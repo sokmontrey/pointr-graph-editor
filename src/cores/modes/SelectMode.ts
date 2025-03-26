@@ -1,4 +1,4 @@
-import { Mode } from "../types/Mode";
+import { Mode } from "../../types/Mode";
 
 export default class SelectMode implements Mode {
     handleDragStart(e: MouseEvent): void {

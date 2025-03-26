@@ -5,8 +5,3 @@ export interface Mode {
     handleClick(e: MouseEvent): void;
     handleWheel(e: WheelEvent): void;
 }
-
-
-export enum ModeType {
-    SELECT = "Select",
-}
