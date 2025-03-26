@@ -2,18 +2,28 @@ import { Mode } from "../../types/Mode";
 
 export default class SelectMode implements Mode {
     handleDragStart(e: MouseEvent): void {
-        throw new Error("Method not implemented.");
+        // Start selection rectangle
+        console.log("Selection started at", e.clientX, e.clientY);
     }
+    
     handleDrag(e: MouseEvent): void {
-        throw new Error("Method not implemented.");
+        // Update selection rectangle
+        console.log("Selection dragging at", e.clientX, e.clientY);
     }
+    
     handleDragEnd(e: MouseEvent): void {
-        throw new Error("Method not implemented.");
+        // Finalize selection
+        console.log("Selection ended at", e.clientX, e.clientY);
     }
+    
     handleClick(e: MouseEvent): void {
-        throw new Error("Method not implemented.");
+        // Select item at point
+        console.log("Click at", e.clientX, e.clientY);
     }
+    
+    // TODO: remove this method all Mode
     handleWheel(e: WheelEvent): void {
-        throw new Error("Method not implemented.");
+        // Default wheel behavior (if not zooming)
+        console.log("Wheel event", e.deltaY);
     }
 }
