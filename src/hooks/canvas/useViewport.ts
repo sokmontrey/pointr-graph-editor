@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { Viewport } from '../../types/Viewport';
+import { Viewport } from '../../types/Canvas';
 
 export const useViewport = (initialScale = 1) => {
   const [viewport, setViewport] = useState<Viewport>({

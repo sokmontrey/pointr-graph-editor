@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Viewport } from '../types/Viewport';
+import { Viewport } from '../types/Canvas';
 
 interface CanvasProps {
     viewport: Viewport;
