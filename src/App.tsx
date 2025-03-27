@@ -12,7 +12,14 @@ import { useCanvasRenderer } from './hooks/canvas/useCanvasRenderer';
 export default function App() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { mode, setMode } = useModeManager(useSelectMode());
-  const { viewport, handlePan, handleZoom } = useViewport(1);
+  const viewportSettings = { // TODO: add this to a configuration file
+    initialX: 0,
+    initialY: 0,
+    initialScale: 1,
+    minScale: 0.1,
+    maxScale: 10,
+  }
+  const { viewport, handlePan, handleZoom } = useViewport(...Object.values(viewportSettings));
 
   const render = useCallback((ctx: CanvasRenderingContext2D) => {
     ctx.beginPath();
