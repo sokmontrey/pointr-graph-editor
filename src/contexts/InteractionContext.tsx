@@ -14,8 +14,8 @@ export function InteractionProvider({ children }: { children: ReactNode }) {
   
   return (
     <InteractionContext.Provider value={{
-      on: handlerRef.current.attachListener,
-      off: handlerRef.current.detachListener,
+      on: handlerRef.current.on,
+      off: handlerRef.current.off,
       triggerEvent: handlerRef.current.triggerEvent
     }}>
       {children}

@@ -1,34 +1,31 @@
-export interface InteractionSubscriber {
-  event: string;
-  handler: (e: any) => void;
-} // TODO: move to types
+import { InteractionListener } from "../types/Interaction";
 
 const useInteractionHandler = () => {
-  const subscribers: InteractionSubscriber[] = [];
+  const listeners: InteractionListener[] = [];
 
-  const attachListener = (event: string, handler: (e: any) => void) => {
-    subscribers.push({ event, handler });
+  const on = (event: string, handler: (e: any) => void) => {
+    listeners.push({ event, handler });
   };
 
-  const detachListener = (event: string, handler: (e: any) => void) => {
-    const index = subscribers
+  const off = (event: string, handler: (e: any) => void) => {
+    const index = listeners
       .findIndex(
         sub => sub.event === event &&
           sub.handler === handler);
     if (index !== -1) {
-      subscribers.splice(index, 1);
+      listeners.splice(index, 1);
     }
   };
 
   const triggerEvent = (event: string, data?: any) => {
-    subscribers
+    listeners
       .filter(sub => sub.event === event)
       .forEach(sub => sub.handler(data));
   };
 
   return {
-    attachListener,
-    detachListener,
+    on,
+    off,
     triggerEvent,
   };
 };

@@ -16,6 +16,7 @@ export default function App() {
     handlePan,
     handleZoom,
   });
+
   useCanvasInteraction(canvasRef);
 
   return (
