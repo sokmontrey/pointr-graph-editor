@@ -1,6 +1,6 @@
 import { Mode } from "../../types/Mode";
 
-const useCreateNodeMode = (): Mode => {
+const useCreateNodeMode = (nodeType: string): Mode => {
     return {
         name: "Create Node",
         handleMouseMove : (e: MouseEvent) => {

@@ -1,4 +1,4 @@
-import { InteractionListener } from "../types/Interaction";
+import { InteractionListener } from "../../types/Interaction";
 
 const useInteractionHandler = () => {
   const listeners: InteractionListener[] = [];

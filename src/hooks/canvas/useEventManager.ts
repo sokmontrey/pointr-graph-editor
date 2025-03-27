@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import { Mode } from '../types/Mode';
-import { useInteraction } from '../contexts/InteractionContext';
+import { Mode } from '../../types/Mode';
+import { useInteraction } from '../../contexts/InteractionContext';
 
 export function useEventManager ({
   mode,
