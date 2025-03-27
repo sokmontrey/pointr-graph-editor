@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { Viewport } from '../types/Viewport';
 
 export const useViewport = (initialScale = 1) => {
@@ -8,25 +8,29 @@ export const useViewport = (initialScale = 1) => {
     scale: initialScale,
   });
 
-  const pan = (dx: number, dy: number) => {
+  const handlePan = useCallback((movementX: number, movementY: number) => {
     setViewport(prev => ({
       ...prev,
-      x: prev.x + dx,
-      y: prev.y + dy,
+      x: prev.x + movementX,
+      y: prev.y + movementY,
     }));
-  };
+  }, []);
 
-  const zoom = (factor: number, centerX: number, centerY: number) => {
+  const handleZoom = useCallback((clientX: number, clientY: number, deltaY: number) => {
+    const factor = deltaY > 0 ? 0.9 : 1.1;
     setViewport(prev => {
       const newScale = prev.scale * factor;
-      // Adjust position to zoom toward mouse position
       return {
         scale: newScale,
-        x: centerX - (centerX - prev.x) * factor,
-        y: centerY - (centerY - prev.y) * factor,
+        x: clientX - (clientX - prev.x) * factor,
+        y: clientY - (clientY - prev.y) * factor,
       };
     });
-  };
+  }, []);
 
-  return { viewport, setViewport, pan, zoom };
-};
+  return { viewport, setViewport, handlePan, handleZoom };
+}
+
+
+
+
