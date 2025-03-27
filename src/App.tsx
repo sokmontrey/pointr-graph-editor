@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useRef } from 'react';
 import './App.css';
 import Canvas from './components/Canvas';
 import { useCanvasInteraction } from './hooks/canvas/useCanvasInteraction';
@@ -7,24 +7,21 @@ import { useEventAttachment } from './hooks/canvas/useEventAttachment';
 import Controls from './components/Controls';
 import useSelectMode from './hooks/mode/useSelectMode';
 import { useViewport } from './hooks/canvas/useViewport';
+import { useCanvasRenderer } from './hooks/canvas/useCanvasRenderer';
 
 export default function App() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { mode, setMode } = useModeManager(useSelectMode());
+  const { viewport, handlePan, handleZoom } = useViewport(1);
 
-  const draw = useCallback((canvas: HTMLCanvasElement) => {
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
+  const render = useCallback((ctx: CanvasRenderingContext2D) => {
     ctx.beginPath();
     ctx.arc(100, 100, 50, 0, 2 * Math.PI);
     ctx.strokeStyle = 'white';
     ctx.stroke();
   }, []);
 
-  // Update canva and redraw
-  const { handlePan, handleZoom } = useViewport(1);
-
+  const { draw } = useCanvasRenderer(canvasRef, viewport, render);
   useEventAttachment(mode, handlePan, handleZoom);
   useCanvasInteraction(canvasRef);
 
