@@ -14,6 +14,7 @@ const Canvas = ({
     width = 800, 
     height = 600,
 }: CanvasProps) => {
+    // TODO: deal with viewport later
     useEffect(() => {
         const canvas = ref?.current;
         if (!canvas) return;
