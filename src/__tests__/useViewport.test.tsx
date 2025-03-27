@@ -1,5 +1,5 @@
 import { renderHook, act } from '@testing-library/react';
-import { useViewport } from '../hooks/useViewport';
+import { useViewport } from '../hooks/canvas/useViewport';
 
 describe('useViewport', () => {
   test('should initialize with default values', () => {

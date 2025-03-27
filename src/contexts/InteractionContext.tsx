@@ -1,5 +1,5 @@
 import { createContext, useContext, useRef, ReactNode } from 'react';
-import InteractionHandler from '../hooks/useInteractionHandler';
+import InteractionHandler from '../hooks/canvas/useInteractionHandler';
 
 type InteractionContextType = {
   on: (event: string, handler: (e: any) => void) => void;

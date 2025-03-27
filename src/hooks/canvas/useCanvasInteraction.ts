@@ -1,5 +1,5 @@
 import { RefObject, useEffect } from 'react';
-import { useInteraction } from '../contexts/InteractionContext';
+import { useInteraction } from '../../contexts/InteractionContext';
 
 export const useCanvasInteraction = (
   canvasRef: RefObject<HTMLCanvasElement | null>,
