@@ -7,7 +7,7 @@ export const useEventAttachment = (
   pan: (movementX: number, movementY: number) => void,
   zoom: (clientX: number, clientY: number, deltaY: number) => void,
 ) => {
-  // attachMode(mode);
+  attachMode(mode);
   attachViewport(pan, zoom);
 };
 
@@ -46,6 +46,7 @@ const attachViewport = (
     };
 
     const handlePan = (e: MouseEvent) => {
+      // TODO: create enum for buttons
       if (e.buttons !== 4) return; // TODO: space or ctrl can also pan
       pan(e.movementX, e.movementY);
     };
