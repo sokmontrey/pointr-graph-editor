@@ -1,6 +1,7 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { Viewport } from '../../types/Canvas';
 
+// TODO: implement min/max scale
 export const useViewport = (initialScale = 1) => {
   const [viewport, setViewport] = useState<Viewport>({
     x: 0,
@@ -30,7 +31,3 @@ export const useViewport = (initialScale = 1) => {
 
   return { viewport, setViewport, handlePan, handleZoom };
 }
-
-
-
-
