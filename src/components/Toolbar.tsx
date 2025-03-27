@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useCreateNodeMode from "../hooks/mode/useCreateNodeMode";
 import useSelectMode from "../hooks/mode/useSelectMode";
 import { Mode } from "../types/Mode";
@@ -16,28 +16,27 @@ const Toolbar = ({
 
     return (<div>
         <button 
-            onClick={() => setMode(useSelectMode())}
-        >
+        onClick={() => setMode(useSelectMode())} >
             Select
         </button>
 
         <select 
-            value={nodeType}
-            onChange={(e) => setNodeType(e.target.value)}
-        >
+        value={nodeType}
+        onChange={(e) => {
+            setNodeType(e.target.value);
+            setMode(useCreateNodeMode(nodeTypes[e.target.value]));
+        }}>
             {Object.keys(nodeTypes).map((key) =>
                 <option 
-                    key={key} 
-                    value={key}
-                >
+                key={key} 
+                value={key}>
                     {nodeTypes[key].name}
                 </option>
             )}
         </select>
 
         <button 
-            onClick={() => setMode(useCreateNodeMode(nodeType))}
-        >
+        onClick={() => setMode(useCreateNodeMode(nodeTypes[nodeType]))}>
             {nodeTypes[nodeType].name}
         </button>
     </div>);
