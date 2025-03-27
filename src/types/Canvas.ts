@@ -8,3 +8,5 @@ export interface Viewport {
   y: number;
   scale: number;
 }
+
+export type RenderFunction = (ctx: CanvasRenderingContext2D) => void;
