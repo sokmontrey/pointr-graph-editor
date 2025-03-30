@@ -1,12 +1,11 @@
 import { RefObject, useEffect } from 'react';
-import { useInteraction } from '../../contexts/InteractionContext';
+import { EventBus } from '../../types';
 
 export const useCanvasInteraction = (
   canvasRef: RefObject<HTMLCanvasElement | null>,
+  eventBus: EventBus,
   dragThreshold = 5,
 ) => {
-  const { triggerEvent } = useInteraction();
-
   let startX: number | null = null;
   let startY: number | null = null;
   let isMouseDown = false;
@@ -22,18 +21,17 @@ export const useCanvasInteraction = (
   const handleMouseUp = (e: MouseEvent) => {
     isMouseDown = false;
     if (isDragging) {
-      triggerEvent('dragend', e);
       isDragging = false;
     } else {
-      triggerEvent('click', e);
+      eventBus.publish('click', e);
     }
   };
 
   const handleMouseMove = (e: MouseEvent) => {
     if (isDragging) {
-      triggerEvent('dragging', e);
+      eventBus.publish('dragging', e);
     } else {
-      triggerEvent('mousemove', e);
+      eventBus.publish('mousemove', e);
     }
 
     if (!isMouseDown) return;
@@ -45,7 +43,7 @@ export const useCanvasInteraction = (
   };
 
   const handleWheel = (e: WheelEvent) => {
-    triggerEvent('wheel', e);
+    eventBus.publish('wheel', e);
   };
 
   useEffect(() => {
@@ -63,5 +61,5 @@ export const useCanvasInteraction = (
       canvas.removeEventListener('mouseup', handleMouseUp);
       canvas.removeEventListener('wheel', handleWheel);
     };
-  }, [canvasRef, dragThreshold, triggerEvent]);
+  }, [canvasRef, dragThreshold, eventBus]);
 };
