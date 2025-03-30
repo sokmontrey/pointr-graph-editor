@@ -1,10 +1,12 @@
 import { Mode } from "../../types";
+import { getMousePosition } from "../../utils/mouse";
 
 const useSelectMode = (): Mode => {
     return {
         name: "Select",
         handleMouseMove: (e: MouseEvent) => {
-            console.log("Mouse moved at", e.clientX, e.clientY);
+            const pos = getMousePosition(e)
+            console.log("Mouse moved at ", pos);
         },
         handleDragging: (e: MouseEvent) => {
             console.log("Dragging at", e.clientX, e.clientY);
