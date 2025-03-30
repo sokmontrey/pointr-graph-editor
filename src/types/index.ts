@@ -22,8 +22,8 @@ export interface Mode {
 }
 
 export interface Viewport {
-  viewport: ViewportTransform;
-  setViewport: React.Dispatch<React.SetStateAction<ViewportTransform>>;
-  handlePan: (e: MouseEvent) => void;
-  handleZoom: (e: WheelEvent) => void;
+    viewport: ViewportTransform;
+    setViewport: React.Dispatch<React.SetStateAction<ViewportTransform>>;
+    handlePan: (e: MouseEvent) => void;
+    handleZoom: (e: WheelEvent) => void;
 }

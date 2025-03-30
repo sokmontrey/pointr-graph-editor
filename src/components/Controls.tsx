@@ -10,8 +10,8 @@ const Controls = ({
     setMode,
 }: ControlsProps) => {
     return (<div>
-        <Toolbar 
-            setMode={setMode} 
+        <Toolbar
+            setMode={setMode}
         />
     </div>);
 };

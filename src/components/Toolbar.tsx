@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import useCreateNodeMode from "../hooks/mode/useCreateNodeMode";
 import useSelectMode from "../hooks/mode/useSelectMode";
 import { Mode } from "../types/Mode";
-import { nodeTypes } from "../cores/graph/Node"; 
+import { nodeTypes } from "../cores/graph/Node";
 
 interface ToolbarProps {
     setMode: React.Dispatch<React.SetStateAction<Mode>>
@@ -15,28 +15,28 @@ const Toolbar = ({
     const [nodeType, setNodeType] = useState<string>(firstNodeType);
 
     return (<div>
-        <button 
-        onClick={() => setMode(useSelectMode())} >
+        <button
+            onClick={() => setMode(useSelectMode())} >
             Select
         </button>
 
-        <select 
-        value={nodeType}
-        onChange={(e) => {
-            setNodeType(e.target.value);
-            setMode(useCreateNodeMode(nodeTypes[e.target.value]));
-        }}>
+        <select
+            value={nodeType}
+            onChange={(e) => {
+                setNodeType(e.target.value);
+                setMode(useCreateNodeMode(nodeTypes[e.target.value]));
+            }}>
             {Object.keys(nodeTypes).map((key) =>
-                <option 
-                key={key} 
-                value={key}>
+                <option
+                    key={key}
+                    value={key}>
                     {nodeTypes[key].name}
                 </option>
             )}
         </select>
 
-        <button 
-        onClick={() => setMode(useCreateNodeMode(nodeTypes[nodeType]))}>
+        <button
+            onClick={() => setMode(useCreateNodeMode(nodeTypes[nodeType]))}>
             {nodeTypes[nodeType].name}
         </button>
     </div>);
