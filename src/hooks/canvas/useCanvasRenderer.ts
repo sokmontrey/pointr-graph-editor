@@ -1,6 +1,5 @@
 import { useCallback, useEffect, RefObject } from 'react';
-import { RenderFunction } from '../../types/Canvas';
-import { ViewportManager } from '../../types';
+import { RenderFunction, ViewportManager } from '../../types';
 
 export const useCanvasRenderer = (
     canvasRef: RefObject<HTMLCanvasElement | null>,

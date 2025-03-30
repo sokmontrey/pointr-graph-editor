@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import useCreateNodeMode from "../hooks/mode/useCreateNodeMode";
 import useSelectMode from "../hooks/mode/useSelectMode";
-import { Mode } from "../types/Mode";
 import { nodeTypes } from "../cores/graph/Node";
+import { Mode } from "../types";
 
 interface ToolbarProps {
     setMode: React.Dispatch<React.SetStateAction<Mode>>

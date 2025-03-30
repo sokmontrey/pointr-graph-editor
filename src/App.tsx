@@ -28,7 +28,7 @@ export default function App() {
     const eventBus = useRef(useEventBus()).current;
     
     useAttachViewportEvent(eventBus, viewportManager);
-    // useAttachModeEvent(eventBus, modeManager.mode);
+    useAttachModeEvent(eventBus, modeManager.mode);
 
     useCanvasInteraction(canvasRef, eventBus);
 
