@@ -1,9 +1,9 @@
 import { useCallback, useEffect, RefObject } from 'react';
-import { Viewport, RenderFunction } from '../../types/Canvas';
+import { ViewportTransform, RenderFunction } from '../../types/Canvas';
 
 export const useCanvasRenderer = (
   canvasRef: RefObject<HTMLCanvasElement | null>,
-  viewport: Viewport,
+  viewport: ViewportTransform,
   render: RenderFunction
 ) => {
   // Memoize the draw function 

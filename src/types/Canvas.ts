@@ -3,7 +3,7 @@ export interface InteractionListener {
   handler: (e: any) => void;
 }
 
-export interface Viewport {
+export interface ViewportTransform {
   x: number;
   y: number;
   scale: number;

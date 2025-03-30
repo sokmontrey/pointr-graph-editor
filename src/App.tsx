@@ -1,13 +1,10 @@
 import { useCallback, useRef } from 'react';
 import './App.css';
-import Canvas from './components/Canvas';
 import { useCanvasInteraction } from './hooks/canvas/useCanvasInteraction';
 import { useModeManager } from './hooks/mode/useModeManager';
-import { useEventAttachment } from './hooks/canvas/useEventAttachment';
-import Controls from './components/Controls';
+import { useAttachModeEvent, useAttachViewportEvent } from './hooks/canvas/eventAttachments';
 import useSelectMode from './hooks/mode/useSelectMode';
 import { useViewport } from './hooks/canvas/useViewport';
-import { useCanvasRenderer } from './hooks/canvas/useCanvasRenderer';
 import { useEventBus } from './hooks/canvas/useEventBus';
 
 const viewportSettings = { // TODO: add this to a configuration file
@@ -20,10 +17,13 @@ const viewportSettings = { // TODO: add this to a configuration file
 
 export default function App() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const eventBus = useEventBus();
 
   const modeManager = useModeManager(useSelectMode());
   const viewport = useViewport(...Object.values(viewportSettings));
+
+  const eventBus = useEventBus();
+  useAttachViewportEvent(eventBus, viewport);
+  useAttachModeEvent(eventBus, modeManager.mode);
 
   useCanvasInteraction(canvasRef, eventBus);
 

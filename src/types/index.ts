@@ -1,3 +1,5 @@
+import { ViewportTransform } from "./Canvas";
+
 export interface Point {
     x: number;
     y: number;
@@ -15,7 +17,13 @@ export interface EventBus {
 export interface Mode {
     name: string;
     handleDragging(e: MouseEvent): void;
-    handleDragEnd(e: MouseEvent): void;
     handleClick(e: MouseEvent): void;
     handleMouseMove(e: MouseEvent): void;
+}
+
+export interface Viewport {
+  viewport: ViewportTransform;
+  setViewport: React.Dispatch<React.SetStateAction<ViewportTransform>>;
+  handlePan: (e: MouseEvent) => void;
+  handleZoom: (e: WheelEvent) => void;
 }
