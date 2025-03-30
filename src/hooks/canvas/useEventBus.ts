@@ -1,13 +1,13 @@
 import { useRef, useCallback } from 'react';
-import { EventType, EventCallback } from '../../types';
+import { EventType, EventCallback, EventUnsubscriber, EventBus } from '../../types';
 
-export const useEventBus = () => {
+export const useEventBus = (): EventBus => {
     const listenersRef = useRef<Map<EventType, Set<EventCallback<any>>>>(new Map());
 
     const subscribe = useCallback(<T extends Event>(
         eventType: EventType,
         callback: EventCallback<T>
-    ): (() => void) => {
+    ): EventUnsubscriber => {
         if (!listenersRef.current.has(eventType)) {
             listenersRef.current.set(eventType, new Set());
         }
