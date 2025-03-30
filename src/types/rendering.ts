@@ -1,0 +1,1 @@
+export type RenderFunction = (ctx: CanvasRenderingContext2D) => void;
