@@ -1,20 +1,20 @@
 import { RefObject, useEffect } from 'react';
 import { EventBus } from '../../types';
+import { getMousePosition } from '../../utils/mouse';
+import { Point } from '../../utils/point';
 
 export const useCanvasInteraction = (
     canvasRef: RefObject<HTMLCanvasElement | null>,
     eventBus: EventBus,
     dragThreshold = 5,
 ) => {
-    let startX: number | null = null;
-    let startY: number | null = null;
+    let mouseDownPos: Point | null = null;
     let isMouseDown = false;
     let isDragging = false;
 
     const handleMouseDown = (e: MouseEvent) => {
         isMouseDown = true;
-        startX = e.clientX;
-        startY = e.clientY;
+        mouseDownPos = getMousePosition(e);
     };
 
     const handleMouseUp = (e: MouseEvent) => {
@@ -25,10 +25,10 @@ export const useCanvasInteraction = (
 
     const handleMouseMove = (e: MouseEvent) => {
         if (isMouseDown && !isDragging) {
-            if (startX === null || startY === null) return;
-            const dx = e.clientX - startX;
-            const dy = e.clientY - startY;
-            if (Math.abs(dx) >= dragThreshold || Math.abs(dy) >= dragThreshold) {
+            if (mouseDownPos === null) return;
+            const currentMousePos = getMousePosition(e);
+            const changeInMousePos = currentMousePos.subtract(mouseDownPos).absolute();
+            if (changeInMousePos.x >= dragThreshold || changeInMousePos.y >= dragThreshold) {
                 isDragging = true;
             }
         }
