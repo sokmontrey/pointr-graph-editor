@@ -1,9 +1,10 @@
 import { useCallback, useEffect, RefObject } from 'react';
-import { ViewportTransform, RenderFunction } from '../../types/Canvas';
+import { RenderFunction } from '../../types/Canvas';
+import { ViewportManager } from '../../types';
 
 export const useCanvasRenderer = (
     canvasRef: RefObject<HTMLCanvasElement | null>,
-    viewport: ViewportTransform,
+    viewportManager: ViewportManager,
     render: RenderFunction
 ) => {
     // Memoize the draw function 
@@ -18,13 +19,12 @@ export const useCanvasRenderer = (
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         ctx.save();
-        ctx.translate(viewport.x, viewport.y);
-        ctx.scale(viewport.scale, viewport.scale);
+        ctx.translate(viewportManager.viewport.x, viewportManager.viewport.y);
+        ctx.scale(viewportManager.viewport.scale, viewportManager.viewport.scale);
         render(ctx);
         ctx.restore();
-    }, [canvasRef, viewport, render]);
+    }, [canvasRef, viewportManager, render]);
 
     useEffect(() => { draw(); }, [draw]);
-
     return { draw };
 };

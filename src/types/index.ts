@@ -1,5 +1,3 @@
-import { ViewportTransform } from "./Canvas";
-
 export interface Point {
     x: number;
     y: number;
@@ -21,9 +19,23 @@ export interface Mode {
     handleMouseMove(e: MouseEvent): void;
 }
 
-export interface Viewport {
+export interface ViewportTransform {
+    x: number;
+    y: number;
+    scale: number;
+}
+
+export interface ViewportManager {
     viewport: ViewportTransform;
     setViewport: React.Dispatch<React.SetStateAction<ViewportTransform>>;
     handlePan: (e: MouseEvent) => void;
     handleZoom: (e: WheelEvent) => void;
+}
+
+export interface ViewportSettings {
+    initialX?: number;
+    initialY?: number;
+    initialScale?: number;
+    minScale?: number;
+    maxScale?: number;
 }

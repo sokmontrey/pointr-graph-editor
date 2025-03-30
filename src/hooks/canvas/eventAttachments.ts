@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
-import { EventBus, Mode, Viewport } from '../../types';
+import { EventBus, Mode, ViewportManager } from '../../types';
 
 export const useAttachViewportEvent = (
     eventBus: EventBus,
-    viewport: Viewport,
+    viewport: ViewportManager,
 ) => {
     useEffect(() => {
         const unsubscribers = [

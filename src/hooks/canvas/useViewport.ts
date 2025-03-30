@@ -1,14 +1,13 @@
 import { useState, useCallback } from 'react';
-import { ViewportTransform } from '../../types/Canvas';
-import { Viewport } from '../../types';
+import { ViewportManager, ViewportSettings, ViewportTransform } from '../../types';
 
-export const useViewport = (
+export const useViewportManager = ({
     initialX = 0,
     initialY = 0,
     initialScale = 1,
     minScale = 0.1,
     maxScale = 10,
-): Viewport => {
+}: ViewportSettings): ViewportManager => {
     const [viewport, setViewport] = useState<ViewportTransform>({
         x: initialX,
         y: initialY,
@@ -47,5 +46,10 @@ export const useViewport = (
         });
     }, [minScale, maxScale]);
 
-    return { viewport, setViewport, handlePan, handleZoom };
+    return { 
+        viewport,
+        setViewport, 
+        handlePan, 
+        handleZoom 
+    };
 }

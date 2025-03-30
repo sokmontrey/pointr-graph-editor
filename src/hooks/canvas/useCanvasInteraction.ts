@@ -13,33 +13,27 @@ export const useCanvasInteraction = (
 
     const handleMouseDown = (e: MouseEvent) => {
         isMouseDown = true;
-        isDragging = false;
         startX = e.clientX;
         startY = e.clientY;
     };
 
     const handleMouseUp = (e: MouseEvent) => {
+        if (!isDragging) eventBus.publish('click', e);
         isMouseDown = false;
-        if (isDragging) {
-            isDragging = false;
-        } else {
-            eventBus.publish('click', e);
-        }
+        isDragging = false;
     };
 
     const handleMouseMove = (e: MouseEvent) => {
-        if (isDragging) {
-            eventBus.publish('dragging', e);
-        } else {
-            eventBus.publish('mousemove', e);
+        if (isMouseDown && !isDragging) {
+            if (startX === null || startY === null) return;
+            const dx = e.clientX - startX;
+            const dy = e.clientY - startY;
+            if (Math.abs(dx) >= dragThreshold || Math.abs(dy) >= dragThreshold) {
+                isDragging = true;
+            }
         }
-
-        if (!isMouseDown) return;
-        if (startX === null || startY === null) return;
-        const dx = e.clientX - startX;
-        const dy = e.clientY - startY;
-        if (Math.abs(dx) < dragThreshold && Math.abs(dy) < dragThreshold) return;
-        isDragging = true;
+        
+        eventBus.publish(isDragging ? 'dragging' : 'mousemove', e);
     };
 
     const handleWheel = (e: WheelEvent) => {
