@@ -4,17 +4,17 @@ interface CanvasProps {
     height?: number;
 }
 
-const Canvas = ({ 
+const Canvas = ({
     ref,
-    width = 800, 
+    width = 800,
     height = 600,
 }: CanvasProps) => {
     return (
-        <canvas 
-        ref={ref}
-        width={width}
-        height={height}
-        style={{ border: '1px solid #ccc' }}/>
+        <canvas
+            ref={ref}
+            width={width}
+            height={height}
+            style={{ border: '1px solid #ccc' }} />
     );
 };
 

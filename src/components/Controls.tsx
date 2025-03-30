@@ -1,6 +1,6 @@
 import React from "react";
-import { Mode } from "../types/Mode";
 import Toolbar from "./Toolbar";
+import { Mode } from "../types";
 
 interface ControlsProps {
     setMode: React.Dispatch<React.SetStateAction<Mode>>
@@ -10,8 +10,8 @@ const Controls = ({
     setMode,
 }: ControlsProps) => {
     return (<div>
-        <Toolbar 
-            setMode={setMode} 
+        <Toolbar
+            setMode={setMode}
         />
     </div>);
 };
