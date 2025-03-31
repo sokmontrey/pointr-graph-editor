@@ -1,10 +1,10 @@
 import { useCallback, useEffect, RefObject } from 'react';
-import { RenderFunction, ViewportManager } from '../../types';
+import { RenderBus, ViewportManager } from '../../types';
 
 export const useCanvasRenderer = (
     canvasRef: RefObject<HTMLCanvasElement | null>,
     viewportManager: ViewportManager,
-    render: RenderFunction
+    renderBus: RenderBus
 ) => {
     // Memoize the draw function 
     // And to expose it outside the hook
@@ -20,9 +20,9 @@ export const useCanvasRenderer = (
         ctx.save();
         ctx.translate(viewportManager.viewport.x, viewportManager.viewport.y);
         ctx.scale(viewportManager.viewport.scale, viewportManager.viewport.scale);
-        render(ctx);
+        renderBus.publish(ctx);
         ctx.restore();
-    }, [canvasRef, viewportManager, render]);
+    }, [canvasRef, viewportManager, renderBus]);
 
     useEffect(() => { draw(); }, [draw]);
     return { draw };

@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useRef, useEffect } from 'react';
 import './App.css';
 import { useCanvasInteraction } from './hooks/canvas/useCanvasInteraction';
 import { useModeManager } from './hooks/mode/useModeManager';
@@ -6,6 +6,7 @@ import { useAttachModeEvent, useAttachViewportEvent } from './hooks/event/eventA
 import useSelectMode from './hooks/mode/useSelectMode';
 import { useViewportManager } from './hooks/canvas/useViewport';
 import { useEventBus } from './hooks/event/useEventBus';
+import { useRenderBus } from './hooks/canvas/useRenderBus';
 import Controls from './components/Controls';
 import Canvas from './components/Canvas';
 import { useCanvasRenderer } from './hooks/canvas/useCanvasRenderer';
@@ -24,22 +25,14 @@ export default function App() {
     const modeManager = useModeManager(useSelectMode());
     const viewportManager = useViewportManager(viewportSettings);
 
-    // Memoize the eventBus to prevent recreation on re-renders
     const eventBus = useRef(useEventBus()).current;
-    
     useAttachViewportEvent(eventBus, viewportManager);
     useAttachModeEvent(eventBus, modeManager.mode);
-
     useCanvasInteraction(canvasRef, eventBus);
 
-    const render = useCallback((ctx: CanvasRenderingContext2D) => {
-      ctx.beginPath();
-      ctx.arc(100, 100, 50, 0, 2 * Math.PI);
-      ctx.strokeStyle = 'white';
-      ctx.stroke();
-    }, []);
-
-    useCanvasRenderer(canvasRef, viewportManager, render);
+    const renderBus = useRef(useRenderBus()).current;
+    // renderer attachment
+    useCanvasRenderer(canvasRef, viewportManager, renderBus);
 
     return (
         <div>
