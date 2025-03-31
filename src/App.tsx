@@ -1,4 +1,4 @@
-import { useCallback, useRef, useEffect } from 'react';
+import { useRef } from 'react';
 import './App.css';
 import { useCanvasInteraction } from './hooks/canvas/useCanvasInteraction';
 import { useModeManager } from './hooks/mode/useModeManager';
@@ -10,7 +10,7 @@ import { useRenderBus } from './hooks/canvas/useRenderBus';
 import Controls from './components/Controls';
 import Canvas from './components/Canvas';
 import { useCanvasRenderer } from './hooks/canvas/useCanvasRenderer';
-import { useImageOverlayManager } from './hooks/canvas/useImageOverlayManager';
+import { useImageOverlayManager } from './hooks/imageOverlay/useImageOverlayManager';
 
 const viewportSettings = { // TODO: add this to a configuration file
     initialX: 0,
@@ -32,13 +32,13 @@ export default function App() {
     useAttachModeEvent(eventBus, modeManager.mode);
     useCanvasInteraction(mainCanvasRef, eventBus);
 
-    const imageOverlayManager = useImageOverlayManager(overlayCanvasRef); // TODO: do I need ref?
-
     // ===== Rendering Bus =====
     const overlayRenderBus = useRef(useRenderBus()).current;
     const mainRenderBus = useRef(useRenderBus()).current;
 
     // ===== Rendering Attachment =====
+    const imageOverlayManager = useImageOverlayManager(); // TODO: do I need ref?
+    // TODO check if all .bind are necessary
     overlayRenderBus.subscribe(imageOverlayManager.draw.bind(imageOverlayManager));
 
     // ===== Rendering =====
@@ -48,22 +48,14 @@ export default function App() {
     return (
         <div>
             <p>Current mode: {modeManager.mode.name}</p>
-            <Controls 
+            <Controls
                 modeManager={modeManager}
                 imageOverlayManager={imageOverlayManager}
             />
-            <Canvas 
-                mainRef={mainCanvasRef} 
+            <Canvas
+                mainRef={mainCanvasRef}
                 overlayRef={overlayCanvasRef}
-            /> 
+            />
         </div>
     );
 }
-
-
-
-
-
-
-
-
