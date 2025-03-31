@@ -1,17 +1,33 @@
-import React from "react";
 import Toolbar from "./Toolbar";
-import { Mode } from "../types";
+import { ImageOverlayManager, ModeManager } from "../types";
 
 interface ControlsProps {
-    setMode: React.Dispatch<React.SetStateAction<Mode>>
+    modeManager: ModeManager;
+    imageOverlayManager: ImageOverlayManager; 
 }
 
 const Controls = ({
-    setMode,
+    modeManager,
+    imageOverlayManager,
 }: ControlsProps) => {
     return (<div>
         <Toolbar
-            setMode={setMode}
+            setMode={modeManager.setMode}
+        />
+
+        {/* A proptotype for image overlay for now */}
+        <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+                if (!e.target.files) return;
+                const file = e.target.files[0];
+                const image = new Image();
+                image.src = URL.createObjectURL(file);
+                image.onload = () => {
+                    imageOverlayManager.setImage(image);
+                };
+            }}
         />
     </div>);
 };
