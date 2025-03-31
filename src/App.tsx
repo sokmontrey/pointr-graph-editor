@@ -10,6 +10,7 @@ import { useRenderBus } from './hooks/canvas/useRenderBus';
 import Controls from './components/Controls';
 import Canvas from './components/Canvas';
 import { useCanvasRenderer } from './hooks/canvas/useCanvasRenderer';
+import { useImageOverlayManager } from './hooks/canvas/useImageOverlayManager';
 
 const viewportSettings = { // TODO: add this to a configuration file
     initialX: 0,
@@ -31,17 +32,29 @@ export default function App() {
     useAttachModeEvent(eventBus, modeManager.mode);
     useCanvasInteraction(mainCanvasRef, eventBus);
 
-    const renderBus = useRef(useRenderBus()).current;
-    // renderer attachment
-    useCanvasRenderer(mainCanvasRef, viewportManager, renderBus);
+    const imageOverlayManager = useImageOverlayManager(overlayCanvasRef); // TODO: do I need ref?
+
+    // ===== Rendering Bus =====
+    const overlayRenderBus = useRef(useRenderBus()).current;
+    const mainRenderBus = useRef(useRenderBus()).current;
+
+    // ===== Rendering Attachment =====
+    overlayRenderBus.subscribe(imageOverlayManager.draw.bind(imageOverlayManager));
+
+    // ===== Rendering =====
+    useCanvasRenderer(overlayCanvasRef, viewportManager, overlayRenderBus);
+    useCanvasRenderer(mainCanvasRef, viewportManager, mainRenderBus);
 
     return (
         <div>
             <p>Current mode: {modeManager.mode.name}</p>
-            <Controls setMode={modeManager.setMode} />
+            <Controls 
+                modeManager={modeManager}
+                imageOverlayManager={imageOverlayManager}
+            />
             <Canvas 
-            mainRef={mainCanvasRef} 
-            overlayRef={overlayCanvasRef}
+                mainRef={mainCanvasRef} 
+                overlayRef={overlayCanvasRef}
             /> 
         </div>
     );
