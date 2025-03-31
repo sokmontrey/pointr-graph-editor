@@ -20,7 +20,8 @@ const viewportSettings = { // TODO: add this to a configuration file
 };
 
 export default function App() {
-    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const mainCanvasRef = useRef<HTMLCanvasElement>(null);
+    const overlayCanvasRef = useRef<HTMLCanvasElement>(null);
 
     const modeManager = useModeManager(useSelectMode());
     const viewportManager = useViewportManager(viewportSettings);
@@ -28,17 +29,20 @@ export default function App() {
     const eventBus = useRef(useEventBus()).current;
     useAttachViewportEvent(eventBus, viewportManager);
     useAttachModeEvent(eventBus, modeManager.mode);
-    useCanvasInteraction(canvasRef, eventBus);
+    useCanvasInteraction(mainCanvasRef, eventBus);
 
     const renderBus = useRef(useRenderBus()).current;
     // renderer attachment
-    useCanvasRenderer(canvasRef, viewportManager, renderBus);
+    useCanvasRenderer(mainCanvasRef, viewportManager, renderBus);
 
     return (
         <div>
             <p>Current mode: {modeManager.mode.name}</p>
             <Controls setMode={modeManager.setMode} />
-            <Canvas ref={canvasRef} /> 
+            <Canvas 
+            mainRef={mainCanvasRef} 
+            overlayRef={overlayCanvasRef}
+            /> 
         </div>
     );
 }
