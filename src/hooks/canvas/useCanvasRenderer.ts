@@ -1,11 +1,11 @@
 import { useCallback, useEffect, RefObject } from 'react';
-import { RenderBus, ViewportManager } from '../../types';
+import { CanvasRenderer, RenderBus, ViewportManager } from '../../types';
 
 export const useCanvasRenderer = (
     canvasRef: RefObject<HTMLCanvasElement | null>,
     viewportManager: ViewportManager,
     renderBus: RenderBus
-) => {
+): CanvasRenderer => {
     // Memoize the draw function 
     // And to expose it outside the hook
     const draw = useCallback(() => {
