@@ -2,15 +2,16 @@ import { useRef } from 'react';
 import './App.css';
 import { useCanvasInteraction } from './hooks/canvas/useCanvasInteraction';
 import { useModeManager } from './hooks/mode/useModeManager';
-import { useAttachModeEvent, useAttachViewportEvent } from './hooks/event/eventAttachments';
+import { useAttachModeEvent, useAttachViewportEvent } from './hooks/busAttachment/eventAttachments';
 import useSelectMode from './hooks/mode/useSelectMode';
 import { useViewportManager } from './hooks/canvas/useViewport';
-import { useEventBus } from './hooks/event/useEventBus';
-import { useRenderBus } from './hooks/canvas/useRenderBus';
+import { useEventBus } from './hooks/buses/useEventBus';
+import { useRenderBus } from './hooks/buses/useRenderBus';
 import Controls from './components/Controls';
 import Canvas from './components/Canvas';
 import { useCanvasRenderer } from './hooks/canvas/useCanvasRenderer';
 import { useImageOverlayManager } from './hooks/imageOverlay/useImageOverlayManager';
+import { useAttachImageOverlayRenderer } from './hooks/busAttachment/rendererAttachments';
 
 const viewportSettings = { // TODO: add this to a configuration file
     initialX: 0,
@@ -26,24 +27,20 @@ export default function App() {
 
     const modeManager = useModeManager(useSelectMode());
     const viewportManager = useViewportManager(viewportSettings);
+    const imageOverlayManager = useImageOverlayManager();
 
     const eventBus = useRef(useEventBus()).current;
-    useAttachViewportEvent(eventBus, viewportManager);
-    useAttachModeEvent(eventBus, modeManager.mode);
-    useCanvasInteraction(mainCanvasRef, eventBus);
-
-    // ===== Rendering Bus =====
     const overlayRenderBus = useRef(useRenderBus()).current;
     const mainRenderBus = useRef(useRenderBus()).current;
 
-    // ===== Rendering Attachment =====
-    const imageOverlayManager = useImageOverlayManager(); // TODO: do I need ref?
-    // TODO check if all .bind are necessary
-    overlayRenderBus.subscribe(imageOverlayManager.draw);
+    useAttachViewportEvent(eventBus, viewportManager);
+    useAttachModeEvent(eventBus, modeManager.mode);
+    useAttachImageOverlayRenderer(overlayRenderBus, imageOverlayManager.draw);
 
-    // ===== Rendering =====
     useCanvasRenderer(overlayCanvasRef, viewportManager, overlayRenderBus);
     useCanvasRenderer(mainCanvasRef, viewportManager, mainRenderBus);
+
+    useCanvasInteraction(mainCanvasRef, eventBus);
 
     return (
         <div>

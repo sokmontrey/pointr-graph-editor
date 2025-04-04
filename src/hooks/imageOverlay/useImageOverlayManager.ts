@@ -11,7 +11,7 @@ export const useImageOverlayManager = (): ImageOverlayManager => {
     const draw = (ctx: CanvasRenderingContext2D) => {
         if (!ctx || !image) return;
         ctx.globalAlpha = imageOpacity;
-        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+        // ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
         ctx.drawImage(
             image,
             imageOffset.x,
