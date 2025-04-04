@@ -1,8 +1,8 @@
 import { Point } from "../utils/point";
 
-export type CanvasInteractionType = void; 
+export type CanvasInteraction = void; 
 
-export interface CanvasRendererType {
+export interface CanvasRenderer {
     draw: () => void;
 }
 
@@ -34,8 +34,8 @@ export interface ViewportManager {
     handleZoom: (e: WheelEvent) => void;
 }
 
-export type AttachViewportEventType = void;
-export type AttachModeEventType = void;
+export type AttachViewportEvent = void;
+export type AttachModeEvent = void;
 
 export type EventType = 'mousemove' | 'dragging' | 'click' | 'wheel';
 export type EventCallback<T extends Event> = (event: T) => void;
