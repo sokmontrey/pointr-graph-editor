@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Point } from '../../utils/point';
-import StepperInput from './StepperInput';
+import DragNumberInput from './DragNumberInput';
 
 interface VectorInputProps {
     value: Point;
@@ -44,7 +44,7 @@ const VectorInput = ({
             {label && <label className="vector-label">{label}</label>}
             <div className="vector-controls">
                 <div className="vector-x">
-                    <StepperInput
+                    <DragNumberInput
                         label="X"
                         value={localValue.x}
                         onChange={handleXChange}
@@ -55,7 +55,7 @@ const VectorInput = ({
                     />
                 </div>
                 <div className="vector-y">
-                    <StepperInput
+                    <DragNumberInput
                         label="Y"
                         value={localValue.y}
                         onChange={handleYChange}

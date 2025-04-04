@@ -1,6 +1,6 @@
 import Toolbar from "./Toolbar";
 import { ImageOverlayManager, ModeManager } from "../types";
-import StepperInput from "./input/StepperInput";
+import DragNumberInput from "./input/DragNumberInput";
 import VectorInput from "./input/VectorInput";
 
 interface ControlsProps {
@@ -39,7 +39,7 @@ const Controls = ({
             step={10}
         />
 
-        <StepperInput
+        <DragNumberInput
             label="Image Scale"
             value={imageOverlayManager.imageScale}
             onChange={imageOverlayManager.setImageScale}
@@ -48,7 +48,7 @@ const Controls = ({
             step={0.05}
         />
 
-        <StepperInput
+        <DragNumberInput
             label="Image Opacity"
             value={imageOverlayManager.imageOpacity}
             onChange={imageOverlayManager.setImageOpacity}
