@@ -1,14 +1,14 @@
 import { RefObject, useEffect } from 'react';
 import { CanvasInteraction, EventBus } from '../../types';
 import { getMousePosition } from '../../utils/mouse';
-import { Point } from '../../utils/point';
+import { Vec2 } from '../../utils/vector';
 
 export const useCanvasInteraction = (
     canvasRef: RefObject<HTMLCanvasElement | null>,
     eventBus: EventBus,
     dragThreshold = 5,
 ): CanvasInteraction => {
-    let mouseDownPos: Point | null = null;
+    let mouseDownPos: Vec2 | null = null;
     let isMouseDown = false;
     let isDragging = false;
 

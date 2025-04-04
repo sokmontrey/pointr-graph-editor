@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Point } from '../../utils/point';
+import { Vec2 } from '../../utils/vector';
 import DragNumberInput from './DragNumberInput';
 
 interface VectorInputProps {
-    value: Point;
-    onChange: (value: Point) => void;
+    value: Vec2;
+    onChange: (value: Vec2) => void;
     min?: number;
     max?: number;
     step?: number;
@@ -21,20 +21,20 @@ const VectorInput = ({
     label,
     disabled = false,
 }: VectorInputProps) => {
-    const [localValue, setLocalValue] = useState<Point>(value.clone());
+    const [localValue, setLocalValue] = useState<Vec2>(value.clone());
 
     useEffect(() => {
         setLocalValue(value.clone());
     }, [value]);
 
     const handleXChange = (newX: number) => {
-        const newPoint = new Point(newX, localValue.y);
+        const newPoint = new Vec2(newX, localValue.y);
         setLocalValue(newPoint);
         onChange(newPoint);
     };
 
     const handleYChange = (newY: number) => {
-        const newPoint = new Point(localValue.x, newY);
+        const newPoint = new Vec2(localValue.x, newY);
         setLocalValue(newPoint);
         onChange(newPoint);
     };

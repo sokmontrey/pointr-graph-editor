@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Point } from "../../utils/point";
+import { Vec2 } from "../../utils/vector";
 import { ImageOverlayManager } from "../../types";
 
 export const useImageOverlayManager = (): ImageOverlayManager => {
-    const [imageOffset, setImageOffset] = useState<Point>(new Point(0, 0));
+    const [imageOffset, setImageOffset] = useState<Vec2>(new Vec2(0, 0));
     const [imageScale, setImageScale] = useState<number>(1);
     const [imageOpacity, setImageOpacity] = useState<number>(1);
     const [image, setImage] = useState<HTMLImageElement | null>(null);

@@ -1,4 +1,4 @@
-import { Point } from "../utils/point";
+import { Vec2 } from "../utils/vector";
 
 // ================================= Canvas =================================
 
@@ -57,10 +57,10 @@ export interface EventBus {
 export interface ImageOverlayManager {
     draw: RenderFunction;
     setImage(image: HTMLImageElement | null): void;
-    setImageOffset(offset: Point): void;
+    setImageOffset(offset: Vec2): void;
     setImageScale(scale: number): void;
     setImageOpacity(opacity: number): void;
-    imageOffset: Point;
+    imageOffset: Vec2;
     imageScale: number;
     imageOpacity: number;
 }
