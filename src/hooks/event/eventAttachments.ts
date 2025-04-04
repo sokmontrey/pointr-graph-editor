@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
-import { EventBus, Mode, ViewportManager } from '../../types';
+import { AttachModeEventType, AttachViewportEventType, EventBus, Mode, ViewportManager } from '../../types';
 
 export const useAttachViewportEvent = (
     eventBus: EventBus,
     viewport: ViewportManager,
-) => {
+): AttachViewportEventType => {
     useEffect(() => {
         const unsubscribers = [
             eventBus.subscribe('wheel', viewport.handleZoom.bind(viewport)),
@@ -20,7 +20,7 @@ export const useAttachViewportEvent = (
 export const useAttachModeEvent = (
     eventBus: EventBus,
     mode: Mode,
-) => {
+): AttachModeEventType => {
     useEffect(() => {
         const unsubscribers = [
             eventBus.subscribe('mousemove', mode.handleMouseMove.bind(mode)),

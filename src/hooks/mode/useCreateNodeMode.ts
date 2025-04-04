@@ -1,7 +1,9 @@
 import { Mode } from "../../types";
 import { NodeType } from "../../types/Graph";
 
-const useCreateNodeMode = (nodeType: NodeType): Mode => {
+const useCreateNodeMode = (
+    nodeType: NodeType
+): Mode => {
     return {
         name: `Create ${nodeType.name}`,
         handleMouseMove: (e: MouseEvent) => {

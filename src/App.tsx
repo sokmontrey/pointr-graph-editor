@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import './App.css';
 import { useCanvasInteraction } from './hooks/canvas/useCanvasInteraction';
 import { useModeManager } from './hooks/mode/useModeManager';
