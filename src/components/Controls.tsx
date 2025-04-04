@@ -36,7 +36,7 @@ const Controls = ({
             label="Image Position"
             value={imageOverlayManager.imageOffset}
             onChange={imageOverlayManager.setImageOffset}
-            step={10}
+            step={1}
         />
 
         <DragNumberInput
@@ -45,7 +45,8 @@ const Controls = ({
             onChange={imageOverlayManager.setImageScale}
             min={0.01}
             max={2}
-            step={0.05}
+            step={0.01}
+            dragSensitivity={0.01}
         />
 
         <DragNumberInput
@@ -54,7 +55,8 @@ const Controls = ({
             onChange={imageOverlayManager.setImageOpacity}
             min={0}
             max={1}
-            step={0.05}
+            step={0.01}
+            dragSensitivity={0.01}
         />
     </div>);
 };
