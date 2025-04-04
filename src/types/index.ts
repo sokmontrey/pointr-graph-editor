@@ -1,5 +1,7 @@
 import { Point } from "../utils/point";
 
+// ================================= Canvas =================================
+
 export type CanvasInteraction = void; 
 
 export interface CanvasRenderer {
@@ -12,6 +14,8 @@ export interface RenderBus {
     subscribe(renderFn: RenderFunction): () => void;
     publish(ctx: CanvasRenderingContext2D): void;
 }
+
+// ================================= Viewport =================================
 
 export interface ViewportSettings {
     initialX?: number;
@@ -34,6 +38,8 @@ export interface ViewportManager {
     handleZoom: (e: WheelEvent) => void;
 }
 
+// ================================= Event =================================
+
 export type AttachViewportEvent = void;
 export type AttachModeEvent = void;
 
@@ -46,6 +52,8 @@ export interface EventBus {
     publish<T extends Event>(eventType: EventType, event: T): void;
 }
 
+// ================================= Image Overlay =================================
+
 export interface ImageOverlayManager {
     draw: RenderFunction;
     setImage(image: HTMLImageElement | null): void;
@@ -56,6 +64,8 @@ export interface ImageOverlayManager {
     imageScale: number;
     imageOpacity: number;
 }
+
+// ================================= Mode =================================
 
 export interface ModeManager {
     mode: Mode;
