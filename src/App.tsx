@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import './App.css';
 import { useCanvasInteraction } from './hooks/canvas/useCanvasInteraction';
 import { useModeManager } from './hooks/mode/useModeManager';
@@ -39,7 +39,7 @@ export default function App() {
     // ===== Rendering Attachment =====
     const imageOverlayManager = useImageOverlayManager(); // TODO: do I need ref?
     // TODO check if all .bind are necessary
-    overlayRenderBus.subscribe(imageOverlayManager.draw.bind(imageOverlayManager));
+    overlayRenderBus.subscribe(imageOverlayManager.draw);
 
     // ===== Rendering =====
     useCanvasRenderer(overlayCanvasRef, viewportManager, overlayRenderBus);

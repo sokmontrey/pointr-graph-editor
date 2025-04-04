@@ -1,5 +1,6 @@
 import Toolbar from "./Toolbar";
 import { ImageOverlayManager, ModeManager } from "../types";
+import ImageOverlayControls from "./ImageOverlayControls";
 
 interface ControlsProps {
     modeManager: ModeManager;
@@ -15,19 +16,8 @@ const Controls = ({
             setMode={modeManager.setMode}
         />
 
-        {/* A proptotype for image overlay for now */}
-        <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => {
-                if (!e.target.files) return;
-                const file = e.target.files[0];
-                const image = new Image();
-                image.src = URL.createObjectURL(file);
-                image.onload = () => {
-                    imageOverlayManager.setImage(image);
-                };
-            }}
+        <ImageOverlayControls
+            imageOverlayManager={imageOverlayManager}
         />
     </div>);
 };
