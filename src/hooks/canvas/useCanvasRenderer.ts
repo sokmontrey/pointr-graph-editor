@@ -6,17 +6,17 @@ export const useCanvasRenderer = (
     viewportManager: ViewportManager,
     renderBus: RenderBus
 ): CanvasRenderer => {
-    // Memoize the draw function 
-    // And to expose it outside the hook
     const draw = useCallback(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
 
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
-
+        
+        // Clear the entire canvas first
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+        
+        // Then apply transformations and draw
         ctx.save();
         ctx.translate(viewportManager.viewport.x, viewportManager.viewport.y);
         ctx.scale(viewportManager.viewport.scale, viewportManager.viewport.scale);
@@ -24,6 +24,11 @@ export const useCanvasRenderer = (
         ctx.restore();
     }, [canvasRef, viewportManager, renderBus]);
 
-    useEffect(() => { draw(); }, [draw]);
-    return { draw };
+    useEffect(() => { 
+        draw(); 
+    }, [draw]);
+
+    return { 
+        draw,
+    };
 };
