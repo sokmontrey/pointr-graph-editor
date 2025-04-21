@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Vec2 } from "../../utils/vector";
 import { ImageOverlayManager } from "../../types";
 
@@ -8,10 +8,9 @@ export const useImageOverlayManager = (): ImageOverlayManager => {
     const [imageOpacity, setImageOpacity] = useState<number>(1);
     const [image, setImage] = useState<HTMLImageElement | null>(null);
 
-    const draw = (ctx: CanvasRenderingContext2D) => {
+    const draw = useCallback((ctx: CanvasRenderingContext2D) => {
         if (!ctx || !image) return;
         ctx.globalAlpha = imageOpacity;
-        // ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
         ctx.drawImage(
             image,
             imageOffset.x,
@@ -19,7 +18,7 @@ export const useImageOverlayManager = (): ImageOverlayManager => {
             image.width * imageScale,
             image.height * imageScale,
         );
-    };
+    }, [image, imageOffset, imageScale, imageOpacity]);
 
     return {
         draw,
