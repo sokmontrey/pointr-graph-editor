@@ -9,8 +9,7 @@ interface ImageOverlayControlsProps {
 export default function ImageOverlayControls({
     imageOverlayManager,
 }: ImageOverlayControlsProps) {
-    // TODO create a common Container component for panel controls
-    return (<> 
+    return (<>
         <input
             type="file"
             accept="image/*"
