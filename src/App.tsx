@@ -12,21 +12,14 @@ import Canvas from './components/Canvas';
 import { useCanvasRenderer } from './hooks/canvas/useCanvasRenderer';
 import { useImageOverlayManager } from './hooks/imageOverlay/useImageOverlayManager';
 import { useAttachImageOverlayRenderer } from './hooks/busAttachment/rendererAttachments';
-
-const viewportSettings = { // TODO: add this to a configuration file
-    initialX: 0,
-    initialY: 0,
-    initialScale: 1,
-    minScale: 0.1,
-    maxScale: 10,
-};
+import { defaultViewportSettings } from './app-config';
 
 export default function App() {
     const mainCanvasRef = useRef<HTMLCanvasElement>(null);
     const overlayCanvasRef = useRef<HTMLCanvasElement>(null);
 
     const modeManager = useModeManager(useSelectMode());
-    const viewportManager = useViewportManager(viewportSettings);
+    const viewportManager = useViewportManager(defaultViewportSettings);
     const imageOverlayManager = useImageOverlayManager();
 
     const eventBus = useRef(useEventBus()).current;
