@@ -46,8 +46,7 @@ export const useViewportManager = ({
 
     return { 
         viewport,
-        setViewport, 
-        handlePan, 
+        handlePan,
         handleZoom 
     };
 }

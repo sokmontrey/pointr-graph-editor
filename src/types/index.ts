@@ -33,7 +33,6 @@ export interface ViewportTransform {
 
 export interface ViewportManager {
     viewport: ViewportTransform;
-    setViewport: React.Dispatch<React.SetStateAction<ViewportTransform>>;
     handlePan: (e: MouseEvent) => void;
     handleZoom: (e: WheelEvent) => void;
 }
