@@ -1,6 +1,6 @@
 import { ImageOverlayManager } from "../types";
-import DragNumberInput from "./input/DragNumberInput";
-import VectorInput from "./input/VectorInput";
+import DragNumberInput from "./ui/DragNumberInput.tsx";
+import VectorInput from "./ui/VectorInput.tsx";
 
 interface ImageOverlayControlsProps {
     imageOverlayManager: ImageOverlayManager;

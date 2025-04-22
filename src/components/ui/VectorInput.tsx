@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Vec2 } from '../../utils/vector';
-import DragNumberInput from './DragNumberInput';
+import { Vec2 } from '../../utils/vector.ts';
+import DragNumberInput from './DragNumberInput.tsx';
 
 interface VectorInputProps {
     value: Vec2;
