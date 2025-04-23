@@ -1,7 +1,7 @@
 ﻿import {create} from 'zustand';
 import {Vec2} from "../utils/vector.ts";
 
-interface ViewportState {
+export interface ViewportState {
     offset: Vec2;
     minScale: number;
     maxScale: number;
