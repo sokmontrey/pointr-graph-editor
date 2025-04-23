@@ -7,7 +7,10 @@ export const useMouseEventHandler = (
     canvasRef: React.RefObject<HTMLCanvasElement | null>,
     dragThreshold = 5,
 ) => {
-    const eventBus = React.useRef(useMouseEventBus()).current;
+    const {
+        publish,
+        subscribe,
+    } = React.useRef(useMouseEventBus()).current;
 
     const [mouseDownPos, setMouseDownPos] = React.useState<Vec2 | null>(null); // Use useState
     const [isMouseDown, setIsMouseDown] = React.useState(false);
@@ -20,11 +23,11 @@ export const useMouseEventHandler = (
 
     const handleMouseUp = useCallback((e: MouseEvent) => {
         if (!isDragging) {
-            eventBus.publish('click', e);
+            publish('click', e);
         }
         setIsMouseDown(false);
         setIsDragging(false);
-    }, [isDragging, eventBus]);
+    }, [isDragging, publish]);
 
     const handleMouseMove = useCallback((e: MouseEvent) => {
         if (isMouseDown && !isDragging) {
@@ -36,12 +39,12 @@ export const useMouseEventHandler = (
             }
         }
 
-        eventBus.publish(isDragging ? 'dragging' : 'mousemove', e);
-    }, [isMouseDown, isDragging, mouseDownPos, eventBus, dragThreshold]);
+        publish(isDragging ? 'dragging' : 'mousemove', e);
+    }, [isMouseDown, isDragging, mouseDownPos, dragThreshold, publish]);
 
     const handleWheel = useCallback((e: WheelEvent) => {
-        eventBus.publish('wheel', e);
-    }, [eventBus]);
+        publish('wheel', e);
+    }, [publish]);
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -66,5 +69,7 @@ export const useMouseEventHandler = (
         handleWheel,
         dragThreshold
     ]);
+
+    return { subscribe };
 };
 
