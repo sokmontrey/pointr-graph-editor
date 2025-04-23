@@ -8,3 +8,4 @@ export const getMousePosition = (e: MouseEvent | WheelEvent): Vec2 => {
         e.clientY - rect.top,
     );
 }
+

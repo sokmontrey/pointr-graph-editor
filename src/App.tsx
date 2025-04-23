@@ -1,51 +1,24 @@
-import { useRef } from 'react';
 import './App.css';
-import { useCanvasInteraction } from './hooks/canvas/useCanvasInteraction';
-import { useModeManager } from './hooks/mode/useModeManager';
-import { useAttachModeEvent, useAttachViewportEvent } from './hooks/busAttachment/eventAttachments';
-import useSelectMode from './hooks/mode/useSelectMode';
-import { useViewportManager } from './hooks/canvas/useViewport';
-import { useEventBus } from './hooks/buses/useEventBus';
-import { useRenderBus } from './hooks/buses/useRenderBus';
-import Controls from './components/Controls';
-import Canvas from './components/Canvas';
-import { useCanvasRenderer } from './hooks/canvas/useCanvasRenderer';
-import { useImageOverlayManager } from './hooks/imageOverlay/useImageOverlayManager';
-import { useAttachImageOverlayRenderer } from './hooks/busAttachment/rendererAttachments';
-import { defaultViewportSettings } from './app-config';
+import MainCanvas from "./components/canvas/MainCanvas.tsx";
+import ModeControl from "./components/controls/modeControl.tsx";
+import ImageOverlayControl from "./components/controls/ImageOverlayControl.tsx";
+import OverlayCanvas from "./components/canvas/OverlayCanvas.tsx";
 
 export default function App() {
-    const mainCanvasRef = useRef<HTMLCanvasElement>(null);
-    const overlayCanvasRef = useRef<HTMLCanvasElement>(null);
-
-    const modeManager = useModeManager(useSelectMode());
-    const viewportManager = useViewportManager(defaultViewportSettings);
-    const imageOverlayManager = useImageOverlayManager();
-
-    const eventBus = useRef(useEventBus()).current;
-    const overlayRenderBus = useRef(useRenderBus()).current;
-    const mainRenderBus = useRef(useRenderBus()).current;
-
-    useAttachViewportEvent(eventBus, viewportManager);
-    useAttachModeEvent(eventBus, modeManager.mode);
-    useAttachImageOverlayRenderer(overlayRenderBus, imageOverlayManager.draw);
-
-    useCanvasRenderer(overlayCanvasRef, viewportManager, overlayRenderBus);
-    useCanvasRenderer(mainCanvasRef, viewportManager, mainRenderBus);
-
-    useCanvasInteraction(mainCanvasRef, eventBus);
-
-    return (
-        <div>
-            <p>Current mode: {modeManager.mode.name}</p>
-            <Controls
-                modeManager={modeManager}
-                imageOverlayManager={imageOverlayManager}
-            />
-            <Canvas
-                mainRef={mainCanvasRef}
-                overlayRef={overlayCanvasRef}
-            />
+    return ( <>
+        <div style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            zIndex: 1000,
+        }}>
+            <ModeControl />
+            <ImageOverlayControl />
         </div>
-    );
+
+        <div style={{position: 'relative'}}>
+            <MainCanvas />
+            <OverlayCanvas />
+        </div>
+    </>);
 }
