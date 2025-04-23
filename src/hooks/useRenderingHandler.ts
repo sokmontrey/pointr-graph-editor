@@ -6,13 +6,11 @@ export interface CanvasRenderer {
     draw: () => void;
 }
 
-export const useCanvasRenderingHandler = (
+export const useRenderingHandler = (
     canvasRef: RefObject<HTMLCanvasElement | null>,
     renderingBus: RenderingBus,
     viewport: ViewportState,
 ): CanvasRenderer => {
-    const {publish} = renderingBus;
-
     const draw = useCallback(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
@@ -29,10 +27,10 @@ export const useCanvasRenderingHandler = (
         ctx.scale(viewport.scale, viewport.scale);
 
         // Publish the context to the render bus
-        publish(ctx);
+        renderingBus.publish(ctx);
 
         ctx.restore();
-    }, [canvasRef, viewport, publish]);
+    }, [canvasRef, viewport, renderingBus]);
 
     useEffect(() => {
         draw();

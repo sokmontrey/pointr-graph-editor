@@ -49,33 +49,3 @@ export const useViewportStore = create<
         scale: 1,
     }),
 }));
-
-// const handlePan = useCallback((e: MouseEvent) => {
-//     if (e.buttons !== 4) return;
-//     const { movementX, movementY } = e;
-//     setViewport(prev => ({
-//         ...prev,
-//         x: prev.x + movementX,
-//         y: prev.y + movementY,
-//     }));
-// }, []);
-//
-// const handleZoom = useCallback((e: WheelEvent) => {
-//     const { clientX, clientY, deltaY } = e;
-//     const rect = (e.target as HTMLCanvasElement).getBoundingClientRect();
-//     const x = clientX - rect.left;
-//     const y = clientY - rect.top;
-//
-//     const factor = deltaY > 0 ? 0.9 : 1.1;
-//     setViewport(prev => {
-//         const newScale = Math.max(minScale, Math.min(maxScale, prev.scale * factor));
-//         if (newScale !== prev.scale) {
-//             return {
-//                 scale: newScale,
-//                 x: x - (x - prev.x) * (newScale / prev.scale),
-//                 y: y - (y - prev.y) * (newScale / prev.scale),
-//             };
-//         }
-//         return prev;
-//     });
-// }, [minScale, maxScale]);
