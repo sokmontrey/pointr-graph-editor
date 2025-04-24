@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {SelectMode} from "../../domain/modes";
 import {useModeStore} from "../../stores/modeStore.ts";
 import {NodeType, nodeTypes} from "../../domain/graph/node.ts";
-import {CreateMode} from "../../domain/modes/CreateMode.ts";
+import {CreateMode} from "../../domain/modes";
 
 const ModeControl: React.FC = () => {
     const {setMode} = useModeStore();
