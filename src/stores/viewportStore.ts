@@ -8,7 +8,7 @@ export interface ViewportState {
     scale: number;
 }
 
-interface ViewportAction {
+export interface ViewportAction {
     pan: (changeInOffset: Vec2) => void;
     zoom: (factor: number, mousePos: Vec2) => void;
     reset: () => void;
