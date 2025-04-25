@@ -5,9 +5,9 @@ import {ModeState} from "../../stores/modeStore.ts";
 export const useModeEventAttachment = (eventBus: EventBus, mode: ModeState) => {
     useEffect(() => {
         const unsubscribes = [
-            eventBus.subscribe('click', mode.mode.handleClick),
-            eventBus.subscribe('dragging', mode.mode.handleDragging),
-            eventBus.subscribe('mousemove', mode.mode.handleMouseMove),
+            eventBus.subscribe('click', mode.mode.handleClick.bind(mode.mode)),
+            eventBus.subscribe('dragging', mode.mode.handleDragging.bind(mode.mode)),
+            eventBus.subscribe('mousemove', mode.mode.handleMouseMove.bind(mode.mode)),
         ];
 
         return () => {
