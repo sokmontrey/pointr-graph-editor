@@ -9,9 +9,9 @@ export interface ModeAction {
     setMode: (mode: IMode) => void;
 }
 
-export const useModeStore = create<
-    ModeState & ModeAction
->((set) => ({
+export type ModeStore = ModeState & ModeAction;
+
+export const useModeStore = create<ModeStore>((set) => ({
     mode: new SelectMode(),
     setMode: (mode) => set({ mode }),
 }));

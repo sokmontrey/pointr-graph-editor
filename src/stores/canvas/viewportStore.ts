@@ -21,15 +21,16 @@ const defaultViewportSettings: ViewportState = {
     maxScale: 3,
 };
 
-export const useViewportStore = create<
-    ViewportState & ViewportAction
->((set, get) => ({
+export interface ViewportStore extends ViewportState, ViewportAction {
+}
+
+export const useViewportStore = create<ViewportStore>((set, get) => ({
     ...defaultViewportSettings,
     pan: (changeInOffset) => set({
         offset: get().offset.add(changeInOffset)
     }),
     zoom: (factor, mousePos) => {
-        const { scale, minScale, maxScale, offset } = get();
+        const {scale, minScale, maxScale, offset} = get();
         const newScale = Math.max(minScale, Math.min(maxScale, scale * factor));
         if (newScale !== scale) {
             const scaleChange = newScale / scale;

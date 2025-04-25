@@ -1,28 +1,28 @@
 ﻿import {NodeType} from "../../domain/graph";
 import {Vec2} from "../../utils/vector.ts";
-import {ICommand} from "./Command.ts";
-import {GraphStores} from "../SingletonStores.ts";
+import {ICommand} from "./ICommand.ts";
+import {NodeStore, NodeSeedStore} from "../../stores/graph";
 
-class CreateNodeCommand implements ICommand{
-    private nodeType: NodeType;
-    private position: Vec2;
+class CreateNodeCommand implements ICommand {
     private nodeId!: string;
 
-    constructor(nodeType: NodeType, position: Vec2) {
-        this.nodeType = nodeType;
-        this.position = position; // TODO: get grid store to snap to grid
-    }
+    constructor(
+        private nodeType: NodeType,
+        private position: Vec2,
+        private nodeSeedStore: NodeSeedStore,
+        private nodeStore: NodeStore,
+    ) { }
 
     execute() {
-        const id = GraphStores.nodeSeedStore.getId(this.nodeType.name);
+        const id = this.nodeSeedStore.getId(this.nodeType.name);
         this.nodeId = id.toString();
-        GraphStores.nodeStore.addNode(this.nodeId, this.position, this.nodeType);
-        GraphStores.nodeSeedStore.incrementSeed(this.nodeType.name);
+        this.nodeStore.addNode(this.nodeId, this.position, this.nodeType);
+        this.nodeSeedStore.incrementSeed(this.nodeType.name);
     }
 
     undo(): void {
-        GraphStores.nodeStore.removeNode(this.nodeId);
-        GraphStores.nodeSeedStore.decrementSeed(this.nodeType.name);
+        this.nodeStore.removeNode(this.nodeId);
+        this.nodeSeedStore.decrementSeed(this.nodeType.name);
     }
 }
 
