@@ -5,7 +5,7 @@ import {useRenderingBus} from "../../hooks/useRenderingBus.ts";
 import {useRenderingHandler} from "../../hooks/useRenderingHandler.ts";
 import {useViewportStore} from "../../stores/viewportStore.ts";
 
-const OverlayCanvas = ({zIndex}: ZIndexProps) => {
+const ImageOverlayCanvas = ({zIndex}: ZIndexProps) => {
     const ref = useRef<HTMLCanvasElement | null>(null);
 
     const viewport = useViewportStore();
@@ -25,4 +25,4 @@ const OverlayCanvas = ({zIndex}: ZIndexProps) => {
     />;
 }
 
-export default OverlayCanvas;
+export default ImageOverlayCanvas;
