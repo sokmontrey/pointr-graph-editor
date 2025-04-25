@@ -1,4 +1,4 @@
-﻿import {EventPropMap} from "../../hooks/useEventBus.ts";
+﻿import {EventPropMap} from "../../hooks/event";
 import {IMode} from "./IMode.ts";
 
 export class SelectMode implements IMode {

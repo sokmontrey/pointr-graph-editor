@@ -1,8 +1,8 @@
-﻿import {Vec2} from "../utils/vector.ts";
+﻿import {Vec2} from "../../utils/vector.ts";
 import React, {useCallback, useEffect} from "react";
-import {getMousePosition} from "../utils/mouse.ts";
+import {getMousePosition} from "../../utils/mouse.ts";
 import {EventBus} from "./useEventBus.ts";
-import {ViewportState} from "../stores/canvas/viewportStore.ts";
+import {ViewportState} from "../../stores/canvas";
 
 export const useEventHandler = (
     canvasRef: React.RefObject<HTMLCanvasElement | null>,

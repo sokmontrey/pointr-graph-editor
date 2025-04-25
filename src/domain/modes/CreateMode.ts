@@ -1,10 +1,10 @@
 ﻿import {IMode} from "./IMode.ts";
 import {NodeType} from "../graph";
-import {EventPropMap} from "../../hooks/useEventBus.ts";
+import {EventPropMap} from "../../hooks/event";
 import {Vec2} from "../../utils/vector.ts";
 import {GridStore} from "../../stores/canvas";
 import CommandFactory from "../../core/commands/CommandFactory.ts";
-import {CommandManager} from "../../core/commands/CommandManager.ts";
+import {CommandManager} from "../../core/commands";
 
 export class CreateMode implements IMode {
     name = "Create";
