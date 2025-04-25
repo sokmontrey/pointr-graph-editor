@@ -5,6 +5,7 @@ export type RenderingFunction = (ctx: CanvasRenderingContext2D) => void;
 export interface RenderingBus {
     subscribe(renderFn: RenderingFunction): () => void;
     publish(ctx: CanvasRenderingContext2D): void;
+    clear(): void;
 }
 
 export const useRenderingBus = (): RenderingBus => {
@@ -22,7 +23,11 @@ export const useRenderingBus = (): RenderingBus => {
         renderFunctionsRef.current.forEach(renderFn => renderFn(ctx));
     }, []);
 
+    const clear = useCallback((): void => {
+        renderFunctionsRef.current.clear();
+    }, []);
+
     return {
-        subscribe, publish
+        subscribe, publish, clear,
     };
 };
