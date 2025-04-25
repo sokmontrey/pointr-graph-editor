@@ -3,20 +3,24 @@
 export interface NodeType {
     name: string;
     color: string;
+    isRedundantId: boolean;
 }
 
 export const nodeTypes: Record<string, NodeType> = {
     PathNode: {
         name: "Path Node",
-        color: "blue"
+        color: "blue",
+        isRedundantId: false,
     },
     ReferenceNode: {
         name: "Reference Node",
-        color: "orange"
+        color: "orange",
+        isRedundantId: true,
     },
     RoomNode: {
         name: "Room Node",
-        color: "green"
+        color: "green",
+        isRedundantId: false,
     }
 }
 

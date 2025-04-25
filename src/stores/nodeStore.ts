@@ -44,7 +44,7 @@ export const useNodeStore = create<
     },
     updateNodeId: (id, newId) => {
         const {nodes} = get();
-        // TODO: check if newId already exists
+        // TODO: check if newId already exists only if the nodeType allows it
         set({
             nodes: nodes.map(node => node.id === id ? {...node, id: newId} : node),
         });
