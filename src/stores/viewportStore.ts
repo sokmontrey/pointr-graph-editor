@@ -17,8 +17,8 @@ export interface ViewportAction {
 const defaultViewportSettings: ViewportState = {
     offset: new Vec2(0, 0),
     scale: 1,
-    minScale: 0.1,
-    maxScale: 10,
+    minScale: 1,
+    maxScale: 3,
 };
 
 export const useViewportStore = create<
