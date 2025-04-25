@@ -1,18 +1,21 @@
 ﻿import React from "react";
 
-interface CanvasProps {
+export interface CanvasProps {
     ref: React.Ref<HTMLCanvasElement>;
     width?: number;
     height?: number;
-    zIndex?: number;
     disablePointerEvent?: boolean;
+}
+
+export interface ZIndexProps {
+    zIndex?: number;
 }
 
 const Canvas = ({
                     ref,
                     zIndex = 0,
                     disablePointerEvent = true,
-                }: CanvasProps) => {
+                }: CanvasProps & ZIndexProps) => {
     return (<canvas
         ref={ref}
         width={window.innerWidth}

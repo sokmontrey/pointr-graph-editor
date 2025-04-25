@@ -1,4 +1,4 @@
-﻿import Canvas from "./Canvas.tsx";
+﻿import Canvas, {ZIndexProps} from "./Canvas.tsx";
 import {useRef} from "react";
 import {useRenderingBus} from "../../hooks/useRenderingBus.ts";
 import {useRenderingHandler} from "../../hooks/useRenderingHandler.ts";
@@ -9,7 +9,7 @@ import {useViewportEventAttachment} from "../../hooks/attachments/useViewportEve
 import {useModeEventAttachment} from "../../hooks/attachments/useModeEventAttachment.ts";
 import {useModeStore} from "../../stores/modeStore.ts";
 
-const MainCanvas = () => {
+const MainCanvas = ({ zIndex }: ZIndexProps) => {
     const ref = useRef<HTMLCanvasElement | null>(null);
 
     const viewport = useViewportStore();
@@ -28,7 +28,7 @@ const MainCanvas = () => {
     // renderingBus.subscribe(graphEngine.draw); // TODO: separate draw from the graph engine
 
     return ( <Canvas
-        zIndex={10}
+        zIndex={zIndex}
         ref={ref}
         disablePointerEvent={false}
     /> );

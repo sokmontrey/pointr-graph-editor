@@ -3,6 +3,7 @@ import MainCanvas from "./components/canvas/MainCanvas.tsx";
 import ModeControl from "./components/controls/modeControl.tsx";
 import ImageOverlayControl from "./components/controls/ImageOverlayControl.tsx";
 import OverlayCanvas from "./components/canvas/OverlayCanvas.tsx";
+import BulletGrid from "./components/canvas/BulletGrid.tsx";
 
 export default function App() {
     return ( <>
@@ -17,8 +18,9 @@ export default function App() {
         </div>
 
         <div style={{position: 'relative'}}>
-            <MainCanvas />
-            <OverlayCanvas />
+            <MainCanvas zIndex={100} />
+            <BulletGrid zIndex={10} />
+            <OverlayCanvas zIndex={0} />
         </div>
     </>);
 }
