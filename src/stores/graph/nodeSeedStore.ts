@@ -1,5 +1,5 @@
 ﻿import {create} from 'zustand';
-import {nodeTypes} from "../domain/graph/node.ts";
+import {nodeTypes} from "../../domain/graph";
 
 export interface NodeSeedState {
     seed: Record<string, number>;
