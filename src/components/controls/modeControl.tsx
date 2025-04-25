@@ -18,11 +18,11 @@ const ModeControl: React.FC = () => {
 
     const switchToCreateMode = (nodeType: NodeType) => {
         setNodeType(nodeType);
-        setMode(new CreateMode({
+        setMode(new CreateMode(
             nodeType,
             gridStore,
             commandStore,
-        }));
+        ));
     };
 
     return (<div>

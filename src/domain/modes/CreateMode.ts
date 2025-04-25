@@ -6,28 +6,16 @@ import CreateNodeCommand from "../../core/commands/CreateNodeCommand.ts";
 import {GridStore} from "../../stores/canvas";
 import {CommandStore} from "../../stores/main";
 
-export interface CreateModeProps {
-    nodeType: NodeType;
-    commandStore: CommandStore;
-    gridStore: GridStore;
-}
-
 export class CreateMode implements IMode {
     name = "Create";
-    nodeType: NodeType;
-    commandStore: CommandStore;
-    gridStore: GridStore;
     position: Vec2 = new Vec2(0, 0);
 
-    constructor({
-                    nodeType,
-                    commandStore,
-                    gridStore
-                }: CreateModeProps) {
+    constructor(
+        private nodeType: NodeType,
+        private gridStore: GridStore,
+        private commandStore: CommandStore,
+    ) {
         this.name = "Create " + nodeType.name;
-        this.commandStore = commandStore;
-        this.gridStore = gridStore;
-        this.nodeType = nodeType;
     }
 
     handleMouseMove({mousePos}: EventPropMap["mousemove"]): void {
