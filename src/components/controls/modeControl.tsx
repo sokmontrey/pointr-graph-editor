@@ -5,39 +5,33 @@ import {NodeType, nodeTypes} from "../../domain/graph/node.ts";
 import {CreateMode} from "../../domain/modes";
 
 const ModeControl: React.FC = () => {
-    const {setMode} = useModeStore();
+    const {mode, setMode} = useModeStore();
     const [nodeType, setNodeType] = useState<NodeType>(nodeTypes.PathNode);
 
-    const switchToCreateMode = () => {
-        setMode(new CreateMode(nodeType));
-    };
-
-    const handleCreateModeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setNodeType(nodeTypes[e.target.value]);
-        switchToCreateMode();
+    const switchToCreateMode = (type: NodeType) => {
+        setNodeType(type);
+        setMode(new CreateMode(type));
     };
 
     return (<div>
-        <button
-            onClick={() => setMode(new SelectMode())}>
+        <p>{mode.name}</p>
+
+        <button onClick={() => setMode(new SelectMode())}>
             Select
         </button>
 
         <select
             value={nodeType.name}
-            onChange={handleCreateModeChange}
+            onChange={e => switchToCreateMode(nodeTypes[e.target.value])}
         >
-            {Object.keys(nodeTypes).map((key) =>
-                <option
-                    key={key}
-                    value={key}>
-                    {nodeTypes[key].name}
+            {Object.entries(nodeTypes).map(([key, value]) =>
+                <option key={key} value={key}>
+                    {value.name}
                 </option>
             )}
         </select>
 
-        <button
-            onClick={switchToCreateMode}>
+        <button onClick={() => switchToCreateMode(nodeType)}>
             {nodeType.name}
         </button>
     </div>);
