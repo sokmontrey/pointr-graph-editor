@@ -1,23 +1,27 @@
 ﻿import {useEffect} from "react";
-import {EventBus, MouseButton} from "../useEventBus.ts";
+import {EventBus, EventPropMap, MouseButton} from "../useEventBus.ts";
 import {ViewportAction} from "../../stores/viewportStore.ts";
 
 export const useViewportEventAttachment = (eventBus: EventBus, viewport: ViewportAction) => {
     useEffect(() => {
-        const unsubscribeZoom = eventBus.subscribe('wheel', ({deltaY, mousePos}) => {
+        const handleZoom = ({deltaY, mousePos}: EventPropMap['wheel']) => {
             const factor = deltaY > 0 ? 0.9 : 1.1;
             viewport.zoom(factor, mousePos);
-        });
+        };
 
-        const unsubscribePan = eventBus.subscribe('dragging', ({movement, buttons}) => {
+        const handlePan = ({movement, buttons}: EventPropMap['dragging']) => {
             if (buttons === MouseButton.Middle) {
                 viewport.pan(movement);
             }
-        });
+        };
+
+        const unsubscribes = [
+            eventBus.subscribe('wheel', handleZoom),
+            eventBus.subscribe('dragging', handlePan),
+        ];
 
         return () => {
-            unsubscribeZoom();
-            unsubscribePan();
+            unsubscribes.forEach((unsubscribe) => unsubscribe());
         };
     }, [eventBus, viewport]);
 };
