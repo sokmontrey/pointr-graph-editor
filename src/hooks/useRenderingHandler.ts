@@ -4,8 +4,6 @@ import {ViewportState} from "../stores/viewportStore.ts";
 
 export interface CanvasRenderer {
     draw: () => void;
-    preDraw: () => void;
-    postDraw: () => void;
 }
 
 export const useRenderingHandler = (
@@ -13,7 +11,7 @@ export const useRenderingHandler = (
     renderingBus: RenderingBus,
     viewport: ViewportState,
 ): CanvasRenderer => {
-    const preDraw = useCallback(() => {
+    const draw = useCallback(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
         const ctx = canvas.getContext('2d');
@@ -23,38 +21,18 @@ export const useRenderingHandler = (
         ctx.save();
         ctx.translate(viewport.offset.x, viewport.offset.y);
         ctx.scale(viewport.scale, viewport.scale);
-    }, [canvasRef, viewport]);
-
-    const postDraw = useCallback(() => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-
-        ctx.restore();
-    }, [canvasRef]);
-
-    const draw = useCallback(() => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-
         renderingBus.publish(ctx);
-    }, [canvasRef, renderingBus]);
+        ctx.restore();
+    }, [canvasRef, renderingBus, viewport]);
 
     useEffect(() => {
         const frameId = requestAnimationFrame(() => {
-            preDraw();
             draw();
-            postDraw();
         });
         return () => cancelAnimationFrame(frameId);
-    }, [draw, postDraw, preDraw]);
+    }, [draw]);
 
     return {
-        preDraw,
         draw,
-        postDraw,
     };
 };
