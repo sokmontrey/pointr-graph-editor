@@ -18,9 +18,9 @@ const defaultNodeSeedSettings: NodeSeedState = {
     ),
 };
 
-export const useNodeSeedStore = create<
-    NodeSeedState & NodeSeedAction
->((set, get) => ({
+export type NodeSeedStore = NodeSeedState & NodeSeedAction;
+
+export const useNodeSeedStore = create<NodeSeedStore>((set, get) => ({
     ...defaultNodeSeedSettings,
     getId: (nodeType: string) => {
         const {seed} = get();

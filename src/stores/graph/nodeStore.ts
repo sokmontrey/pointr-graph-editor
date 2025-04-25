@@ -1,14 +1,13 @@
 import {create} from 'zustand';
 import {Node, NodeType} from "../../domain/graph";
 import {Vec2} from "../../utils/vector.ts";
-import {useNodeSeedStore} from "./nodeSeedStore.ts";
 
 export interface NodeState {
     nodes: Node[];
 }
 
 export interface NodeAction {
-    addNode: (position: Vec2, nodeType: NodeType) => void;
+    addNode: (id: string, position: Vec2, nodeType: NodeType) => void;
     removeNode: (id: string) => void;
     moveNode: (id: string, position: Vec2) => void;
     updateNodeId: (id: string, newId: string) => void;
@@ -16,13 +15,12 @@ export interface NodeAction {
     clearNodes: () => void;
 }
 
-export const useNodeStore = create<
-    NodeState & NodeAction
->((set, get) => ({
+export type NodeStore = NodeState & NodeAction;
+
+export const useNodeStore = create<NodeStore>((set, get) => ({
     nodes: [],
-    addNode: (position, nodeType) => {
+    addNode: (id, position, nodeType) => {
         const {nodes} = get();
-        const id = useNodeSeedStore.getState().nextSeed(nodeType.name);
         const newNode: Node = {
             id: id.toString(),
             type: nodeType,
