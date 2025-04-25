@@ -31,7 +31,7 @@ export const useImageOverlayStore = create<
     setImageOffset: (imageOffset) => set({imageOffset}),
     setImageScale: (imageScale) => set({imageScale}),
     setImageOpacity: (imageOpacity) => set({imageOpacity}),
-    draw: (ctx) => {
+    draw: (ctx) => { // TODO move draw to somewhere else to separate concerns
         const {image, imageOffset, imageScale, imageOpacity} = get();
         if (!ctx || !image) return;
         ctx.globalAlpha = imageOpacity;
