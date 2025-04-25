@@ -9,6 +9,9 @@ import {useViewportEventAttachment} from "../../hooks/attachments/useViewportEve
 import {useModeEventAttachment} from "../../hooks/attachments/useModeEventAttachment.ts";
 import {useModeStore} from "../../stores/modeStore.ts";
 
+/**
+ * Responsible for main mouse interaction and graph rendering
+ */
 const MainCanvas = ({ zIndex }: ZIndexProps) => {
     const ref = useRef<HTMLCanvasElement | null>(null);
 
