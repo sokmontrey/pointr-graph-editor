@@ -2,10 +2,12 @@
 import React, {useCallback, useEffect} from "react";
 import {getMousePosition} from "../utils/mouse.ts";
 import {EventBus} from "./useEventBus.ts";
+import {ViewportState} from "../stores/viewportStore.ts";
 
 export const useEventHandler = (
     canvasRef: React.RefObject<HTMLCanvasElement | null>,
     eventBus: EventBus,
+    viewport: ViewportState,
     dragThreshold = 5,
 ) => {
     const {publish} = eventBus;
@@ -17,20 +19,20 @@ export const useEventHandler = (
     const handleMouseDown = useCallback((e: MouseEvent) => {
         e.preventDefault();
         setIsMouseDown(true);
-        setMouseDownPos(getMousePosition(e));
-    }, []);
+        setMouseDownPos(getMousePosition(e, viewport.offset, viewport.scale));
+    }, [viewport]);
 
     const handleMouseUp = useCallback((e: MouseEvent) => {
         e.preventDefault();
         if (!isDragging) {
             publish('click', {
-                mousePos: getMousePosition(e),
+                mousePos: getMousePosition(e, viewport.offset, viewport.scale),
                 buttons: e.buttons,
             });
         }
         setIsMouseDown(false);
         setIsDragging(false);
-    }, [isDragging, publish]);
+    }, [isDragging, publish, viewport]);
 
     const handleMouseMove = useCallback((e: MouseEvent) => {
         e.preventDefault();
@@ -38,7 +40,7 @@ export const useEventHandler = (
             if (mouseDownPos === null) {
                 return;
             }
-            const currentMousePos = getMousePosition(e);
+            const currentMousePos = getMousePosition(e, viewport.offset, viewport.scale);
             const changeInMousePos = currentMousePos.subtract(mouseDownPos).absolute();
             if (changeInMousePos.x >= dragThreshold || changeInMousePos.y >= dragThreshold) {
                 setIsDragging(true);
@@ -47,25 +49,25 @@ export const useEventHandler = (
 
         if (isDragging) {
             publish('dragging', {
-                mousePos: getMousePosition(e),
+                mousePos: getMousePosition(e, viewport.offset, viewport.scale),
                 movement: new Vec2(e.movementX, e.movementY),
                 buttons: e.buttons,
             });
         } else {
             publish('mousemove', {
-                mousePos: getMousePosition(e),
+                mousePos: getMousePosition(e, viewport.offset, viewport.scale),
                 movement: new Vec2(e.movementX, e.movementY),
             });
         }
-    }, [isMouseDown, isDragging, mouseDownPos, dragThreshold, publish]);
+    }, [isMouseDown, isDragging, mouseDownPos, viewport, dragThreshold, publish]);
 
     const handleWheel = useCallback((e: WheelEvent) => {
         e.preventDefault();
         publish('wheel', {
-            mousePos: getMousePosition(e),
+            mousePos: getMousePosition(e, viewport.offset, viewport.scale),
             deltaY: e.deltaY,
         });
-    }, [publish]);
+    }, [publish, viewport]);
 
     const handleContextMenu = useCallback((e: MouseEvent) => {
         e.preventDefault();

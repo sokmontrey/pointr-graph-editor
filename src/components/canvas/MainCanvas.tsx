@@ -25,7 +25,7 @@ const MainCanvas = ({ zIndex }: ZIndexProps) => {
     useViewportEventAttachment(eventBus, viewport);
     useModeEventAttachment(eventBus, mode);
 
-    useEventHandler(ref, eventBus);
+    useEventHandler(ref, eventBus, viewport);
     useRenderingHandler(ref, renderingBus, viewport);
 
     // renderingBus.subscribe(graphEngine.draw); // TODO: separate draw from the graph engine
