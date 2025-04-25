@@ -1,17 +1,15 @@
-﻿import {IMode} from "./IMode.ts";
+﻿import { EventPropMap } from "../../hooks/useEventBus.ts";
+import {IMode} from "./IMode.ts";
 
 export class SelectMode implements IMode {
     name = "Select";
-
-    handleMouseMove(e: MouseEvent) {
-        console.log("Mouse moved at", e.clientX, e.clientY);
+    handleMouseMove(props: EventPropMap["mousemove"]): void {
+        throw new Error("Method not implemented.");
     }
-
-    handleDragging(e: MouseEvent) {
-        console.log("Dragging at", e.clientX, e.clientY);
+    handleDragging(props: EventPropMap["dragging"]): void {
+        throw new Error("Method not implemented.");
     }
-
-    handleClick(e: MouseEvent) {
-        console.log("Click at", e.clientX, e.clientY);
+    handleClick(props: EventPropMap["click"]): void {
+        throw new Error("Method not implemented.");
     }
 }

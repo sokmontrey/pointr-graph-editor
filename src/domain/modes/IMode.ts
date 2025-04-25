@@ -1,6 +1,8 @@
-﻿export interface IMode {
+﻿import {EventPropMap} from "../../hooks/useEventBus.ts";
+
+export interface IMode {
     name: string;
-    handleMouseMove(e: MouseEvent): void;
-    handleDragging(e: MouseEvent): void;
-    handleClick(e: MouseEvent): void;
+    handleMouseMove(props: EventPropMap['mousemove']): void;
+    handleDragging(props: EventPropMap['dragging']): void;
+    handleClick(props: EventPropMap['click']): void;
 }

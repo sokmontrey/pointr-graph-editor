@@ -1,11 +1,11 @@
 ﻿import { create } from 'zustand';
 import { IMode, SelectMode } from '../domain/modes'
 
-interface ModeState {
+export interface ModeState {
     mode: IMode;
 }
 
-interface ModeAction {
+export interface ModeAction {
     setMode: (mode: IMode) => void;
 }
 

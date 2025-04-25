@@ -1,5 +1,6 @@
 ﻿import {IMode} from "./IMode.ts";
 import {NodeType} from "../graph/node.ts";
+import { EventPropMap } from "../../hooks/useEventBus.ts";
 
 export class CreateMode implements IMode {
     name = "Create";
@@ -10,15 +11,15 @@ export class CreateMode implements IMode {
         this.nodeType = nodeType;
     }
 
-    handleMouseMove(e: MouseEvent) {
-        console.log("Mouse moved at", e.clientX, e.clientY);
+    handleMouseMove(props: EventPropMap["mousemove"]): void {
+        throw new Error("Method not implemented.");
+    }
+    handleDragging(props: EventPropMap["dragging"]): void {
+        throw new Error("Method not implemented.");
+    }
+    handleClick(props: EventPropMap["click"]): void {
+        throw new Error("Method not implemented.");
     }
 
-    handleDragging(e: MouseEvent) {
-        console.log("Dragging at", e.clientX, e.clientY);
-    }
-
-    handleClick(e: MouseEvent) {
-        console.log("Click at", e.clientX, e.clientY);
-    }
 }
+
