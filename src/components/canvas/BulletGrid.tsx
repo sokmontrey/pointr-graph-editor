@@ -1,10 +1,11 @@
 ﻿import {useViewportStore} from "../../stores/viewportStore.ts";
 import {ZIndexProps} from "./Canvas.tsx";
+import {useGridStore} from "../../stores/gridStore.ts";
 
 const BulletGrid = ({ zIndex }: ZIndexProps) => {
     const viewport = useViewportStore();
-    const baseGapSize = 10; // TODO: grid store & control
-    const gapSize = Math.max(1, baseGapSize * viewport.scale);
+    const grid = useGridStore();
+    const gapSize = Math.max(1, grid.gap * viewport.scale);
     const dotSize = 0.8 + Math.max(0.2, viewport.scale * 0.2);
 
     return <div
