@@ -4,12 +4,12 @@ import {IMode} from "./IMode.ts";
 export class SelectMode implements IMode {
     name = "Select";
     handleMouseMove(props: EventPropMap["mousemove"]): void {
-        throw new Error("Method not implemented.");
+        console.log(props);
     }
     handleDragging(props: EventPropMap["dragging"]): void {
-        throw new Error("Method not implemented.");
+        console.log(props);
     }
     handleClick(props: EventPropMap["click"]): void {
-        throw new Error("Method not implemented.");
+        console.log(props);
     }
 }

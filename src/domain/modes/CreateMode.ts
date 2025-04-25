@@ -12,13 +12,13 @@ export class CreateMode implements IMode {
     }
 
     handleMouseMove(props: EventPropMap["mousemove"]): void {
-        throw new Error("Method not implemented.");
+        console.log(props);
     }
     handleDragging(props: EventPropMap["dragging"]): void {
-        throw new Error("Method not implemented.");
+        console.log(props);
     }
     handleClick(props: EventPropMap["click"]): void {
-        throw new Error("Method not implemented.");
+        console.log(props);
     }
 
 }
