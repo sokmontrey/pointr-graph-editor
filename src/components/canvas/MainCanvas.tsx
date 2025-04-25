@@ -1,13 +1,13 @@
 ﻿import Canvas, {ZIndexProps} from "./Canvas.tsx";
 import {useRef} from "react";
-import {useRenderingBus} from "../../hooks/useRenderingBus.ts";
-import {useRenderingHandler} from "../../hooks/useRenderingHandler.ts";
-import {useEventBus} from "../../hooks/useEventBus.ts";
-import {useViewportStore} from "../../stores/canvas/viewportStore.ts";
-import {useEventHandler} from "../../hooks/useEventHandler.ts";
-import {useViewportEventAttachment} from "../../hooks/attachments/useViewportEventAttachment.ts";
-import {useModeEventAttachment} from "../../hooks/attachments/useModeEventAttachment.ts";
-import {useModeStore} from "../../stores/main/modeStore.ts";
+import {useRenderingBus} from "../../hooks/rendering";
+import {useRenderingHandler} from "../../hooks/rendering";
+import {useEventBus} from "../../hooks/event";
+import {useViewportStore} from "../../stores/canvas";
+import {useEventHandler} from "../../hooks/event";
+import {useViewportEventAttachment} from "../../hooks/attachments";
+import {useModeEventAttachment} from "../../hooks/attachments";
+import {useModeStore} from "../../stores/main";
 
 /**
  * Responsible for main mouse interaction and graph rendering

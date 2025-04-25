@@ -1,4 +1,4 @@
-﻿import {EventPropMap} from "../../hooks/useEventBus.ts";
+﻿import {EventPropMap} from "../../hooks/event";
 
 export interface IMode {
     name: string;

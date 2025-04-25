@@ -4,7 +4,7 @@ import {useModeStore} from "../../stores/main";
 import {NodeType, nodeTypes} from "../../domain/graph";
 import {CreateMode} from "../../domain/modes";
 import {useGridStore} from "../../stores/canvas";
-import {CommandManager} from "../../core/commands/CommandManager.ts";
+import {CommandManager} from "../../core/commands";
 import CommandFactory from "../../core/commands/CommandFactory.ts";
 import {useEdgeStore, useNodeSeedStore, useNodeStore} from "../../stores/graph";
 

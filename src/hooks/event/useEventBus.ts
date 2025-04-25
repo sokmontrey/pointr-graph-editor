@@ -1,5 +1,5 @@
 import {useRef, useCallback} from 'react';
-import {Vec2} from "../utils/vector.ts";
+import {Vec2} from "../../utils/vector.ts";
 
 export type EventType = 'mousemove' | 'dragging' | 'click' | 'wheel';
 

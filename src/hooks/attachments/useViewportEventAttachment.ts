@@ -1,6 +1,6 @@
 ﻿import {useEffect} from "react";
-import {EventBus, EventPropMap, MouseButton} from "../useEventBus.ts";
-import {ViewportAction} from "../../stores/canvas/viewportStore.ts";
+import {EventBus, EventPropMap, MouseButton} from "../event";
+import {ViewportAction} from "../../stores/canvas";
 
 export const useViewportEventAttachment = (eventBus: EventBus, viewport: ViewportAction) => {
     useEffect(() => {
