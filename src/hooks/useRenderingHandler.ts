@@ -11,30 +11,48 @@ export const useRenderingHandler = (
     renderingBus: RenderingBus,
     viewport: ViewportState,
 ): CanvasRenderer => {
-    const draw = useCallback(() => {
+    const preDraw = useCallback(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
-
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
 
-        // Clear the entire canvas first
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        // Then apply transformations and draw
         ctx.save();
         ctx.translate(viewport.offset.x, viewport.offset.y);
         ctx.scale(viewport.scale, viewport.scale);
+    }, [canvasRef, viewport]);
 
-        // Publish the context to the render bus
-        renderingBus.publish(ctx);
+    const postDraw = useCallback(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
 
         ctx.restore();
-    }, [canvasRef, viewport, renderingBus]);
+    }, [canvasRef]);
+
+    const draw = useCallback(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        renderingBus.publish(ctx);
+    }, [canvasRef, renderingBus]);
 
     useEffect(() => {
-        draw();
-    }, [draw]);
+        const frameId = requestAnimationFrame(() => {
+            preDraw();
+            draw();
+            postDraw();
+        });
+        return () => cancelAnimationFrame(frameId);
+    }, [draw, postDraw, preDraw]);
 
-    return {draw};
+    return {
+        preDraw,
+        draw,
+        postDraw,
+    };
 };
