@@ -6,17 +6,21 @@ import {useEventBus} from "../../hooks/useEventBus.ts";
 import {useViewportStore} from "../../stores/viewportStore.ts";
 import {useEventHandler} from "../../hooks/useEventHandler.ts";
 import {useViewportEventAttachment} from "../../hooks/attachments/useViewportEventAttachment.ts";
+import {useModeEventAttachment} from "../../hooks/attachments/useModeEventAttachment.ts";
+import {useModeStore} from "../../stores/modeStore.ts";
 
 const MainCanvas = () => {
     const ref = useRef<HTMLCanvasElement | null>(null);
 
     const viewport = useViewportStore();
+    const mode = useModeStore();
     // const graphEngine = useGraphEngineStore();
 
     const renderingBus = useRenderingBus();
     const eventBus = useEventBus();
 
     useViewportEventAttachment(eventBus, viewport);
+    useModeEventAttachment(eventBus, mode);
 
     useEventHandler(ref, eventBus);
     useRenderingHandler(ref, renderingBus, viewport);
