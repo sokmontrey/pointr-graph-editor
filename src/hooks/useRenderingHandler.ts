@@ -4,6 +4,8 @@ import {ViewportState} from "../stores/viewportStore.ts";
 
 export interface CanvasRenderer {
     draw: () => void;
+    preDraw: () => void;
+    postDraw: () => void;
 }
 
 export const useRenderingHandler = (
