@@ -16,7 +16,8 @@ export class SelectMode implements IMode {
         console.log(props);
     }
 
-    draw(ctx: CanvasRenderingContext2D): void {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    draw(_ctx: CanvasRenderingContext2D): void {
         // console.log(ctx);
     }
 }

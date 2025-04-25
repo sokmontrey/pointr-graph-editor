@@ -1,22 +1,34 @@
 import React, {useState} from "react";
 import {SelectMode} from "../../domain/modes";
-import {useModeStore} from "../../stores/main/modeStore.ts";
-import {NodeType, nodeTypes} from "../../domain/graph/node.ts";
+import {useCommandStore, useModeStore} from "../../stores/main";
+import {NodeType, nodeTypes} from "../../domain/graph";
 import {CreateMode} from "../../domain/modes";
+import {useGridStore} from "../../stores/canvas";
 
 const ModeControl: React.FC = () => {
     const {mode, setMode} = useModeStore();
     const [nodeType, setNodeType] = useState<NodeType>(nodeTypes.PathNode);
 
-    const switchToCreateMode = (type: NodeType) => {
-        setNodeType(type);
-        setMode(new CreateMode(type));
+    const commandStore = useCommandStore();
+    const gridStore = useGridStore();
+
+    const switchToSelectMode = () => {
+        setMode(new SelectMode());
+    }
+
+    const switchToCreateMode = (nodeType: NodeType) => {
+        setNodeType(nodeType);
+        setMode(new CreateMode({
+            nodeType,
+            gridStore,
+            commandStore,
+        }));
     };
 
     return (<div>
         <p>{mode.name}</p>
 
-        <button onClick={() => setMode(new SelectMode())}>
+        <button onClick={switchToSelectMode}>
             Select
         </button>
 

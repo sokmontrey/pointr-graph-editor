@@ -2,17 +2,31 @@
 import {NodeType} from "../graph";
 import {EventPropMap} from "../../hooks/useEventBus.ts";
 import {Vec2} from "../../utils/vector.ts";
-import {CanvasStores, MainStores} from "../../core/SingletonStores.ts";
 import CreateNodeCommand from "../../core/commands/CreateNodeCommand.ts";
+import {GridStore} from "../../stores/canvas";
+import {CommandStore} from "../../stores/main";
+
+export interface CreateModeProps {
+    nodeType: NodeType;
+    commandStore: CommandStore;
+    gridStore: GridStore;
+}
 
 export class CreateMode implements IMode {
     name = "Create";
     nodeType: NodeType;
+    commandStore: CommandStore;
+    gridStore: GridStore;
+    position: Vec2 = new Vec2(0, 0);
 
-    currentMousePos: Vec2 = new Vec2(0, 0);
-
-    constructor(nodeType: NodeType) {
+    constructor({
+                    nodeType,
+                    commandStore,
+                    gridStore
+                }: CreateModeProps) {
         this.name = "Create " + nodeType.name;
+        this.commandStore = commandStore;
+        this.gridStore = gridStore;
         this.nodeType = nodeType;
     }
 
@@ -25,20 +39,20 @@ export class CreateMode implements IMode {
 
     handleClick(props: EventPropMap["click"]): void {
         this.calculateSnappedPosition(props.mousePos);
-        MainStores.commandStore.execute(
-            new CreateNodeCommand(this.nodeType, this.currentMousePos)
+        this.commandStore.execute(
+            new CreateNodeCommand(this.nodeType, this.position)
         );
     }
 
     private calculateSnappedPosition(mousePos: Vec2): void {
-        const gap = CanvasStores.gridStore.gap;
+        const gap = this.gridStore.gap;
         // TODO: improve snapping closer to actual mouse pos
-        this.currentMousePos = mousePos.round(gap).subtract(Vec2.fromNumber(gap / 2));
+        this.position = mousePos.round(gap).subtract(Vec2.fromNumber(gap / 2));
     }
 
     draw(ctx: CanvasRenderingContext2D): void {
         ctx.beginPath();
-        ctx.arc(this.currentMousePos.x, this.currentMousePos.y, 10, 0, 2 * Math.PI);
+        ctx.arc(this.position.x, this.position.y, 10, 0, 2 * Math.PI);
         ctx.stroke();
     }
 }

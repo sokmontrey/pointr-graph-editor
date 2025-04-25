@@ -6,27 +6,8 @@ import ImageOverlayCanvas from "./components/canvas/ImageOverlayCanvas.tsx";
 import BulletGrid from "./components/canvas/BulletGrid.tsx";
 import GridControl from "./components/controls/gridControl.tsx";
 import ModeOverlayCanvas from "./components/canvas/ModeOverlayCanvas.tsx";
-import {useEdgeStore, useNodeSeedStore, useNodeStore} from "./stores/graph";
-import {CanvasStores, GraphStores, MainStores} from "./core/SingletonStores.ts";
-import {useGridStore} from "./stores/canvas/gridStore.ts";
-import {useImageOverlayStore} from "./stores/canvas/imageOverlayStore.ts";
-import {useViewportStore} from "./stores/canvas/viewportStore.ts";
-import {useModeStore} from "./stores/main/modeStore.ts";
-import {useCommandStore} from "./stores/main/commandStore.ts";
 
 export default function App() {
-    // TODO: stop using this and favor dependency injection
-    GraphStores.nodeSeedStore = useNodeSeedStore();
-    GraphStores.nodeStore = useNodeStore();
-    GraphStores.edgeStore = useEdgeStore();
-
-    CanvasStores.gridStore = useGridStore();
-    CanvasStores.imageOverlayStore = useImageOverlayStore();
-    CanvasStores.viewportStore = useViewportStore();
-
-    MainStores.modeStore = useModeStore();
-    MainStores.commandStore = useCommandStore();
-
     return (<>
         <div style={{
             position: 'fixed',
