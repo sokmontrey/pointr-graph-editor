@@ -1,17 +1,23 @@
 ﻿import Canvas, {ZIndexProps} from "./Canvas.tsx";
-import {useRef} from "react";
+import {useEffect, useRef} from "react";
 import {useRenderingBus} from "../../hooks/useRenderingBus.ts";
 import {useRenderingHandler} from "../../hooks/useRenderingHandler.ts";
 import {useViewportStore} from "../../stores/viewportStore.ts";
+import {useModeStore} from "../../stores/modeStore.ts";
 
 const ModeOverlayCanvas = ({ zIndex }: ZIndexProps) => {
     const ref = useRef<HTMLCanvasElement | null>(null);
 
     const viewport = useViewportStore();
+    const mode = useModeStore();
 
     const renderingBus = useRenderingBus();
+    useRenderingHandler(ref, renderingBus, viewport, true);
 
-    useRenderingHandler(ref, renderingBus, viewport);
+    useEffect(() => {
+        renderingBus.clear();
+        renderingBus.subscribe(mode.mode.draw.bind(mode.mode));
+    }, [mode, renderingBus]);
 
     return ( <Canvas
         zIndex={zIndex}

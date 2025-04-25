@@ -10,6 +10,7 @@ export const useRenderingHandler = (
     canvasRef: RefObject<HTMLCanvasElement | null>,
     renderingBus: RenderingBus,
     viewport: ViewportState,
+    isLoop = false,
 ): CanvasRenderer => {
     const draw = useCallback(() => {
         const canvas = canvasRef.current;
@@ -26,11 +27,22 @@ export const useRenderingHandler = (
     }, [canvasRef, renderingBus, viewport]);
 
     useEffect(() => {
-        const frameId = requestAnimationFrame(() => {
-            draw();
-        });
+        let frameId: number;
+        
+        if (isLoop) {
+            const loop = () => {
+                draw();
+                frameId = requestAnimationFrame(loop);
+            };
+            frameId = requestAnimationFrame(loop);
+        } else {
+            frameId = requestAnimationFrame(() => {
+                draw();
+            });
+        }
+        
         return () => cancelAnimationFrame(frameId);
-    }, [draw]);
+    }, [draw, isLoop]);
 
     return {
         draw,
