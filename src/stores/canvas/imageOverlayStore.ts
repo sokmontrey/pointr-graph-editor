@@ -23,9 +23,9 @@ const defaultImageOverlaySettings: ImageOverlayState = {
     imageOpacity: 1,
 };
 
-export const useImageOverlayStore = create<
-    ImageOverlayState & ImageOverlayAction
->((set, get) => ({
+export type ImageOverlayStore = ImageOverlayState & ImageOverlayAction;
+
+export const useImageOverlayStore = create<ImageOverlayStore>((set, get) => ({
     ...defaultImageOverlaySettings,
     setImage: (image) => set({image}),
     setImageOffset: (imageOffset) => set({imageOffset}),

@@ -8,13 +8,13 @@ export interface GridAction {
     setGap: (gap: number) => void;
 }
 
-const defaultGridSettings: GridState = {
+export const defaultGridSettings: GridState = {
     gap: 10,
 };
 
-export const useGridStore = create<
-    GridState & GridAction
->((set) => ({
+export type GridStore = GridState & GridAction;
+
+export const useGridStore = create<GridStore>((set) => ({
     ...defaultGridSettings,
     setGap: (gap) => set({gap}),
 }));
