@@ -2,7 +2,8 @@
 import {NodeType} from "../graph";
 import {EventPropMap} from "../../hooks/useEventBus.ts";
 import {Vec2} from "../../utils/vector.ts";
-import StoresSingleton from "../../core/SingletonStores.ts";
+import {CanvasStores, MainStores} from "../../core/SingletonStores.ts";
+import CreateNodeCommand from "../../core/commands/CreateNodeCommand.ts";
 
 export class CreateMode implements IMode {
     name = "Create";
@@ -15,17 +16,24 @@ export class CreateMode implements IMode {
         this.nodeType = nodeType;
     }
 
-    handleMouseMove(props: EventPropMap["mousemove"]): void {
-        const gap = StoresSingleton.gridStore.gap;
-        this.currentMousePos = props.mousePos.round(gap).subtract(Vec2.fromNumber(gap / 2));
+    handleMouseMove({mousePos}: EventPropMap["mousemove"]): void {
+        this.calculateSnappedPosition(mousePos);
     }
 
-    handleDragging(props: EventPropMap["dragging"]): void {
-        console.log(props);
-    }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    handleDragging(_props: EventPropMap["dragging"]): void { }
 
     handleClick(props: EventPropMap["click"]): void {
-        console.log(props);
+        this.calculateSnappedPosition(props.mousePos);
+        MainStores.commandStore.execute(
+            new CreateNodeCommand(this.nodeType, this.currentMousePos)
+        );
+    }
+
+    private calculateSnappedPosition(mousePos: Vec2): void {
+        const gap = CanvasStores.gridStore.gap;
+        // TODO: improve snapping closer to actual mouse pos
+        this.currentMousePos = mousePos.round(gap).subtract(Vec2.fromNumber(gap / 2));
     }
 
     draw(ctx: CanvasRenderingContext2D): void {

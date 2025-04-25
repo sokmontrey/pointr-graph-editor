@@ -12,8 +12,10 @@ import {useGridStore} from "./stores/canvas/gridStore.ts";
 import {useImageOverlayStore} from "./stores/canvas/imageOverlayStore.ts";
 import {useViewportStore} from "./stores/canvas/viewportStore.ts";
 import {useModeStore} from "./stores/main/modeStore.ts";
+import {useCommandStore} from "./stores/main/commandStore.ts";
 
 export default function App() {
+    // TODO: stop using this and favor dependency injection
     GraphStores.nodeSeedStore = useNodeSeedStore();
     GraphStores.nodeStore = useNodeStore();
     GraphStores.edgeStore = useEdgeStore();
@@ -23,6 +25,7 @@ export default function App() {
     CanvasStores.viewportStore = useViewportStore();
 
     MainStores.modeStore = useModeStore();
+    MainStores.commandStore = useCommandStore();
 
     return (<>
         <div style={{
