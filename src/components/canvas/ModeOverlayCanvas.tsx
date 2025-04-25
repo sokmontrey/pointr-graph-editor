@@ -16,7 +16,7 @@ const ModeOverlayCanvas = ({ zIndex }: ZIndexProps) => {
     return ( <Canvas
         zIndex={zIndex}
         ref={ref}
-        disablePointerEvent={false}
+        disablePointerEvent={true}
     /> );
 }
 
