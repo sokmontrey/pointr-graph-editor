@@ -1,7 +1,7 @@
 ﻿import React from "react";
 import DragNumberInput from "../ui/DragNumberInput.tsx";
 import VectorInput from "../ui/VectorInput.tsx";
-import {useImageOverlayStore} from "../../stores/imageOverlayStore";
+import {useImageOverlayStore} from "../../stores/canvas/imageOverlayStore.ts";
 
 const ImageOverlayControl: React.FC = () => {
     const {

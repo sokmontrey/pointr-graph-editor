@@ -1,5 +1,5 @@
 ﻿import {create} from 'zustand';
-import {Vec2} from '../utils/vector'; // Assuming you have this utility
+import {Vec2} from '../../utils/vector.ts'; // Assuming you have this utility
 
 export interface ImageOverlayState {
     image: HTMLImageElement | null;

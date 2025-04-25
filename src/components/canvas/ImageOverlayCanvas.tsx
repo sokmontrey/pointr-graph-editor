@@ -1,9 +1,9 @@
 ﻿import Canvas, {ZIndexProps} from "./Canvas.tsx";
 import {useRef} from "react";
-import {useImageOverlayStore} from "../../stores/imageOverlayStore.ts";
+import {useImageOverlayStore} from "../../stores/canvas/imageOverlayStore.ts";
 import {useRenderingBus} from "../../hooks/useRenderingBus.ts";
 import {useRenderingHandler} from "../../hooks/useRenderingHandler.ts";
-import {useViewportStore} from "../../stores/viewportStore.ts";
+import {useViewportStore} from "../../stores/canvas/viewportStore.ts";
 
 const ImageOverlayCanvas = ({zIndex}: ZIndexProps) => {
     const ref = useRef<HTMLCanvasElement | null>(null);

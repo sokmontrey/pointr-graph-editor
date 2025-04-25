@@ -3,11 +3,11 @@ import {useRef} from "react";
 import {useRenderingBus} from "../../hooks/useRenderingBus.ts";
 import {useRenderingHandler} from "../../hooks/useRenderingHandler.ts";
 import {useEventBus} from "../../hooks/useEventBus.ts";
-import {useViewportStore} from "../../stores/viewportStore.ts";
+import {useViewportStore} from "../../stores/canvas/viewportStore.ts";
 import {useEventHandler} from "../../hooks/useEventHandler.ts";
 import {useViewportEventAttachment} from "../../hooks/attachments/useViewportEventAttachment.ts";
 import {useModeEventAttachment} from "../../hooks/attachments/useModeEventAttachment.ts";
-import {useModeStore} from "../../stores/modeStore.ts";
+import {useModeStore} from "../../stores/main/modeStore.ts";
 
 /**
  * Responsible for main mouse interaction and graph rendering

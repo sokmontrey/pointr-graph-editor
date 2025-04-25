@@ -1,6 +1,6 @@
 ﻿import {useEffect} from "react";
 import {EventBus} from "../useEventBus.ts";
-import {ModeState} from "../../stores/modeStore.ts";
+import {ModeState} from "../../stores/main/modeStore.ts";
 
 export const useModeEventAttachment = (eventBus: EventBus, mode: ModeState) => {
     useEffect(() => {

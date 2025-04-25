@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {SelectMode} from "../../domain/modes";
-import {useModeStore} from "../../stores/modeStore.ts";
+import {useModeStore} from "../../stores/main/modeStore.ts";
 import {NodeType, nodeTypes} from "../../domain/graph/node.ts";
 import {CreateMode} from "../../domain/modes";
 

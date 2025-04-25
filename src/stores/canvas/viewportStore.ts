@@ -1,5 +1,5 @@
 ﻿import {create} from 'zustand';
-import {Vec2} from "../utils/vector.ts";
+import {Vec2} from "../../utils/vector.ts";
 
 export interface ViewportState {
     offset: Vec2;

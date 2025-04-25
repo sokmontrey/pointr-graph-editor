@@ -1,6 +1,6 @@
 ﻿import React from "react";
 import DragNumberInput from "../ui/DragNumberInput.tsx";
-import {useGridStore} from "../../stores/gridStore.ts";
+import {useGridStore} from "../../stores/canvas/gridStore.ts";
 
 const GridControl: React.FC = () => {
     const {

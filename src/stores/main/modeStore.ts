@@ -1,5 +1,5 @@
 ﻿import { create } from 'zustand';
-import { IMode, SelectMode } from '../domain/modes'
+import { IMode, SelectMode } from '../../domain/modes'
 
 export interface ModeState {
     mode: IMode;

@@ -1,6 +1,6 @@
-﻿import {useViewportStore} from "../../stores/viewportStore.ts";
+﻿import {useViewportStore} from "../../stores/canvas/viewportStore.ts";
 import {ZIndexProps} from "./Canvas.tsx";
-import {useGridStore} from "../../stores/gridStore.ts";
+import {useGridStore} from "../../stores/canvas/gridStore.ts";
 
 const BulletGrid = ({ zIndex }: ZIndexProps) => {
     const viewport = useViewportStore();

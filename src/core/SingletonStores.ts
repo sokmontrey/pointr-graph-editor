@@ -1,8 +1,8 @@
 ﻿import {EdgeStore, NodeSeedStore, NodeStore} from "../stores/graph";
-import {GridAction, GridState} from "../stores/gridStore.ts";
-import {ViewportAction, ViewportState} from "../stores/viewportStore.ts";
-import {ImageOverlayAction, ImageOverlayState} from "../stores/imageOverlayStore.ts";
-import {ModeAction, ModeState} from "../stores/modeStore.ts";
+import {GridAction, GridState} from "../stores/canvas/gridStore.ts";
+import {ViewportAction, ViewportState} from "../stores/canvas/viewportStore.ts";
+import {ImageOverlayAction, ImageOverlayState} from "../stores/canvas/imageOverlayStore.ts";
+import {ModeAction, ModeState} from "../stores/main/modeStore.ts";
 
 export class GraphStores {
     static nodeStore: NodeStore;

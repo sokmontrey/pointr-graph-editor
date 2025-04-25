@@ -2,7 +2,7 @@
 import React, {useCallback, useEffect} from "react";
 import {getMousePosition} from "../utils/mouse.ts";
 import {EventBus} from "./useEventBus.ts";
-import {ViewportState} from "../stores/viewportStore.ts";
+import {ViewportState} from "../stores/canvas/viewportStore.ts";
 
 export const useEventHandler = (
     canvasRef: React.RefObject<HTMLCanvasElement | null>,

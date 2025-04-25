@@ -2,8 +2,8 @@
 import {useEffect, useRef} from "react";
 import {useRenderingBus} from "../../hooks/useRenderingBus.ts";
 import {useRenderingHandler} from "../../hooks/useRenderingHandler.ts";
-import {useViewportStore} from "../../stores/viewportStore.ts";
-import {useModeStore} from "../../stores/modeStore.ts";
+import {useViewportStore} from "../../stores/canvas/viewportStore.ts";
+import {useModeStore} from "../../stores/main/modeStore.ts";
 
 const ModeOverlayCanvas = ({ zIndex }: ZIndexProps) => {
     const ref = useRef<HTMLCanvasElement | null>(null);

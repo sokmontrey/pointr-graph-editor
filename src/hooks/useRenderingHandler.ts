@@ -1,6 +1,6 @@
 import {useCallback, useEffect, RefObject} from 'react';
 import {RenderingBus} from "./useRenderingBus.ts";
-import {ViewportState} from "../stores/viewportStore.ts";
+import {ViewportState} from "../stores/canvas/viewportStore.ts";
 
 export interface CanvasRenderer {
     draw: () => void;
