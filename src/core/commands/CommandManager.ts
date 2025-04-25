@@ -1,16 +1,16 @@
 ﻿import {GraphStore} from "../../stores/graph";
-import {ICommand} from "./ICommand.ts";
+import Command from "./Command.ts";
 
 class CommandManager {
-    private undoStack: ICommand[] = [];
-    private redoStack: ICommand[] = [];
+    private undoStack: Command[] = [];
+    private redoStack: Command[] = [];
     private readonly graphStore: GraphStore;
 
     constructor(store: GraphStore) {
         this.graphStore = store;
     }
 
-    execute(command: ICommand) {
+    execute(command: Command) {
         command.setGraphStore(this.graphStore);
         command.execute();
         this.undoStack.push(command);
