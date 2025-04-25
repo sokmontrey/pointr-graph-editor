@@ -6,8 +6,10 @@ import ImageOverlayCanvas from "./components/canvas/ImageOverlayCanvas.tsx";
 import BulletGrid from "./components/canvas/BulletGrid.tsx";
 import GridControl from "./components/controls/gridControl.tsx";
 import ModeOverlayCanvas from "./components/canvas/ModeOverlayCanvas.tsx";
+import {useNodeStore} from "./stores/graph";
 
 export default function App() {
+    const {nodes} = useNodeStore();
     return (<>
         <div style={{
             position: 'fixed',
@@ -15,6 +17,7 @@ export default function App() {
             left: 0,
             zIndex: 1000,
         }}>
+            <p>{nodes.length}</p>
             <ModeControl/>
             <ImageOverlayControl/>
             <GridControl/>

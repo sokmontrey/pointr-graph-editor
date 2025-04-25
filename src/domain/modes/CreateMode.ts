@@ -2,9 +2,9 @@
 import {NodeType} from "../graph";
 import {EventPropMap} from "../../hooks/useEventBus.ts";
 import {Vec2} from "../../utils/vector.ts";
-import CreateNodeCommand from "../../core/commands/CreateNodeCommand.ts";
 import {GridStore} from "../../stores/canvas";
-import {CommandStore} from "../../stores/main";
+import CommandFactory from "../../core/commands/CommandFactory.ts";
+import {CommandManager} from "../../core/commands/CommandManager.ts";
 
 export class CreateMode implements IMode {
     name = "Create";
@@ -13,7 +13,8 @@ export class CreateMode implements IMode {
     constructor(
         private nodeType: NodeType,
         private gridStore: GridStore,
-        private commandStore: CommandStore,
+        private commandManager: CommandManager,
+        private commandFactory: CommandFactory,
     ) {
         this.name = "Create " + nodeType.name;
     }
@@ -23,13 +24,16 @@ export class CreateMode implements IMode {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    handleDragging(_props: EventPropMap["dragging"]): void { }
+    handleDragging(_props: EventPropMap["dragging"]): void {
+    }
 
     handleClick(props: EventPropMap["click"]): void {
         this.calculateSnappedPosition(props.mousePos);
-        this.commandStore.execute(
-            new CreateNodeCommand(this.nodeType, this.position)
+        const command = this.commandFactory.createNodeCommand(
+            this.nodeType,
+            this.position,
         );
+        this.commandManager.execute(command);
     }
 
     private calculateSnappedPosition(mousePos: Vec2): void {
