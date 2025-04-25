@@ -1,7 +1,8 @@
 ﻿import {IMode} from "./IMode.ts";
-import {NodeType} from "../graph/node.ts";
+import {NodeType} from "../graph";
 import {EventPropMap} from "../../hooks/useEventBus.ts";
 import {Vec2} from "../../utils/vector.ts";
+import StoresSingleton from "../../core/SingletonStores.ts";
 
 export class CreateMode implements IMode {
     name = "Create";
@@ -15,7 +16,8 @@ export class CreateMode implements IMode {
     }
 
     handleMouseMove(props: EventPropMap["mousemove"]): void {
-        this.currentMousePos = props.mousePos;
+        const gap = StoresSingleton.gridStore.gap;
+        this.currentMousePos = props.mousePos.round(gap).subtract(Vec2.fromNumber(gap / 2));
     }
 
     handleDragging(props: EventPropMap["dragging"]): void {

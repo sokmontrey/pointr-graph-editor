@@ -1,14 +1,14 @@
 ﻿import {create} from 'zustand';
 import {Vec2} from '../utils/vector'; // Assuming you have this utility
 
-interface ImageOverlayState {
+export interface ImageOverlayState {
     image: HTMLImageElement | null;
     imageOffset: Vec2;
     imageScale: number;
     imageOpacity: number;
 }
 
-interface ImageOverlayAction {
+export interface ImageOverlayAction {
     setImage: (image: HTMLImageElement | null) => void;
     setImageOffset: (offset: Vec2) => void;
     setImageScale: (scale: number) => void;

@@ -1,23 +1,10 @@
-﻿import {EdgeStore, NodeSeedStore, NodeStore} from "../../stores/graph";
-import Command from "./Command.ts";
+﻿import {ICommand} from "./Command.ts";
 
 class CommandManager {
-    private undoStack: Command[] = [];
-    private redoStack: Command[] = [];
-    private readonly nodeStore: NodeStore;
-    private readonly edgeStore: EdgeStore;
-    private readonly nodeSeedStore: NodeSeedStore;
+    private undoStack: ICommand[] = [];
+    private redoStack: ICommand[] = [];
 
-    constructor(nodeStore: NodeStore, edgeStore: EdgeStore, nodeSeedStore: NodeSeedStore) {
-        this.nodeStore = nodeStore;
-        this.edgeStore = edgeStore;
-        this.nodeSeedStore = nodeSeedStore;
-    }
-
-    execute(command: Command) {
-        command.setNodeStore(this.nodeStore);
-        command.setEdgeStore(this.edgeStore);
-        command.setNodeSeedStore(this.nodeSeedStore);
+    execute(command: ICommand) {
         command.execute();
         this.undoStack.push(command);
         this.redoStack = [];
