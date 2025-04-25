@@ -1,7 +1,7 @@
 ﻿import {NodeType} from "../../domain/graph";
 import {Vec2} from "../../utils/vector.ts";
 import {ICommand} from "./Command.ts";
-import StoresSingleton from "../SingletonStores.ts";
+import {GraphStores} from "../SingletonStores.ts";
 
 class CreateNodeCommand implements ICommand{
     private nodeType: NodeType;
@@ -14,15 +14,15 @@ class CreateNodeCommand implements ICommand{
     }
 
     execute() {
-        const id = StoresSingleton.nodeSeedStore.getId(this.nodeType.name);
+        const id = GraphStores.nodeSeedStore.getId(this.nodeType.name);
         this.nodeId = id.toString();
-        StoresSingleton.nodeStore.addNode(this.nodeId, this.position, this.nodeType);
-        StoresSingleton.nodeSeedStore.incrementSeed(this.nodeType.name);
+        GraphStores.nodeStore.addNode(this.nodeId, this.position, this.nodeType);
+        GraphStores.nodeSeedStore.incrementSeed(this.nodeType.name);
     }
 
     undo(): void {
-        StoresSingleton.nodeStore.removeNode(this.nodeId);
-        StoresSingleton.nodeSeedStore.decrementSeed(this.nodeType.name);
+        GraphStores.nodeStore.removeNode(this.nodeId);
+        GraphStores.nodeSeedStore.decrementSeed(this.nodeType.name);
     }
 }
 
