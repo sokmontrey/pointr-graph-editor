@@ -6,7 +6,9 @@ export interface NodeSeedState {
 }
 
 export interface NodeSeedAction {
-    nextSeed: (nodeType: string) => number;
+    getId: (nodeType: string) => number;
+    incrementSeed: (nodeType: string) => void;
+    decrementSeed: (nodeType: string) => void;
     loadSeed: (seed: Record<string, number>) => void;
 }
 
@@ -20,11 +22,17 @@ export const useNodeSeedStore = create<
     NodeSeedState & NodeSeedAction
 >((set, get) => ({
     ...defaultNodeSeedSettings,
-    nextSeed: (nodeType: string) => {
+    getId: (nodeType: string) => {
         const {seed} = get();
-        const nextId = seed[nodeType] || 0;
-        set({seed: {...seed, [nodeType]: nextId + 1}});
-        return nextId;
+        return seed[nodeType] || 0;
+    },
+    incrementSeed: (nodeType: string) => {
+        const {seed} = get();
+        set({seed: {...seed, [nodeType]: seed[nodeType] + 1}});
+    },
+    decrementSeed: (nodeType: string) => {
+        const {seed} = get();
+        set({seed: {...seed, [nodeType]: seed[nodeType] - 1}});
     },
     loadSeed: (seed) => set({seed}),
 }));

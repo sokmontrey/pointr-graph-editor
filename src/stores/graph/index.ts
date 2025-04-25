@@ -1,2 +1,3 @@
 ﻿export * from './nodeSeedStore.ts';
-export * from './graphStore.ts';
+export * from './nodeStore.ts';
+export * from './edgeStore.ts';
