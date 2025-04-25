@@ -15,11 +15,13 @@ export const useEventHandler = (
     const [isDragging, setIsDragging] = React.useState(false);
 
     const handleMouseDown = useCallback((e: MouseEvent) => {
+        e.preventDefault();
         setIsMouseDown(true);
         setMouseDownPos(getMousePosition(e));
     }, []);
 
     const handleMouseUp = useCallback((e: MouseEvent) => {
+        e.preventDefault();
         if (!isDragging) {
             publish('click', {
                 mousePos: getMousePosition(e),
@@ -31,6 +33,7 @@ export const useEventHandler = (
     }, [isDragging, publish]);
 
     const handleMouseMove = useCallback((e: MouseEvent) => {
+        e.preventDefault();
         if (isMouseDown && !isDragging) {
             if (mouseDownPos === null) {
                 return;
@@ -57,11 +60,16 @@ export const useEventHandler = (
     }, [isMouseDown, isDragging, mouseDownPos, dragThreshold, publish]);
 
     const handleWheel = useCallback((e: WheelEvent) => {
+        e.preventDefault();
         publish('wheel', {
             mousePos: getMousePosition(e),
             deltaY: e.deltaY,
         });
     }, [publish]);
+
+    const handleContextMenu = useCallback((e: MouseEvent) => {
+        e.preventDefault();
+    }, []);
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -73,6 +81,7 @@ export const useEventHandler = (
         canvas.addEventListener('mousemove', handleMouseMove);
         canvas.addEventListener('mouseup', handleMouseUp);
         canvas.addEventListener('wheel', handleWheel);
+        canvas.addEventListener('contextmenu', handleContextMenu);
 
         // TODO: Keyboard event as well
         // TODO: separate concerns
@@ -82,6 +91,7 @@ export const useEventHandler = (
             canvas.removeEventListener('mousemove', handleMouseMove);
             canvas.removeEventListener('mouseup', handleMouseUp);
             canvas.removeEventListener('wheel', handleWheel);
+            canvas.removeEventListener('contextmenu', handleContextMenu);
         };
     }, [
         canvasRef,
@@ -89,7 +99,8 @@ export const useEventHandler = (
         handleMouseMove,
         handleMouseUp,
         handleWheel,
-        dragThreshold
+        dragThreshold,
+        handleContextMenu
     ]);
 
     return {
