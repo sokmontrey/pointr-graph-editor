@@ -29,15 +29,11 @@ export const useViewportStore = create<
         offset: get().offset.add(changeInOffset)
     }),
     zoom: (factor, mousePos) => {
-        const newScale = Math.max(
-            get().minScale,
-            Math.min(get().maxScale, get().scale * factor)
-        );
-        if (newScale !== get().scale) {
-            const offsetDiff = mousePos.subtract(get().offset);
-            const newOffset = mousePos.subtract(
-                offsetDiff.multiply(newScale / get().scale)
-            );
+        const { scale, minScale, maxScale, offset } = get();
+        const newScale = Math.max(minScale, Math.min(maxScale, scale * factor));
+        if (newScale !== scale) {
+            const scaleChange = newScale / scale;
+            const newOffset = mousePos.subtract(mousePos.subtract(offset).multiply(scaleChange));
             set({
                 scale: newScale,
                 offset: newOffset,
