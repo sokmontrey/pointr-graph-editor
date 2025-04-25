@@ -31,9 +31,9 @@ export interface GraphAction {
     loadGraph: (nodes: Node[], edges: Edge[]) => void;
 }
 
-export const useGraphStore = create<
-    GraphState & GraphAction
->((set, get) => ({
+export type GraphStore = GraphState & GraphAction;
+
+export const useGraphStore = create<GraphStore>((set, get) => ({
     nodes: [],
     edges: [],
     
