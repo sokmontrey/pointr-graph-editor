@@ -8,6 +8,7 @@ export const useModeEventAttachment = (eventBus: EventBus, mode: ModeState) => {
             eventBus.subscribe('click', mode.mode.handleClick.bind(mode.mode)),
             eventBus.subscribe('dragging', mode.mode.handleDragging.bind(mode.mode)),
             eventBus.subscribe('mousemove', mode.mode.handleMouseMove.bind(mode.mode)),
+            eventBus.subscribe('mouseup', mode.mode.handleMouseUp.bind(mode.mode)),
         ];
 
         return () => {
