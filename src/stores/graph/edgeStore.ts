@@ -7,7 +7,7 @@ export interface EdgeState {
 }
 
 export interface EdgeAction {
-    addEdge: (fromId: string, toId: string) => void;
+    addEdge: (fromId: string, toId: string) => string | null;
     removeEdge: (id: string) => void;
     removeEdgesConnectedToNode: (nodeId: string) => void;
     loadEdges: (edges: Edge[]) => void;
@@ -22,7 +22,7 @@ export const useEdgeStore = create<EdgeStore>((set, get) => ({
     addEdge: (fromId, toId) => {
         const {edges} = get();
         if (edges.some(edge => edge.from === fromId && edge.to === toId)) {
-            return; // Edge already exists
+            return null; // Edge already exists
         }
 
         // Check if nodes exist
@@ -32,15 +32,17 @@ export const useEdgeStore = create<EdgeStore>((set, get) => ({
 
         if (!fromNodeExists || !toNodeExists) {
             console.warn(`Cannot create edge: node ${!fromNodeExists ? fromId : toId} does not exist`);
-            return;
+            return null;
         }
 
+        const id = `${fromId}-${toId}-${Date.now()}`;
         const newEdge: Edge = {
-            id: `${fromId}-${toId}-${Date.now()}`,
+            id,
             from: fromId,
             to: toId,
         };
         set({edges: [...edges, newEdge]});
+        return id;
     },
     removeEdge: (id) => {
         const {edges} = get();

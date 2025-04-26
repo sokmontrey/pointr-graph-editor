@@ -16,7 +16,8 @@ export class ConnectMode implements IMode {
         private nodeStore: NodeStore,
         private commandStore: CommandStore,
         private commandFactory: CommandFactory,
-    ) { }
+    ) {
+    }
 
     handleMouseMove(props: EventPropMap["mousemove"]): void {
         this.mousePos = props.mousePos;
@@ -31,16 +32,24 @@ export class ConnectMode implements IMode {
         this.mousePos = props.mousePos;
         this.hoveredNode = this.getHoveredNode();
 
-        if (this.selectedNode) {
-            // const command = this.commandFactory.createEdgeCommand(
-            //     this.selectedNode.id,
-            //     this.hoveredNode!.id,
-            // );
-            // this.commandStore.execute(command);
+        if (!this.hoveredNode) {
             this.reset();
-        } else {
-            this.selectedNode = this.hoveredNode;
+            return;
         }
+
+        if (!this.selectedNode) {
+            this.selectedNode = this.hoveredNode;
+            return;
+        }
+
+        if (this.selectedNode === this.hoveredNode) return;
+
+        const command = this.commandFactory.connectCommand(
+            this.selectedNode.id,
+            this.hoveredNode!.id,
+        );
+        this.commandStore.execute(command);
+        this.reset();
     }
 
     private getHoveredNode(): Node | null {
