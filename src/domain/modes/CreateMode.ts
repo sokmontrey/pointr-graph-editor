@@ -13,7 +13,7 @@ export class CreateMode implements IMode {
     constructor(
         private nodeType: NodeType,
         private gridStore: GridStore,
-        private commandManager: CommandStore,
+        private commandStore: CommandStore,
         private commandFactory: CommandFactory,
     ) {
         this.name = "Create " + nodeType.name;
@@ -33,7 +33,7 @@ export class CreateMode implements IMode {
             this.nodeType,
             this.position,
         );
-        this.commandManager.execute(command);
+        this.commandStore.execute(command);
     }
 
     private calculateSnappedPosition(mousePos: Vec2): void {
