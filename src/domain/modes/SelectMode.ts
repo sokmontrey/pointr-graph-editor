@@ -6,7 +6,10 @@ import {Segment} from "../../utils/segment.ts";
 import {CommandStore} from "../../stores/main";
 import CommandFactory from "../../core/commands/CommandFactory.ts";
 import {Vec2} from "../../utils/vector.ts";
+import {snapToGrid} from "../../utils/mouse.ts";
+import {GridStore} from "../../stores/canvas";
 
+// TODO: refactor to achieve single responsibility principle
 export class SelectMode extends Mode {
     name = "Select";
 
@@ -15,6 +18,7 @@ export class SelectMode extends Mode {
 
     private isDragging: boolean = false;
     private dragStartPos: Vec2 | null = null;
+    private draggingNode: Node | null = null;
 
     // TODO: store this in a store for outside access
     // (Keyboard shortcuts, etc)
@@ -24,8 +28,9 @@ export class SelectMode extends Mode {
     constructor(
         private nodeStore: NodeStore,
         private edgeStore: EdgeStore,
-        private commandFactory: CommandFactory,
+        private gridStore: GridStore,
         private commandStore: CommandStore,
+        private commandFactory: CommandFactory,
     ) {
         super();
     }
@@ -40,25 +45,37 @@ export class SelectMode extends Mode {
     }
 
     override handleDragging(props: EventPropMap["dragging"]): void {
-        if (this.selectedNode) {
-            if (!this.isDragging) {
-                this.isDragging = true;
-                this.dragStartPos = props.mousePos;
-            }
-            this.nodeStore.moveNode(this.selectedNode.id, props.mousePos);
+        this.draggingNode = this.hoveredNode;
+
+        if (!this.draggingNode) {
+            return;
         }
+
+        if (!this.isDragging) {
+            this.isDragging = true;
+            this.dragStartPos = props.mousePos;
+        }
+
+        const snappedPos = snapToGrid(props.mousePos, this.gridStore.gap);
+        this.nodeStore.moveNode(this.draggingNode.id, snappedPos);
     }
 
     override handleMouseUp(props: EventPropMap["mouseup"]): void {
-        if (this.isDragging && this.selectedNode && this.dragStartPos) {
+        if (this.isDragging &&
+            this.draggingNode &&
+            this.dragStartPos
+        ) {
+            const snappedPos = snapToGrid(props.mousePos, this.gridStore.gap);
             const command = this.commandFactory.moveNodeCommand(
-                this.selectedNode.id,
+                this.draggingNode.id,
                 this.dragStartPos,
-                props.mousePos,
+                snappedPos,
             );
             this.commandStore.execute(command);
             this.isDragging = false;
             this.dragStartPos = null;
+            this.selectedNode = null;
+            this.draggingNode = null;
         }
     }
 
