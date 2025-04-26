@@ -6,6 +6,7 @@ import {CreateMode} from "../../domain/modes";
 import {useGridStore} from "../../stores/canvas";
 import CommandFactory from "../../core/commands/CommandFactory.ts";
 import {useEdgeStore, useNodeSeedStore, useNodeStore} from "../../stores/graph";
+import {ConnectMode} from "../../domain/modes/ConnectMode.ts";
 
 const ModeControl: React.FC = () => {
     const {mode, setMode} = useModeStore();
@@ -27,6 +28,14 @@ const ModeControl: React.FC = () => {
         setMode(new SelectMode());
     }
 
+    const switchToConnectMode = () => {
+        setMode(new ConnectMode(
+            nodeStore,
+            commandStore,
+            commandFactory.current,
+        ));
+    };
+
     const switchToCreateMode = (nodeType: NodeType) => {
         setNodeType(nodeType);
         setMode(new CreateMode(
@@ -42,6 +51,10 @@ const ModeControl: React.FC = () => {
 
         <button onClick={switchToSelectMode}>
             Select
+        </button>
+
+        <button onClick={() => switchToConnectMode()}>
+            Connect
         </button>
 
         <select
