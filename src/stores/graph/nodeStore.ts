@@ -7,7 +7,7 @@ export interface NodeState {
 }
 
 export interface NodeAction {
-    addNode: (label: string, position: Vec2, nodeType: NodeType) => string;
+    addNode: (label: string, position: Vec2, nodeType: NodeType, id: string | null) => string;
     removeNode: (id: string) => void;
     moveNode: (id: string, position: Vec2) => void;
     updateNodeLabel: (id: string, newLabel: string) => void;
@@ -21,9 +21,9 @@ export type NodeStore = NodeState & NodeAction;
 
 export const useNodeStore = create<NodeStore>((set, get) => ({
     nodes: [],
-    addNode: (label, position, nodeType) => {
+    addNode: (label, position, nodeType, id = null) => {
         const {nodes} = get();
-        const id = Date.now().toString();
+        id ??= Date.now().toString();
         const newNode: Node = {
             id,
             label,
