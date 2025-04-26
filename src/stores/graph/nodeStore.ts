@@ -7,10 +7,10 @@ export interface NodeState {
 }
 
 export interface NodeAction {
-    addNode: (id: string, position: Vec2, nodeType: NodeType) => void;
+    addNode: (label: string, position: Vec2, nodeType: NodeType) => void;
     removeNode: (id: string) => void;
     moveNode: (id: string, position: Vec2) => void;
-    updateNodeId: (id: string, newId: string) => void;
+    updateNodeLabel: (id: string, newLabel: string) => void;
     loadNodes: (nodes: Node[]) => void;
     clearNodes: () => void;
     draw: (ctx: CanvasRenderingContext2D) => void;
@@ -20,10 +20,11 @@ export type NodeStore = NodeState & NodeAction;
 
 export const useNodeStore = create<NodeStore>((set, get) => ({
     nodes: [],
-    addNode: (id, position, nodeType) => {
+    addNode: (label, position, nodeType) => {
         const {nodes} = get();
         const newNode: Node = {
-            id: id.toString(),
+            id: Date.now().toString(),
+            label,
             type: nodeType,
             position,
         };
@@ -41,11 +42,13 @@ export const useNodeStore = create<NodeStore>((set, get) => ({
             nodes: nodes.map(node => node.id === id ? {...node, position} : node),
         });
     },
-    updateNodeId: (id, newId) => {
+    // TODO: update label instead of id
+    updateNodeLabel: (id, newLabel) => {
         const {nodes} = get();
-        // TODO: check if newId already exists only if the nodeType allows it
         set({
-            nodes: nodes.map(node => node.id === id ? {...node, id: newId} : node),
+            nodes: nodes.map(node => node.id === id
+                ? {...node, label: newLabel}
+                : node),
         });
     },
     loadNodes: (nodes) => set({nodes}),
@@ -57,6 +60,12 @@ export const useNodeStore = create<NodeStore>((set, get) => ({
             ctx.arc(node.position.x, node.position.y, 10, 0, 2 * Math.PI);
             ctx.fillStyle = node.type.color;
             ctx.fill();
+
+            ctx.fillStyle = "black";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.font = "12px Arial";
+            ctx.fillText(node.label.toString(), node.position.x, node.position.y + 5);
         });
     },
 }));

@@ -10,9 +10,9 @@ export interface EdgeAction {
     addEdge: (fromId: string, toId: string) => void;
     removeEdge: (id: string) => void;
     removeEdgesConnectedToNode: (nodeId: string) => void;
-    updateEdgeNodeId: (oldId: string, newId: string) => void;
     loadEdges: (edges: Edge[]) => void;
     clearEdges: () => void;
+    draw: (ctx: CanvasRenderingContext2D) => void;
 }
 
 export type EdgeStore = EdgeState & EdgeAction;
@@ -26,9 +26,9 @@ export const useEdgeStore = create<EdgeStore>((set, get) => ({
         }
 
         // Check if nodes exist
-        const nodeStore = useNodeStore.getState();
-        const fromNodeExists = nodeStore.nodes.some(node => node.id === fromId);
-        const toNodeExists = nodeStore.nodes.some(node => node.id === toId);
+        const {nodes} = useNodeStore.getState();
+        const fromNodeExists = nodes.some(node => node.id === fromId);
+        const toNodeExists = nodes.some(node => node.id === toId);
 
         if (!fromNodeExists || !toNodeExists) {
             console.warn(`Cannot create edge: node ${!fromNodeExists ? fromId : toId} does not exist`);
@@ -52,20 +52,20 @@ export const useEdgeStore = create<EdgeStore>((set, get) => ({
             edges: edges.filter(edge => edge.from !== nodeId && edge.to !== nodeId),
         });
     },
-    updateEdgeNodeId: (oldId, newId) => {
-        const {edges} = get();
-        set({
-            edges: edges.map(edge => {
-                if (edge.from === oldId) {
-                    return {...edge, from: newId};
-                }
-                if (edge.to === oldId) {
-                    return {...edge, to: newId};
-                }
-                return edge;
-            }),
-        });
-    },
     loadEdges: (edges) => set({edges}),
     clearEdges: () => set({edges: []}),
+    draw: (ctx) => {
+        const {edges} = get();
+        edges.forEach(edge => {
+            const fromNode = useNodeStore.getState().nodes.find(node => node.id === edge.from);
+            const toNode = useNodeStore.getState().nodes.find(node => node.id === edge.to);
+            if (!fromNode || !toNode) return;
+
+            ctx.beginPath();
+            ctx.moveTo(fromNode.position.x, fromNode.position.y);
+            ctx.lineTo(toNode.position.x, toNode.position.y);
+            ctx.strokeStyle = 'black';
+            ctx.stroke();
+        });
+    },
 }));

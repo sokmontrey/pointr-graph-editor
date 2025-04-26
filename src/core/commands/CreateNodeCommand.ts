@@ -14,15 +14,12 @@ class CreateNodeCommand implements ICommand {
     ) { }
 
     execute() {
-        const id = this.nodeSeedStore.getId(this.nodeType.name);
-        this.nodeId = id.toString();
-        this.nodeStore.addNode(this.nodeId, this.position, this.nodeType);
-        this.nodeSeedStore.incrementSeed(this.nodeType.name);
+        const label = this.nodeSeedStore.next(this.nodeType.name);
+        this.nodeStore.addNode(label.toString(), this.position, this.nodeType);
     }
 
     undo(): void {
         this.nodeStore.removeNode(this.nodeId);
-        this.nodeSeedStore.decrementSeed(this.nodeType.name);
     }
 }
 
