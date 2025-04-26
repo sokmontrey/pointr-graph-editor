@@ -14,7 +14,7 @@ class CreateNodeCommand implements ICommand {
     ) { }
 
     execute() {
-        const label = this.nodeSeedStore.next(this.nodeType.name);
+        const label = this.nodeSeedStore.next(this.nodeType.key);
         this.nodeStore.addNode(label.toString(), this.position, this.nodeType);
     }
 

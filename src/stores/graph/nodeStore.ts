@@ -65,7 +65,7 @@ export const useNodeStore = create<NodeStore>((set, get) => ({
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
             ctx.font = "12px Arial";
-            ctx.fillText(node.label.toString(), node.position.x, node.position.y + 5);
+            ctx.fillText(node.label, node.position.x, node.position.y + 20);
         });
     },
 }));
