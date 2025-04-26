@@ -38,8 +38,11 @@ export class CreateMode implements IMode {
 
     private calculateSnappedPosition(mousePos: Vec2): void {
         const gap = this.gridStore.gap;
-        // TODO: improve snapping closer to actual mouse pos
-        this.position = mousePos.round(gap).subtract(Vec2.fromNumber(gap / 2));
+        const halfGap = Vec2.fromNumber(gap / 2);
+        this.position = mousePos
+            .add(halfGap)
+            .round(gap)
+            .subtract(halfGap);
     }
 
     draw(ctx: CanvasRenderingContext2D): void {
