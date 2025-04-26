@@ -28,8 +28,9 @@ const ModeControl: React.FC = () => {
         setMode(new SelectMode(
             nodeStore,
             edgeStore,
-            commandFactory.current,
+            gridStore,
             commandStore,
+            commandFactory.current,
         ));
     }
 
