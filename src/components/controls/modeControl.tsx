@@ -58,7 +58,6 @@ const ModeControl: React.FC = () => {
         </button>
 
         <select
-            value={nodeType.name}
             onChange={e => switchToCreateMode(nodeTypes[e.target.value])}
         >
             {Object.entries(nodeTypes).map(([key, value]) =>
