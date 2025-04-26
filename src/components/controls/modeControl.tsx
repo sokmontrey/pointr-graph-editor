@@ -6,7 +6,7 @@ import {CreateNodeMode} from "../../domain/modes";
 import {useGridStore} from "../../stores/canvas";
 import CommandFactory from "../../core/commands/CommandFactory.ts";
 import {useEdgeStore, useNodeSeedStore, useNodeStore} from "../../stores/graph";
-import {ConnectMode} from "../../domain/modes/ConnectMode.ts";
+import {ConnectMode} from "../../domain/modes";
 
 const ModeControl: React.FC = () => {
     const {mode, setMode} = useModeStore();

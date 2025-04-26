@@ -1,10 +1,10 @@
 ﻿import {EventPropMap} from "../../hooks/event";
-import {IMode} from "./IMode.ts";
+import {Mode} from "./Mode.ts";
 import {Node, Edge} from "../graph";
 import {EdgeStore, NodeStore} from "../../stores/graph";
 import {Segment} from "../../utils/segment.ts";
 
-export class SelectMode implements IMode {
+export class SelectMode extends Mode {
     name = "Select";
 
     private hoveredNode: Node | null = null;
@@ -18,9 +18,11 @@ export class SelectMode implements IMode {
     constructor(
         private nodeStore: NodeStore,
         private edgeStore: EdgeStore,
-    ) { }
+    ) {
+        super();
+    }
 
-    handleMouseMove(props: EventPropMap["mousemove"]): void {
+    override handleMouseMove(props: EventPropMap["mousemove"]): void {
         this.hoveredNode = this.nodeStore.getHoveredNode(props.mousePos);
         if (this.hoveredNode) {
             this.hoveredEdge = null;
@@ -30,11 +32,7 @@ export class SelectMode implements IMode {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    handleDragging(_props: EventPropMap["dragging"]): void {
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    handleClick(_props: EventPropMap["click"]): void {
+    override handleClick(_props: EventPropMap["click"]): void {
         if (this.hoveredNode) {
             this.selectedNode = this.hoveredNode;
             this.selectedEdge = null;
@@ -51,7 +49,7 @@ export class SelectMode implements IMode {
         this.selectedEdge = null;
     }
 
-    draw(ctx: CanvasRenderingContext2D): void {
+    override draw(ctx: CanvasRenderingContext2D): void {
         ctx.lineWidth = 2;
         this.drawNode(ctx, this.hoveredNode, 'red');
         this.drawEdge(ctx, this.hoveredEdge, 'red');

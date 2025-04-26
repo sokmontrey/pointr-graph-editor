@@ -1,13 +1,13 @@
 ﻿import { create } from 'zustand';
-import { IMode, SelectMode } from '../../domain/modes'
+import { Mode, SelectMode } from '../../domain/modes'
 import {useEdgeStore, useNodeStore} from "../graph";
 
 export interface ModeState {
-    mode: IMode;
+    mode: Mode;
 }
 
 export interface ModeAction {
-    setMode: (mode: IMode) => void;
+    setMode: (mode: Mode) => void;
 }
 
 export type ModeStore = ModeState & ModeAction;

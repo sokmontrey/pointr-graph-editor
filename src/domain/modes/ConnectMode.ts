@@ -1,12 +1,12 @@
 ﻿import {EventPropMap} from "../../hooks/event";
 import {CommandStore} from "../../stores/main";
-import {IMode} from "./IMode.ts";
+import {Mode} from "./Mode.ts";
 import {NodeStore} from "../../stores/graph";
 import CommandFactory from "../../core/commands/CommandFactory.ts";
 import {Node} from "../graph";
 import {Vec2} from "../../utils/vector.ts";
 
-export class ConnectMode implements IMode {
+export class ConnectMode extends Mode {
     name = 'connect';
     private hoveredNode: Node | null = null;
     private selectedNode: Node | null = null;
@@ -17,18 +17,15 @@ export class ConnectMode implements IMode {
         private commandStore: CommandStore,
         private commandFactory: CommandFactory,
     ) {
+        super();
     }
 
-    handleMouseMove(props: EventPropMap["mousemove"]): void {
+    override handleMouseMove(props: EventPropMap["mousemove"]): void {
         this.mousePos = props.mousePos;
         this.hoveredNode = this.nodeStore.getHoveredNode(props.mousePos);
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    handleDragging(_props: EventPropMap["dragging"]): void {
-    }
-
-    handleClick(props: EventPropMap["click"]): void {
+    override handleClick(props: EventPropMap["click"]): void {
         this.mousePos = props.mousePos;
         this.hoveredNode = this.nodeStore.getHoveredNode(props.mousePos);
 
@@ -52,11 +49,7 @@ export class ConnectMode implements IMode {
         this.reset();
     }
 
-    private reset() {
-        this.selectedNode = null;
-    }
-
-    draw(ctx: CanvasRenderingContext2D): void {
+    override draw(ctx: CanvasRenderingContext2D): void {
         if (this.hoveredNode) {
             ctx.beginPath();
             ctx.arc(this.hoveredNode.position.x, this.hoveredNode.position.y, 10, 0, 2 * Math.PI);
@@ -76,5 +69,9 @@ export class ConnectMode implements IMode {
             ctx.strokeStyle = 'green';
             ctx.stroke();
         }
+    }
+
+    private reset() {
+        this.selectedNode = null;
     }
 }
