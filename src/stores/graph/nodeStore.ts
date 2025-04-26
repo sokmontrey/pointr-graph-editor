@@ -7,7 +7,7 @@ export interface NodeState {
 }
 
 export interface NodeAction {
-    addNode: (label: string, position: Vec2, nodeType: NodeType, id: string | null) => string;
+    addNode: (label: string, position: Vec2, nodeType: NodeType, id?: string | null) => string;
     removeNode: (id: string) => void;
     moveNode: (id: string, position: Vec2) => void;
     updateNodeLabel: (id: string, newLabel: string) => void;
