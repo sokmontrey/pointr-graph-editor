@@ -3,12 +3,18 @@ import {Mode} from "./Mode.ts";
 import {Node, Edge} from "../graph";
 import {EdgeStore, NodeStore} from "../../stores/graph";
 import {Segment} from "../../utils/segment.ts";
+import {CommandStore} from "../../stores/main";
+import CommandFactory from "../../core/commands/CommandFactory.ts";
+import {Vec2} from "../../utils/vector.ts";
 
 export class SelectMode extends Mode {
     name = "Select";
 
     private hoveredNode: Node | null = null;
     private hoveredEdge: [Edge, Segment] | null = null;
+
+    private isDragging: boolean = false;
+    private dragStartPos: Vec2 | null = null;
 
     // TODO: store this in a store for outside access
     // (Keyboard shortcuts, etc)
@@ -18,6 +24,8 @@ export class SelectMode extends Mode {
     constructor(
         private nodeStore: NodeStore,
         private edgeStore: EdgeStore,
+        private commandFactory: CommandFactory,
+        private commandStore: CommandStore,
     ) {
         super();
     }
@@ -28,6 +36,29 @@ export class SelectMode extends Mode {
             this.hoveredEdge = null;
         } else {
             this.hoveredEdge = this.edgeStore.getHoveredEdge(props.mousePos);
+        }
+    }
+
+    override handleDragging(props: EventPropMap["dragging"]): void {
+        if (this.selectedNode) {
+            if (!this.isDragging) {
+                this.isDragging = true;
+                this.dragStartPos = props.mousePos;
+            }
+            this.nodeStore.moveNode(this.selectedNode.id, props.mousePos);
+        }
+    }
+
+    override handleMouseUp(props: EventPropMap["mouseup"]): void {
+        if (this.isDragging && this.selectedNode && this.dragStartPos) {
+            const command = this.commandFactory.moveNodeCommand(
+                this.selectedNode.id,
+                this.dragStartPos,
+                props.mousePos,
+            );
+            this.commandStore.execute(command);
+            this.isDragging = false;
+            this.dragStartPos = null;
         }
     }
 
