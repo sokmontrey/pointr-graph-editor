@@ -30,6 +30,10 @@ export const useEventHandler = (
                 buttons: e.buttons,
             });
         }
+        publish('mouseup', {
+            mousePos: getMousePosition(e, viewport.offset, viewport.scale),
+            buttons: e.buttons,
+        });
         setIsMouseDown(false);
         setIsDragging(false);
     }, [isDragging, publish, viewport]);

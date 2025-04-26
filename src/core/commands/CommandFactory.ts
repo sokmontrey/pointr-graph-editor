@@ -4,6 +4,7 @@ import {ICommand} from "./ICommand.ts";
 import {Vec2} from "../../utils/vector.ts";
 import {NodeType} from "../../domain/graph";
 import ConnectCommand from "./ConnectCommand.ts";
+import MoveNodeCommand from "./MoveNodeCommand.ts";
 
 class CommandFactory {
     constructor(
@@ -18,6 +19,10 @@ class CommandFactory {
 
     connectCommand(fromId: string, toId: string): ICommand {
         return new ConnectCommand(fromId, toId, this.edgeStore);
+    }
+
+    moveNodeCommand(id: string, oldPosition: Vec2, newPosition: Vec2): ICommand {
+        return new MoveNodeCommand(id, oldPosition, newPosition, this.nodeStore);
     }
 }
 

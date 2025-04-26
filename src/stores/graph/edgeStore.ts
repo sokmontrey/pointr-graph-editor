@@ -15,7 +15,7 @@ export interface EdgeAction {
     loadEdges: (edges: Edge[]) => void;
     clearEdges: () => void;
     draw: (ctx: CanvasRenderingContext2D) => void;
-    getHoveredEdge: (position: Vec2) => Edge | null;
+    getHoveredEdge: (position: Vec2) => [Edge, Segment] | null;
 }
 
 export type EdgeStore = EdgeState & EdgeAction;
@@ -61,13 +61,18 @@ export const useEdgeStore = create<EdgeStore>((set, get) => ({
     clearEdges: () => set({edges: []}),
     getHoveredEdge: (position) => {
         const {edges} = get();
-        return edges.find(edge => {
+        for (const edge of edges) {
             const fromNode = useNodeStore.getState().nodes.find(node => node.id === edge.from);
             const toNode = useNodeStore.getState().nodes.find(node => node.id === edge.to);
-            if (!fromNode || !toNode) return false;
+            if (!fromNode || !toNode) {
+                continue;
+            }
             const segment = new Segment(fromNode.position, toNode.position);
-            return segment.isHovered(position, 10);
-        }) ?? null;
+            if (segment.isHovered(position, 10)){
+                return [edge, segment];
+            }
+        }
+        return null;
     },
     draw: (ctx) => {
         const {edges} = get();
