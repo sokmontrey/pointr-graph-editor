@@ -21,7 +21,7 @@ export class ConnectMode implements IMode {
 
     handleMouseMove(props: EventPropMap["mousemove"]): void {
         this.mousePos = props.mousePos;
-        this.hoveredNode = this.getHoveredNode();
+        this.hoveredNode = this.nodeStore.getHoveredNode(props.mousePos);
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -30,7 +30,7 @@ export class ConnectMode implements IMode {
 
     handleClick(props: EventPropMap["click"]): void {
         this.mousePos = props.mousePos;
-        this.hoveredNode = this.getHoveredNode();
+        this.hoveredNode = this.nodeStore.getHoveredNode(props.mousePos);
 
         if (!this.hoveredNode) {
             this.reset();
@@ -50,12 +50,6 @@ export class ConnectMode implements IMode {
         );
         this.commandStore.execute(command);
         this.reset();
-    }
-
-    private getHoveredNode(): Node | null {
-        const {nodes} = this.nodeStore;
-        const hoveredNode = nodes.find(node => node.position.distance(this.mousePos) < 10);
-        return hoveredNode ?? null;
     }
 
     private reset() {
