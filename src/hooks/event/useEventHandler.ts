@@ -77,6 +77,17 @@ export const useEventHandler = (
         e.preventDefault();
     }, []);
 
+    const handleKeypress = useCallback((e: KeyboardEvent) => {
+        e.preventDefault();
+        publish('keypress', {
+            key: e.key,
+            ctrlKey: e.ctrlKey,
+            shiftKey: e.shiftKey,
+            altKey: e.altKey,
+            metaKey: e.metaKey,
+        });
+    }, [publish]);
+
     useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) {
@@ -88,6 +99,7 @@ export const useEventHandler = (
         canvas.addEventListener('mouseup', handleMouseUp);
         canvas.addEventListener('wheel', handleWheel);
         canvas.addEventListener('contextmenu', handleContextMenu);
+        window.addEventListener('keypress', handleKeypress);
 
         // TODO: Keyboard event as well
         // TODO: separate concerns
@@ -98,6 +110,7 @@ export const useEventHandler = (
             canvas.removeEventListener('mouseup', handleMouseUp);
             canvas.removeEventListener('wheel', handleWheel);
             canvas.removeEventListener('contextmenu', handleContextMenu);
+            window.removeEventListener('keypress', handleKeypress);
         };
     }, [
         canvasRef,
@@ -106,7 +119,8 @@ export const useEventHandler = (
         handleMouseUp,
         handleWheel,
         dragThreshold,
-        handleContextMenu
+        handleContextMenu,
+        handleKeypress,
     ]);
 
     return {
