@@ -1,14 +1,31 @@
 import {useRef, useCallback} from 'react';
 import {Vec2} from "../../utils/vector.ts";
 
-export type EventType = 'mousemove' | 'mouseup' | 'dragging' | 'click' | 'wheel';
+export type EventType =
+    // Mouse
+    'mousemove' |
+    'mouseup' |
+    'dragging' |
+    'click' |
+    'wheel' |
+    // Keyboard
+    'keypress';
 
 export type EventPropMap = {
+    // Mouse
     mousemove: { mousePos: Vec2, movement: Vec2 };
     mouseup: { mousePos: Vec2, buttons: number };
     dragging: { mousePos: Vec2, movement: Vec2, buttons: number };
     click: { mousePos: Vec2, buttons: number };
     wheel: { mousePos: Vec2, deltaY: number };
+    // Keyboard
+    keypress: {
+        key: string,
+        ctrlKey: boolean,
+        shiftKey: boolean,
+        altKey: boolean,
+        metaKey: boolean
+    };
 };
 
 export enum MouseButton {
