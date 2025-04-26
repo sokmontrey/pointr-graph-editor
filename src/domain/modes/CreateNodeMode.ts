@@ -7,7 +7,7 @@ import CommandFactory from "../../core/commands/CommandFactory.ts";
 import {CommandStore} from "../../stores/main";
 import {snapToGrid} from "../../utils/mouse.ts";
 
-export class CreateMode implements IMode {
+export class CreateNodeMode implements IMode {
     name = "Create";
     position: Vec2 = new Vec2(0, 0);
 

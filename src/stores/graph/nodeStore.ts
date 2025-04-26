@@ -14,6 +14,7 @@ export interface NodeAction {
     loadNodes: (nodes: Node[]) => void;
     clearNodes: () => void;
     draw: (ctx: CanvasRenderingContext2D) => void;
+    getHoveredNode: (position: Vec2) => Node | null;
 }
 
 export type NodeStore = NodeState & NodeAction;
@@ -55,6 +56,10 @@ export const useNodeStore = create<NodeStore>((set, get) => ({
     },
     loadNodes: (nodes) => set({nodes}),
     clearNodes: () => set({nodes: []}),
+    getHoveredNode: (position) => {
+        const {nodes} = get();
+        return nodes.find(node => node.position.distance(position) < 10) ?? null;
+    },
     draw: (ctx) => {
         const {nodes} = get();
         nodes.forEach(node => {
