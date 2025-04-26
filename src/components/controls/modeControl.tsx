@@ -1,10 +1,9 @@
 import React, {useRef, useState} from "react";
 import {SelectMode} from "../../domain/modes";
-import {useModeStore} from "../../stores/main";
+import {useCommandStore, useModeStore} from "../../stores/main";
 import {NodeType, nodeTypes} from "../../domain/graph";
 import {CreateMode} from "../../domain/modes";
 import {useGridStore} from "../../stores/canvas";
-import {CommandManager} from "../../core/commands";
 import CommandFactory from "../../core/commands/CommandFactory.ts";
 import {useEdgeStore, useNodeSeedStore, useNodeStore} from "../../stores/graph";
 
@@ -17,7 +16,7 @@ const ModeControl: React.FC = () => {
     const nodeStore = useNodeStore();
     const edgeStore = useEdgeStore();
 
-    const commandManager = useRef<CommandManager>(new CommandManager());
+    const commandStore = useCommandStore();
     const commandFactory = useRef<CommandFactory>(new CommandFactory(
         nodeSeedStore,
         nodeStore,
@@ -33,7 +32,7 @@ const ModeControl: React.FC = () => {
         setMode(new CreateMode(
             nodeType,
             gridStore,
-            commandManager.current,
+            commandStore,
             commandFactory.current,
         ));
     };

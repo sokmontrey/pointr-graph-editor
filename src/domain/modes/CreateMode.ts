@@ -4,7 +4,7 @@ import {EventPropMap} from "../../hooks/event";
 import {Vec2} from "../../utils/vector.ts";
 import {GridStore} from "../../stores/canvas";
 import CommandFactory from "../../core/commands/CommandFactory.ts";
-import {CommandManager} from "../../core/commands";
+import {CommandStore} from "../../stores/main";
 
 export class CreateMode implements IMode {
     name = "Create";
@@ -13,7 +13,7 @@ export class CreateMode implements IMode {
     constructor(
         private nodeType: NodeType,
         private gridStore: GridStore,
-        private commandManager: CommandManager,
+        private commandManager: CommandStore,
         private commandFactory: CommandFactory,
     ) {
         this.name = "Create " + nodeType.name;
