@@ -25,7 +25,10 @@ const ModeControl: React.FC = () => {
     ));
 
     const switchToSelectMode = () => {
-        setMode(new SelectMode());
+        setMode(new SelectMode(
+            nodeStore,
+            edgeStore,
+        ));
     }
 
     const switchToConnectMode = () => {
