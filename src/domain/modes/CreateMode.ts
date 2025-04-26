@@ -5,6 +5,7 @@ import {Vec2} from "../../utils/vector.ts";
 import {GridStore} from "../../stores/canvas";
 import CommandFactory from "../../core/commands/CommandFactory.ts";
 import {CommandStore} from "../../stores/main";
+import {snapToGrid} from "../../utils/mouse.ts";
 
 export class CreateMode implements IMode {
     name = "Create";
@@ -38,11 +39,7 @@ export class CreateMode implements IMode {
 
     private calculateSnappedPosition(mousePos: Vec2): void {
         const gap = this.gridStore.gap;
-        const halfGap = Vec2.fromNumber(gap / 2);
-        this.position = mousePos
-            .add(halfGap)
-            .round(gap)
-            .subtract(halfGap);
+        this.position = snapToGrid(mousePos, gap);
     }
 
     draw(ctx: CanvasRenderingContext2D): void {

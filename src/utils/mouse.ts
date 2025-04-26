@@ -13,3 +13,11 @@ export const getMousePosition = (
     );
 }
 
+export const snapToGrid = (position: Vec2, gap: number): Vec2 => {
+    const halfGap = Vec2.fromNumber(gap / 2);
+    return position
+        .add(halfGap)
+        .round(gap)
+        .subtract(halfGap);
+}
+
