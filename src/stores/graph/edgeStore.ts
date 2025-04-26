@@ -1,6 +1,8 @@
 import {create} from 'zustand';
 import {Edge} from "../../domain/graph";
 import {useNodeStore} from "./nodeStore.ts";
+import {Vec2} from "../../utils/vector.ts";
+import {Segment} from "../../utils/segment.ts";
 
 export interface EdgeState {
     edges: Edge[];
@@ -13,6 +15,7 @@ export interface EdgeAction {
     loadEdges: (edges: Edge[]) => void;
     clearEdges: () => void;
     draw: (ctx: CanvasRenderingContext2D) => void;
+    getHoveredEdge: (position: Vec2) => Edge | null;
 }
 
 export type EdgeStore = EdgeState & EdgeAction;
@@ -56,6 +59,16 @@ export const useEdgeStore = create<EdgeStore>((set, get) => ({
     },
     loadEdges: (edges) => set({edges}),
     clearEdges: () => set({edges: []}),
+    getHoveredEdge: (position) => {
+        const {edges} = get();
+        return edges.find(edge => {
+            const fromNode = useNodeStore.getState().nodes.find(node => node.id === edge.from);
+            const toNode = useNodeStore.getState().nodes.find(node => node.id === edge.to);
+            if (!fromNode || !toNode) return false;
+            const segment = new Segment(fromNode.position, toNode.position);
+            return segment.isHovered(position, 10);
+        }) ?? null;
+    },
     draw: (ctx) => {
         const {edges} = get();
         edges.forEach(edge => {
