@@ -10,11 +10,9 @@ const ImageOverlayCanvas = ({zIndex}: ZIndexProps) => {
 
     const viewport = useViewportStore();
     const imageOverlay = useImageOverlayStore();
-    // const gridDots = useGridDotsStore();
 
     const renderingBus = useRenderingBus();
     renderingBus.subscribe(imageOverlay.draw);
-    // renderingBus.subscribe(gridDots.draw);
 
     useRenderingHandler(ref, renderingBus, viewport);
 

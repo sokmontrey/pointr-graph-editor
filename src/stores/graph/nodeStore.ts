@@ -13,6 +13,7 @@ export interface NodeAction {
     updateNodeId: (id: string, newId: string) => void;
     loadNodes: (nodes: Node[]) => void;
     clearNodes: () => void;
+    draw: (ctx: CanvasRenderingContext2D) => void;
 }
 
 export type NodeStore = NodeState & NodeAction;
@@ -49,4 +50,13 @@ export const useNodeStore = create<NodeStore>((set, get) => ({
     },
     loadNodes: (nodes) => set({nodes}),
     clearNodes: () => set({nodes: []}),
+    draw: (ctx) => {
+        const {nodes} = get();
+        nodes.forEach(node => {
+            ctx.beginPath();
+            ctx.arc(node.position.x, node.position.y, 10, 0, 2 * Math.PI);
+            ctx.fillStyle = node.type.color;
+            ctx.fill();
+        });
+    },
 }));

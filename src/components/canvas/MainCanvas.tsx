@@ -8,6 +8,7 @@ import {useEventHandler} from "../../hooks/event";
 import {useViewportEventAttachment} from "../../hooks/attachments";
 import {useModeEventAttachment} from "../../hooks/attachments";
 import {useModeStore} from "../../stores/main";
+import {useNodeStore} from "../../stores/graph";
 
 /**
  * Responsible for main mouse interaction and graph rendering
@@ -17,18 +18,17 @@ const MainCanvas = ({ zIndex }: ZIndexProps) => {
 
     const viewport = useViewportStore();
     const mode = useModeStore();
-    // const graphEngine = useGraphEngineStore();
+    const nodeStore = useNodeStore();
 
-    const renderingBus = useRenderingBus();
     const eventBus = useEventBus();
+    const renderingBus = useRenderingBus();
+    renderingBus.subscribe(nodeStore.draw);
 
     useViewportEventAttachment(eventBus, viewport);
     useModeEventAttachment(eventBus, mode);
 
     useEventHandler(ref, eventBus, viewport);
     useRenderingHandler(ref, renderingBus, viewport);
-
-    // renderingBus.subscribe(graphEngine.draw); // TODO: separate draw from the graph engine
 
     return ( <Canvas
         zIndex={zIndex}
