@@ -1,8 +1,8 @@
 ﻿import {create} from 'zustand';
 
 export interface SelectionState {
-    selectedNode: string | null;
-    selectedEdge: string | null;
+    selected: string | null;
+    selectionType: 'node' | 'edge' | null;
 }
 
 export interface SelectionAction {
@@ -14,9 +14,9 @@ export interface SelectionAction {
 export type SelectionStore = SelectionState & SelectionAction;
 
 export const useSelectionStore = create<SelectionStore>((set) => ({
-    selectedNode: null,
-    selectedEdge: null,
-    setSelectedNode: (nodeId) => set({selectedNode: nodeId}),
-    setSelectedEdge: (edgeId) => set({selectedEdge: edgeId}),
-    clear: () => set({selectedNode: null, selectedEdge: null}),
+    selected: null,
+    selectionType: null,
+    setSelectedNode: (nodeId) => set({selected: nodeId, selectionType: 'node'}),
+    setSelectedEdge: (edgeId) => set({selected: edgeId, selectionType: 'edge'}),
+    clear: () => set({selected: null, selectionType: null}),
 }));
