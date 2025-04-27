@@ -341,6 +341,24 @@ export class PersistenceService {
             }
         }
     }
+
+    /**
+     * Get all available workspaces from localStorage
+     */
+    getAllWorkspaces(): string[] {
+        const workspaces = new Set<string>();
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (!key || key === WORKSPACE_KEY) continue;
+            if (!key.startsWith(`${STORAGE_PREFIX}-`)) continue;
+            // key format: graph-editor-<workspace>-<storeKey>
+            const parts = key.split('-');
+            if (parts.length < 3) continue;
+            const workspace = parts[2];
+            workspaces.add(workspace);
+        }
+        return Array.from(workspaces);
+    }
 }
 
 // Create a singleton instance

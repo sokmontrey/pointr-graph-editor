@@ -48,6 +48,7 @@ export const usePersistence = (debounceMs: number = 1000) => {
         getCurrentWorkspace: persistenceService.getCurrentWorkspace.bind(persistenceService),
         setCurrentWorkspace: persistenceService.setCurrentWorkspace.bind(persistenceService),
         clearCurrentWorkspace: persistenceService.clearCurrentWorkspace.bind(persistenceService),
+        getAllWorkspaces: persistenceService.getAllWorkspaces.bind(persistenceService),
     };
 };
 

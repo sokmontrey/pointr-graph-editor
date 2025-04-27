@@ -1,61 +1,74 @@
-﻿import {useState, useEffect} from 'react';
-import {usePersistence} from '../../hooks/persistence';
+﻿import React, {useState, useEffect} from 'react';
+import {usePersistence} from "../../hooks/persistence";
 
-const WorkspaceControl = () => {
+export default function WorkspaceControls() {
     const persistence = usePersistence();
-    const [newWorkspaceName, setNewWorkspaceName] = useState('');
-    const [currentWorkspace, setCurrentWorkspace] = useState(persistence.getCurrentWorkspace());
+    const [workspaces, setWorkspaces] = useState<string[]>([]);
+    const [current, setCurrent] = useState<string>('');
+    const [newWorkspace, setNewWorkspace] = useState<string>('');
 
-    // Update the current workspace display when it changes
     useEffect(() => {
-        setCurrentWorkspace(persistence.getCurrentWorkspace());
-    }, [persistence]);
+        refreshWorkspaces();
+    }, []);
 
-    const handleSwitchWorkspace = () => {
-        if (newWorkspaceName.trim() === '') return;
+    function refreshWorkspaces() {
+        const all = persistence.getAllWorkspaces();
+        setWorkspaces(all);
+        const curr = persistence.getCurrentWorkspace();
+        setCurrent(curr);
+    }
 
-        // Clear current workspace data from memory
+    function onWorkspaceChange(e: React.ChangeEvent<HTMLSelectElement>) {
+        const workspaceName = e.target.value;
+        setCurrent(workspaceName);
         persistence.clearCurrentWorkspace();
 
-        // Try to load data from the new workspace
-        const loaded = persistence.loadAllStores(newWorkspaceName);
-
-        // If no data was found, we're creating a new workspace
+        const loaded = persistence.loadAllStores(workspaceName);
         if (!loaded) {
-            persistence.setCurrentWorkspace(newWorkspaceName);
+            persistence.setCurrentWorkspace(workspaceName);
             persistence.saveAllStores();
         }
+    }
 
-        // Update the current workspace display
-        setCurrentWorkspace(persistence.getCurrentWorkspace());
+    function createWorkspace() {
+        if (!newWorkspace) return;
+        persistence.setCurrentWorkspace(newWorkspace);
+        persistence.saveAllStores();
+        setNewWorkspace('');
+        refreshWorkspaces();
+    }
 
-        // Reset input field
-        setNewWorkspaceName('');
-    };
+    function deleteWorkspace() {
+        if (!confirm(`Delete workspace '${current}'? This cannot be undone.`)) {
+            return;
+        }
+        persistence.clearCurrentWorkspace();
+        // TODO: implement delete workspace in persistence service
+        refreshWorkspaces();
+    }
 
     return (
-        <div style={{marginBottom: '10px'}}>
-            <div>
-                <strong>Current Workspace:</strong> {currentWorkspace}
-            </div>
-            <div style={{display: 'flex', marginTop: '5px'}}>
+        <div>
+            <label>
+                Workspace:
+                <select value={current} onChange={onWorkspaceChange}>
+                    {workspaces.map(ws => (
+                        <option key={ws} value={ws}>{ws}</option>
+                    ))}
+                </select>
+            </label>
+
+            <label>
+                New workspace:
                 <input
                     type="text"
-                    value={newWorkspaceName}
-                    onChange={(e) => setNewWorkspaceName(e.target.value)}
-                    placeholder="New workspace name"
-                    style={{marginRight: '5px'}}
+                    value={newWorkspace}
+                    onChange={e => setNewWorkspace(e.target.value)}
                 />
-                <button
-                    onClick={handleSwitchWorkspace}
-                    disabled={newWorkspaceName.trim() === ''}
-                    style={{marginRight: '5px'}}
-                >
-                    Switch/Create
-                </button>
-            </div>
+                <button onClick={createWorkspace}>Create</button>
+            </label>
+
+            <button onClick={deleteWorkspace}>Delete Current</button>
         </div>
     );
-};
-
-export default WorkspaceControl;
+}
