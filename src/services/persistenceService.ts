@@ -43,6 +43,7 @@ export interface PersistenceData {
             imageOffset: { x: number; y: number };
             imageScale: number;
             imageOpacity: number;
+            imageData?: string | null; // Base64 encoded image data
         };
     };
 }
@@ -119,7 +120,8 @@ export class PersistenceService {
                         y: imageOverlayStore.imageOffset.y
                     },
                     imageScale: imageOverlayStore.imageScale,
-                    imageOpacity: imageOverlayStore.imageOpacity
+                    imageOpacity: imageOverlayStore.imageOpacity,
+                    imageData: imageOverlayStore.imageData
                 }
             }
         };
@@ -189,6 +191,7 @@ export class PersistenceService {
         imageOverlayStore.setImageOffset(new Vec2(0, 0));
         imageOverlayStore.setImageScale(1);
         imageOverlayStore.setImageOpacity(1);
+        imageOverlayStore.setImage(null, null);
 
         console.log(`Cleared all stores for workspace: ${this.currentWorkspace}`);
     }
@@ -320,6 +323,21 @@ export class PersistenceService {
 
             if (data.imageOpacity !== undefined) {
                 imageOverlayStore.setImageOpacity(data.imageOpacity);
+            }
+
+            // Load image data if available
+            if (data.imageData) {
+                // Create a new image from the stored data
+                const image = new Image();
+                image.src = data.imageData;
+
+                // Set the image once it's loaded
+                image.onload = () => {
+                    imageOverlayStore.setImage(image, data.imageData);
+                };
+            } else {
+                // Clear the image if no data is available
+                imageOverlayStore.setImage(null, null);
             }
         }
     }

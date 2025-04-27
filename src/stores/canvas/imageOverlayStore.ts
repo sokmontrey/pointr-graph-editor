@@ -3,13 +3,15 @@ import {Vec2} from '../../utils/vector.ts';
 
 export interface ImageOverlayState {
     image: HTMLImageElement | null;
+    imageData: string | null; // Base64 encoded image data
     imageOffset: Vec2;
     imageScale: number;
     imageOpacity: number;
 }
 
 export interface ImageOverlayAction {
-    setImage: (image: HTMLImageElement | null) => void;
+    setImage: (image: HTMLImageElement | null, imageData?: string | null) => void;
+    setImageData: (data: string | null) => void;
     setImageOffset: (offset: Vec2) => void;
     setImageScale: (scale: number) => void;
     setImageOpacity: (opacity: number) => void;
@@ -18,6 +20,7 @@ export interface ImageOverlayAction {
 
 const defaultImageOverlaySettings: ImageOverlayState = {
     image: null,
+    imageData: null,
     imageOffset: new Vec2(0, 0),
     imageScale: 1,
     imageOpacity: 1,
@@ -27,7 +30,8 @@ export type ImageOverlayStore = ImageOverlayState & ImageOverlayAction;
 
 export const useImageOverlayStore = create<ImageOverlayStore>((set, get) => ({
     ...defaultImageOverlaySettings,
-    setImage: (image) => set({image}),
+    setImage: (image, imageData = null) => set({image, imageData}),
+    setImageData: (imageData) => set({imageData}),
     setImageOffset: (imageOffset) => set({imageOffset}),
     setImageScale: (imageScale) => set({imageScale}),
     setImageOpacity: (imageOpacity) => set({imageOpacity}),
