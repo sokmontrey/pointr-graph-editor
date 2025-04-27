@@ -37,4 +37,15 @@ export class Vec2 {
     static from(p: { x: number, y: number }): Vec2 {
         return new Vec2(p.x, p.y);
     }
+
+    round(gap: number) {
+        return new Vec2(
+            Math.round(this.x / gap) * gap,
+            Math.round(this.y / gap) * gap,
+        );
+    }
+
+    static fromNumber(number: number) {
+        return new Vec2(number, number);
+    }
 }
