@@ -1,12 +1,12 @@
 ﻿import {useEffect, useRef} from 'react';
 import {persistenceService} from '../../services/persistenceService.ts';
-import {useImageOverlayStore} from "../../stores/canvas";
+import {ImageOverlayState, useImageOverlayStore} from "../../stores/canvas";
 
 export const usePersistenceImageOverlayAttachment = (debounceMs: number = 1000) => {
     const debounceTimerRef = useRef<number | null>(null);
 
     useEffect(() => {
-        const unsubscribe = useImageOverlayStore.subscribe((state) => {
+        const unsubscribe = useImageOverlayStore.subscribe((state: ImageOverlayState) => {
             if (state.imageData !== null) {
                 if (debounceTimerRef.current !== null) {
                     window.clearTimeout(debounceTimerRef.current);

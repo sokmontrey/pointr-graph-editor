@@ -1,7 +1,8 @@
 ﻿import {useCommandStore} from "../../stores/main";
 import {useNodeStore} from "../../stores/graph";
+import React from "react";
 
-const CommandControl = () => {
+const CommandControl = (): React.ReactElement => {
     const {undoStack, redoStack, undo, redo} = useCommandStore();
     const {nodes} = useNodeStore();
 
