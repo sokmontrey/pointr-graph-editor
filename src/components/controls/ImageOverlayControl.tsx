@@ -8,20 +8,27 @@ const ImageOverlayControl: React.FC = () => {
         setImage,
         setImageOffset,
         setImageScale,
+        setImageOpacity,
         imageOffset,
         imageScale,
         imageOpacity,
-        setImageOpacity,
     } = useImageOverlayStore();
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!e.target.files) return;
         const file = e.target.files[0];
-        const image = new Image();
-        image.src = URL.createObjectURL(file);
-        image.onload = () => {
-            setImage(image);
+        const reader = new FileReader();
+
+        reader.onload = (event) => {
+            if (!event.target?.result) return;
+            const imageData = event.target.result as string;
+            const image = new Image();
+            image.src = imageData;
+            image.onload = () => {
+                setImage(image, imageData);
+            };
         };
+        reader.readAsDataURL(file);
     };
 
     return (<div>

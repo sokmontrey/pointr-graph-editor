@@ -8,6 +8,8 @@ import BulletGrid from "./components/canvas/BulletGrid.tsx";
 import ModeOverlayCanvas from "./components/canvas/ModeOverlayCanvas.tsx";
 import CommandControl from "./components/controls/commandControl.tsx";
 import GraphControl from "./components/controls/graphControl.tsx";
+import WorkspaceControl from "./components/controls/workspaceControl.tsx";
+import {Neo4jControl} from "./components/controls/Neo4jControl.tsx";
 
 export default function App() {
     return (<>
@@ -17,11 +19,13 @@ export default function App() {
             left: 0,
             zIndex: 1000,
         }}>
+            <WorkspaceControl/>
             <ModeControl/>
             <ImageOverlayControl/>
             {/*<GridControl/> Mode doesn't reflect store changes, disable for now */}
             <CommandControl/>
-            <GraphControl />
+            <GraphControl/>
+            <Neo4jControl/>
         </div>
 
         <div style={{position: 'relative'}}>

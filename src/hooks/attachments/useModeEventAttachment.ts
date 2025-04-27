@@ -15,13 +15,13 @@ export const useModeEventAttachment = (eventBus: EventBus, modeStore: ModeStore)
     const selectionStore = useSelectionStore();
     const gridStore = useGridStore();
     const nodeSeedStore = useNodeSeedStore();
-    const commandFactory = new CommandFactory(
-        nodeSeedStore,
-        nodeStore,
-        edgeStore,
-    );
 
     useEffect(() => {
+        const commandFactory = new CommandFactory(
+            nodeSeedStore,
+            nodeStore,
+            edgeStore,
+        );
         const handleKeypress = ({ key }: EventPropMap['keypress']) => {
             switch (key) {
                 case 'KeyV':
@@ -91,5 +91,5 @@ export const useModeEventAttachment = (eventBus: EventBus, modeStore: ModeStore)
         return () => {
             unsubscribes.forEach((unsubscribe) => unsubscribe());
         };
-    }, [commandFactory, commandStore, edgeStore, eventBus, gridStore, modeStore, nodeStore, selectionStore]);
+    }, [commandStore, edgeStore, eventBus, gridStore, modeStore, nodeStore, selectionStore]);
 };
