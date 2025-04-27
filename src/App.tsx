@@ -10,6 +10,7 @@ import CommandControl from "./components/controls/commandControl.tsx";
 import GraphControl from "./components/controls/graphControl.tsx";
 import WorkspaceControl from "./components/controls/workspaceControl.tsx";
 import {Neo4jControl} from "./components/controls/Neo4jControl.tsx";
+import ReferenceNodeControl from "./components/controls/ReferenceNodeControl.tsx";
 
 export default function App() {
     return (<>
@@ -26,6 +27,7 @@ export default function App() {
             <CommandControl/>
             <GraphControl/>
             <Neo4jControl/>
+            <ReferenceNodeControl/>
         </div>
 
         <div style={{position: 'relative'}}>
