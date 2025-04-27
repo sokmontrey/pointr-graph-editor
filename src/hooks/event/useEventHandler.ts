@@ -80,7 +80,7 @@ export const useEventHandler = (
     const handleKeypress = useCallback((e: KeyboardEvent) => {
         e.preventDefault();
         publish('keypress', {
-            key: e.key,
+            key: e.code,
             ctrlKey: e.ctrlKey,
             shiftKey: e.shiftKey,
             altKey: e.altKey,
@@ -100,9 +100,6 @@ export const useEventHandler = (
         canvas.addEventListener('wheel', handleWheel);
         canvas.addEventListener('contextmenu', handleContextMenu);
         window.addEventListener('keypress', handleKeypress);
-
-        // TODO: Keyboard event as well
-        // TODO: separate concerns
 
         return () => {
             canvas.removeEventListener('mousedown', handleMouseDown);
