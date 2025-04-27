@@ -1,28 +1,30 @@
 ﻿import {Vec2} from "../../utils/vector.ts";
 
+export type NodeTypeKey = "PathNode" | "ReferenceNode" | "RoomNode";
+
 export interface NodeType {
-    key: string;
+    key: NodeTypeKey;
     name: string;
     color: string;
 }
 
 export const nodeTypes: Record<string, NodeType> = Object.fromEntries([
     {
-        key: "PathNode",
+        key: "PathNode" as NodeTypeKey,
         name: "Path Node",
         color: "blue",
     },
     {
-        key: "ReferenceNode",
+        key: "ReferenceNode" as NodeTypeKey,
         name: "Reference Node",
         color: "orange",
     },
     {
-        key: "RoomNode",
+        key: "RoomNode" as NodeTypeKey,
         name: "Room Node",
         color: "green",
     }
-].map(x => [x.key, x]));
+].map(x => [x.key as NodeTypeKey, x]));
 
 export interface GraphNode {
     id: string;

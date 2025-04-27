@@ -45,6 +45,11 @@ export class Vec2 {
         );
     }
 
+    angle() {
+        const angle = Math.atan2(this.y, this.x) * 180 / Math.PI;
+        return angle < 0 ? angle + 360 : angle;
+    }
+
     static fromNumber(number: number) {
         return new Vec2(number, number);
     }
