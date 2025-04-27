@@ -78,13 +78,23 @@ export const useEventHandler = (
     }, []);
 
     const handleKeypress = useCallback((e: KeyboardEvent) => {
-        publish('keypress', {
-            key: e.code,
-            ctrlKey: e.ctrlKey,
-            shiftKey: e.shiftKey,
-            altKey: e.altKey,
-            metaKey: e.metaKey,
-        });
+        // Skip if the active element is an input, textarea, or other editable element
+        const activeElement = document.activeElement;
+        const isEditableElement = 
+            activeElement instanceof HTMLInputElement || 
+            activeElement instanceof HTMLTextAreaElement || 
+            activeElement instanceof HTMLSelectElement ||
+            activeElement?.hasAttribute('contenteditable');
+        
+        if (!isEditableElement) {
+            publish('keypress', {
+                key: e.code,
+                ctrlKey: e.ctrlKey,
+                shiftKey: e.shiftKey,
+                altKey: e.altKey,
+                metaKey: e.metaKey,
+            });
+        }
     }, [publish]);
 
     useEffect(() => {
