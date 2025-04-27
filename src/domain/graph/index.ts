@@ -1,2 +1,2 @@
-﻿export * from './node.ts';
-export * from './edge.ts';
+﻿export * from './graphNode.ts';
+export * from './graphEdge.ts';

@@ -1,10 +1,10 @@
 ﻿import {EdgeStore, NodeStore} from "../../stores/graph";
 import {ICommand} from "./ICommand.ts";
-import {Node} from "../../domain/graph";
+import {GraphNode} from "../../domain/graph";
 
 class DeleteNodeCommand implements ICommand {
     private connectedNodes: string[];
-    private node: Node;
+    private node: GraphNode;
 
     constructor(
         private nodeId: string,

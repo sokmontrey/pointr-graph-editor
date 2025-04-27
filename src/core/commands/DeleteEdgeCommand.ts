@@ -1,9 +1,9 @@
 ﻿import {EdgeStore} from "../../stores/graph";
 import {ICommand} from "./ICommand.ts";
-import {Edge} from "../../domain/graph";
+import {GraphEdge} from "../../domain/graph";
 
 class DeleteEdgeCommand implements ICommand {
-    private edge: Edge;
+    private edge: GraphEdge;
 
     constructor(
         private edgeId: string,

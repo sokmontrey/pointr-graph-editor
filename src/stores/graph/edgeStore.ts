@@ -1,21 +1,21 @@
 import {create} from 'zustand';
-import {Edge} from "../../domain/graph";
+import {GraphEdge} from "../../domain/graph";
 import {useNodeStore} from "./nodeStore.ts";
 import {Vec2} from "../../utils/vector.ts";
 import {Segment} from "../../utils/segment.ts";
 
 export interface EdgeState {
-    edges: Edge[];
+    edges: GraphEdge[];
 }
 
 export interface EdgeAction {
     addEdge: (fromId: string, toId: string, id?: string | null) => string | null;
     removeEdge: (id: string) => void;
     removeEdgesConnectedToNode: (nodeId: string) => void;
-    loadEdges: (edges: Edge[]) => void;
+    loadEdges: (edges: GraphEdge[]) => void;
     clearEdges: () => void;
     draw: (ctx: CanvasRenderingContext2D) => void;
-    getHoveredEdge: (position: Vec2) => [Edge, Segment] | null;
+    getHoveredEdge: (position: Vec2) => [GraphEdge, Segment] | null;
 }
 
 export type EdgeStore = EdgeState & EdgeAction;
@@ -39,7 +39,7 @@ export const useEdgeStore = create<EdgeStore>((set, get) => ({
         }
 
         id ??= `${fromId}-${toId}-${Date.now()}`;
-        const newEdge: Edge = {
+        const newEdge: GraphEdge = {
             id,
             from: fromId,
             to: toId,

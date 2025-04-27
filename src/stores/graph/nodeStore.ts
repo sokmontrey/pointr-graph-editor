@@ -1,9 +1,9 @@
 import {create} from 'zustand';
-import {Node, NodeType} from "../../domain/graph";
+import {GraphNode, NodeType} from "../../domain/graph";
 import {Vec2} from "../../utils/vector.ts";
 
 export interface NodeState {
-    nodes: Node[];
+    nodes: GraphNode[];
 }
 
 export interface NodeAction {
@@ -11,10 +11,10 @@ export interface NodeAction {
     removeNode: (id: string) => void;
     moveNode: (id: string, position: Vec2) => void;
     updateNodeLabel: (id: string, newLabel: string) => void;
-    loadNodes: (nodes: Node[]) => void;
+    loadNodes: (nodes: GraphNode[]) => void;
     clearNodes: () => void;
     draw: (ctx: CanvasRenderingContext2D) => void;
-    getHoveredNode: (position: Vec2) => Node | null;
+    getHoveredNode: (position: Vec2) => GraphNode | null;
 }
 
 export type NodeStore = NodeState & NodeAction;
@@ -24,7 +24,7 @@ export const useNodeStore = create<NodeStore>((set, get) => ({
     addNode: (label, position, nodeType, id = null) => {
         const {nodes} = get();
         id ??= Date.now().toString();
-        const newNode: Node = {
+        const newNode: GraphNode = {
             id,
             label,
             type: nodeType,

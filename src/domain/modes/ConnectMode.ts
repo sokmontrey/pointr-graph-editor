@@ -3,13 +3,13 @@ import {CommandStore} from "../../stores/main";
 import {Mode} from "./Mode.ts";
 import {NodeStore} from "../../stores/graph";
 import CommandFactory from "../../core/commands/CommandFactory.ts";
-import {Node} from "../graph";
+import {GraphNode} from "../graph";
 import {Vec2} from "../../utils/vector.ts";
 
 export class ConnectMode extends Mode {
     name = 'connect';
-    private hoveredNode: Node | null = null;
-    private selectedNode: Node | null = null;
+    private hoveredNode: GraphNode | null = null;
+    private selectedNode: GraphNode | null = null;
     private mousePos: Vec2 = new Vec2(0, 0);
 
     constructor(
