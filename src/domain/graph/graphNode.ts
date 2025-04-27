@@ -24,7 +24,7 @@ export const nodeTypes: Record<string, NodeType> = Object.fromEntries([
     }
 ].map(x => [x.key, x]));
 
-export interface Node {
+export interface GraphNode {
     id: string;
     label: string;
     type: NodeType;

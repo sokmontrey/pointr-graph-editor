@@ -1,6 +1,6 @@
 ﻿import {EventPropMap} from "../../hooks/event";
 import {Mode} from "./Mode.ts";
-import {Node, Edge} from "../graph";
+import {GraphNode, GraphEdge} from "../graph";
 import {EdgeStore, NodeStore} from "../../stores/graph";
 import {Segment} from "../../utils/segment.ts";
 import {CommandStore} from "../../stores/main";
@@ -8,27 +8,27 @@ import CommandFactory from "../../core/commands/CommandFactory.ts";
 import {Vec2} from "../../utils/vector.ts";
 import {snapToGrid} from "../../utils/mouse.ts";
 import {GridStore} from "../../stores/canvas";
+import {SelectionStore} from "../../stores/main/selectionStore.ts";
 
-// TODO: refactor to achieve single responsibility principle
+export interface GraphEntity {
+    value: GraphNode | GraphEdge;
+    segment?: Segment;
+}
+
 export class SelectMode extends Mode {
     name = "Select";
 
-    private hoveredNode: Node | null = null;
-    private hoveredEdge: [Edge, Segment] | null = null;
+    private hoveredEntity: GraphEntity | null = null;
+    private selectedEntity: GraphEntity | null = null;
 
-    private isDragging: boolean = false;
+    private draggingNode: GraphNode | null = null;
     private dragStartPos: Vec2 | null = null;
-    private draggingNode: Node | null = null;
-
-    // TODO: store this in a store for outside access
-    // (Keyboard shortcuts, etc)
-    private selectedNode: Node | null = null;
-    private selectedEdge: [Edge, Segment] | null = null;
 
     constructor(
         private nodeStore: NodeStore,
         private edgeStore: EdgeStore,
         private gridStore: GridStore,
+        private selectionStore: SelectionStore,
         private commandStore: CommandStore,
         private commandFactory: CommandFactory,
     ) {
@@ -36,35 +36,37 @@ export class SelectMode extends Mode {
     }
 
     override handleMouseMove(props: EventPropMap["mousemove"]): void {
-        this.hoveredNode = this.nodeStore.getHoveredNode(props.mousePos);
-        if (this.hoveredNode) {
-            this.hoveredEdge = null;
-        } else {
-            this.hoveredEdge = this.edgeStore.getHoveredEdge(props.mousePos);
-        }
-    }
-
-    override handleDragging(props: EventPropMap["dragging"]): void {
-        this.draggingNode = this.hoveredNode;
-
-        if (!this.draggingNode) {
+        const nodes = this.nodeStore.getHoveredNode(props.mousePos);
+        if (nodes) {
+            this.hoveredEntity = {value: nodes};
             return;
         }
 
-        if (!this.isDragging) {
-            this.isDragging = true;
-            this.dragStartPos = props.mousePos;
+        const edge = this.edgeStore.getHoveredEdge(props.mousePos);
+        if (edge) {
+            this.hoveredEntity = {value: edge[0], segment: edge[1]};
+            return;
+        }
+
+        this.hoveredEntity = null;
+    }
+
+    override handleDragging(props: EventPropMap["dragging"]): void {
+        if (!this.hoveredEntity || !this.isNode(this.hoveredEntity)) {
+            return;
+        }
+
+        if (!this.draggingNode) {
+            this.draggingNode = this.hoveredEntity.value as GraphNode;
+            this.dragStartPos = this.draggingNode.position;
         }
 
         const snappedPos = snapToGrid(props.mousePos, this.gridStore.gap);
-        this.nodeStore.moveNode(this.draggingNode.id, snappedPos);
+        this.nodeStore.moveNode(this.draggingNode!.id, snappedPos);
     }
 
     override handleMouseUp(props: EventPropMap["mouseup"]): void {
-        if (this.isDragging &&
-            this.draggingNode &&
-            this.dragStartPos
-        ) {
+        if (this.draggingNode && this.dragStartPos) {
             const snappedPos = snapToGrid(props.mousePos, this.gridStore.gap);
             const command = this.commandFactory.moveNodeCommand(
                 this.draggingNode.id,
@@ -72,51 +74,70 @@ export class SelectMode extends Mode {
                 snappedPos,
             );
             this.commandStore.execute(command);
-            this.isDragging = false;
             this.dragStartPos = null;
-            this.selectedNode = null;
             this.draggingNode = null;
+            this.clearSelection();
         }
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     override handleClick(_props: EventPropMap["click"]): void {
-        if (this.hoveredNode) {
-            this.selectedNode = this.hoveredNode;
-            this.selectedEdge = null;
-            return;
+        if (this.hoveredEntity) {
+            this.selectEntity(this.hoveredEntity);
+        } else {
+            this.clearSelection();
         }
+    }
 
-        if (this.hoveredEdge) {
-            this.selectedEdge = this.hoveredEdge;
-            this.selectedNode = null;
-            return;
+    private selectEntity(entity: GraphEntity): void {
+        this.selectedEntity = entity;
+        if (this.isNode(entity)) {
+            this.selectionStore.setNode(entity.value.id);
+        } else {
+            this.selectionStore.setEdge(entity.value.id);
         }
+    }
 
-        this.selectedNode = null;
-        this.selectedEdge = null;
+    private clearSelection(): void {
+        this.selectedEntity = null;
+        this.selectionStore.clear();
+    }
+
+    private isNode(entity: GraphEntity): boolean {
+        return !entity.segment;
     }
 
     override draw(ctx: CanvasRenderingContext2D): void {
         ctx.lineWidth = 2;
-        this.drawNode(ctx, this.hoveredNode, 'red');
-        this.drawEdge(ctx, this.hoveredEdge, 'red');
-        this.drawNode(ctx, this.selectedNode, 'cyan');
-        this.drawEdge(ctx, this.selectedEdge, 'cyan');
+
+        if (this.hoveredEntity) {
+            if (this.isNode(this.hoveredEntity)) {
+                this.drawNode(ctx, this.hoveredEntity, 'red');
+            } else {
+                this.drawEdge(ctx, this.hoveredEntity, 'red');
+            }
+        }
+
+        if (this.selectedEntity) {
+            if (this.isNode(this.selectedEntity)) {
+                this.drawNode(ctx, this.selectedEntity, 'cyan');
+            } else {
+                this.drawEdge(ctx, this.selectedEntity, 'cyan');
+            }
+        }
     }
 
-    private drawNode(ctx: CanvasRenderingContext2D, node: Node | null, color: string): void {
-        if (!node) return;
+    private drawNode(ctx: CanvasRenderingContext2D, entity: GraphEntity, color: string): void {
+        const node = entity.value as GraphNode;
         ctx.beginPath();
         ctx.arc(node.position.x, node.position.y, 10, 0, 2 * Math.PI);
         ctx.strokeStyle = color;
         ctx.stroke();
     }
 
-    private drawEdge(ctx: CanvasRenderingContext2D, edge: [Edge, Segment] | null, color: string): void {
-        if (!edge) return;
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const [_edge, segment] = edge;
+    private drawEdge(ctx: CanvasRenderingContext2D, entity: GraphEntity, color: string): void {
+        const segment = entity.segment;
+        if (!segment) return;
         ctx.beginPath();
         ctx.moveTo(segment.from.x, segment.from.y);
         ctx.lineTo(segment.to.x, segment.to.y);

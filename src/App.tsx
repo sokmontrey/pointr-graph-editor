@@ -7,6 +7,7 @@ import BulletGrid from "./components/canvas/BulletGrid.tsx";
 // import GridControl from "./components/controls/gridControl.tsx";
 import ModeOverlayCanvas from "./components/canvas/ModeOverlayCanvas.tsx";
 import CommandControl from "./components/controls/commandControl.tsx";
+import GraphControl from "./components/controls/graphControl.tsx";
 
 export default function App() {
     return (<>
@@ -20,6 +21,7 @@ export default function App() {
             <ImageOverlayControl/>
             {/*<GridControl/> Mode doesn't reflect store changes, disable for now */}
             <CommandControl/>
+            <GraphControl />
         </div>
 
         <div style={{position: 'relative'}}>
