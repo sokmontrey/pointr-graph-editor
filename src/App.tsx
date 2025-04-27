@@ -8,8 +8,13 @@ import BulletGrid from "./components/canvas/BulletGrid.tsx";
 import ModeOverlayCanvas from "./components/canvas/ModeOverlayCanvas.tsx";
 import CommandControl from "./components/controls/commandControl.tsx";
 import GraphControl from "./components/controls/graphControl.tsx";
+import WorkspaceControl from "./components/controls/workspaceControl.tsx";
+import { usePersistence } from "./hooks/persistence";
 
 export default function App() {
+    // Initialize persistence with 1000ms debounce
+    usePersistence(1000);
+
     return (<>
         <div style={{
             position: 'fixed',
@@ -17,6 +22,7 @@ export default function App() {
             left: 0,
             zIndex: 1000,
         }}>
+            <WorkspaceControl />
             <ModeControl/>
             <ImageOverlayControl/>
             {/*<GridControl/> Mode doesn't reflect store changes, disable for now */}
