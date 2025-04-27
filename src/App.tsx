@@ -12,7 +12,6 @@ import WorkspaceControl from "./components/controls/workspaceControl.tsx";
 import { usePersistence } from "./hooks/persistence";
 
 export default function App() {
-    // Initialize persistence with 1000ms debounce
     usePersistence(1000);
 
     return (<>
