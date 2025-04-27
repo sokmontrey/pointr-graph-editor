@@ -7,6 +7,7 @@ import {useGridStore} from "../../stores/canvas";
 import CommandFactory from "../../core/commands/CommandFactory.ts";
 import {useEdgeStore, useNodeSeedStore, useNodeStore} from "../../stores/graph";
 import {ConnectMode} from "../../domain/modes";
+import {useSelectionStore} from "../../stores/main/selectionStore.ts";
 
 const ModeControl: React.FC = () => {
     const {mode, setMode} = useModeStore();
@@ -16,6 +17,7 @@ const ModeControl: React.FC = () => {
     const nodeSeedStore = useNodeSeedStore();
     const nodeStore = useNodeStore();
     const edgeStore = useEdgeStore();
+    const selectionStore = useSelectionStore();
 
     const commandStore = useCommandStore();
     const commandFactory = useRef<CommandFactory>(new CommandFactory(
@@ -29,6 +31,7 @@ const ModeControl: React.FC = () => {
             nodeStore,
             edgeStore,
             gridStore,
+            selectionStore,
             commandStore,
             commandFactory.current,
         ));

@@ -34,14 +34,6 @@ class CommandFactory {
     deleteEdgeCommand(id: string): ICommand {
         return new DeleteEdgeCommand(id, this.edgeStore);
     }
-
-    deleteCommand(type: "node" | "edge", id: string) : ICommand {
-        switch (type) {
-            case "node": return this.deleteNodeCommand(id);
-            case "edge": return this.deleteEdgeCommand(id);
-            default: throw new Error(`Unknown type: ${type}`);
-        }
-    }
 }
 
 export default CommandFactory;

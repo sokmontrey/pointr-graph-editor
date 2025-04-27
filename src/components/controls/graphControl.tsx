@@ -5,7 +5,7 @@ import {useRef} from "react";
 import {useCommandStore} from "../../stores/main";
 
 const GraphControl = () => {
-    const {selected, selectionType} = useSelectionStore();
+    const {entity: selectedEntity, type: selectionType} = useSelectionStore();
     const nodeSeedStore = useNodeSeedStore();
     const nodeStore = useNodeStore();
     const edgeStore = useEdgeStore();
@@ -18,21 +18,20 @@ const GraphControl = () => {
     ));
 
     const handleDelete = () => {
-        if (!selected || !selectionType) {
+        if (!selectedEntity || !selectionType) {
             return;
         }
 
-        const command = commandFactory.current.deleteCommand(
-            selectionType,
-            selected,
-        );
+        const command = selectionType === "node"
+            ? commandFactory.current.deleteNodeCommand(selectedEntity.id)
+            : commandFactory.current.deleteEdgeCommand(selectedEntity.id);
         commandStore.execute(command);
     };
 
     return <div>
         <button
             onClick={handleDelete}
-            disabled={!selected}
+            disabled={!selectedEntity}
         >
             Delete
         </button>
