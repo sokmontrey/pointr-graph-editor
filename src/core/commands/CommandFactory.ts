@@ -16,7 +16,7 @@ class CommandFactory {
     ) { }
 
     createNodeCommand(nodeType: NodeType, position: Vec2): ICommand {
-        return new CreateNodeCommand(nodeType, position, this.nodeSeedStore, this.nodeStore);
+        return new CreateNodeCommand(nodeType, position, this.nodeSeedStore, this.nodeStore, this.edgeStore);
     }
 
     connectCommand(fromId: string, toId: string): ICommand {
