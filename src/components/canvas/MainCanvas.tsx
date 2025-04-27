@@ -9,7 +9,9 @@ import {useViewportEventAttachment} from "../../hooks/attachments";
 import {useModeEventAttachment} from "../../hooks/attachments";
 import {useCommandStore, useModeStore} from "../../stores/main";
 import {useEdgeStore, useNodeStore} from "../../stores/graph";
-import {useCommandEventAttachment} from "../../hooks/attachments/useCommandEventAttachment.ts";
+import {useCommandEventAttachment} from "../../hooks/attachments";
+import {useSelectionEventAttachment} from "../../hooks/attachments";
+import {useSelectionStore} from "../../stores/main/selectionStore.ts";
 
 /**
  * Responsible for main mouse interaction and graph rendering
@@ -22,6 +24,7 @@ const MainCanvas = ({ zIndex }: ZIndexProps) => {
     const nodeStore = useNodeStore();
     const edgeStore = useEdgeStore();
     const commandStore = useCommandStore();
+    const selectionStore = useSelectionStore();
 
     const eventBus = useEventBus();
     const renderingBus = useRenderingBus();
@@ -31,6 +34,7 @@ const MainCanvas = ({ zIndex }: ZIndexProps) => {
     useViewportEventAttachment(eventBus, viewport);
     useModeEventAttachment(eventBus, mode);
     useCommandEventAttachment(eventBus, commandStore);
+    useSelectionEventAttachment(eventBus, selectionStore);
 
     useEventHandler(ref, eventBus, viewport);
     useRenderingHandler(ref, renderingBus, viewport);

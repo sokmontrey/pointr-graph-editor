@@ -78,7 +78,6 @@ export const useEventHandler = (
     }, []);
 
     const handleKeypress = useCallback((e: KeyboardEvent) => {
-        e.preventDefault();
         publish('keypress', {
             key: e.code,
             ctrlKey: e.ctrlKey,
@@ -99,7 +98,7 @@ export const useEventHandler = (
         canvas.addEventListener('mouseup', handleMouseUp);
         canvas.addEventListener('wheel', handleWheel);
         canvas.addEventListener('contextmenu', handleContextMenu);
-        window.addEventListener('keypress', handleKeypress);
+        window.addEventListener('keydown', handleKeypress);
 
         return () => {
             canvas.removeEventListener('mousedown', handleMouseDown);
@@ -107,7 +106,7 @@ export const useEventHandler = (
             canvas.removeEventListener('mouseup', handleMouseUp);
             canvas.removeEventListener('wheel', handleWheel);
             canvas.removeEventListener('contextmenu', handleContextMenu);
-            window.removeEventListener('keypress', handleKeypress);
+            window.removeEventListener('keydown', handleKeypress);
         };
     }, [
         canvasRef,
