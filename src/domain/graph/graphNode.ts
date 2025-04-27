@@ -30,3 +30,24 @@ export interface GraphNode {
     type: NodeType;
     position: Vec2;
 }
+
+export interface SerializedGraphNode {
+    id: string;
+    label: string;
+    type: string;
+    position: { x: number; y: number };
+}
+
+export const serializeGraphNode = (node: GraphNode): SerializedGraphNode => ({
+    id: node.id,
+    label: node.label,
+    type: node.type.key,
+    position: {x: node.position.x, y: node.position.y},
+});
+
+export const deserializeGraphNode = (node: SerializedGraphNode): GraphNode => ({
+    id: node.id,
+    label: node.label,
+    type: nodeTypes[node.type],
+    position: new Vec2(node.position.x, node.position.y),
+});

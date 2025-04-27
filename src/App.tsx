@@ -9,11 +9,8 @@ import ModeOverlayCanvas from "./components/canvas/ModeOverlayCanvas.tsx";
 import CommandControl from "./components/controls/commandControl.tsx";
 import GraphControl from "./components/controls/graphControl.tsx";
 import WorkspaceControl from "./components/controls/workspaceControl.tsx";
-import { usePersistence } from "./hooks/persistence";
 
 export default function App() {
-    usePersistence(1000);
-
     return (<>
         <div style={{
             position: 'fixed',

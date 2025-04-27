@@ -1,7 +1,7 @@
 ﻿import {EventPropMap} from "../../hooks/event";
 import {Mode} from "./Mode.ts";
 import {GraphNode, GraphEdge} from "../graph";
-import {EdgeStore, NodeStore} from "../../stores/graph";
+import {EdgeStore, NodeStore, useNodeStore} from "../../stores/graph";
 import {Segment} from "../../utils/segment.ts";
 import {CommandStore} from "../../stores/main";
 import CommandFactory from "../../core/commands/CommandFactory.ts";
@@ -36,7 +36,7 @@ export class SelectMode extends Mode {
     }
 
     override handleMouseMove(props: EventPropMap["mousemove"]): void {
-        const nodes = this.nodeStore.getHoveredNode(props.mousePos);
+        const nodes = useNodeStore.getState().getHoveredNode(props.mousePos);
         if (nodes) {
             this.hoveredEntity = {value: nodes};
             return;
