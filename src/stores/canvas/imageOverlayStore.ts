@@ -18,7 +18,7 @@ export interface ImageOverlayAction {
     draw: (ctx: CanvasRenderingContext2D | null) => void;
 }
 
-const defaultImageOverlaySettings: ImageOverlayState = {
+export const defaultImageOverlaySettings: ImageOverlayState = {
     image: null,
     imageData: null,
     imageOffset: new Vec2(0, 0),

@@ -1,61 +1,72 @@
-﻿import {useState, useEffect} from 'react';
-import {usePersistence} from '../../hooks/persistence';
+﻿import React from 'react';
+import {usePersistenceImageOverlayAttachment, usePersistenceStoreAttachment} from "../../hooks/attachments";
+import {useWorkspace} from "../../hooks/persistence";
 
-const WorkspaceControl = () => {
-    const persistence = usePersistence();
-    const [newWorkspaceName, setNewWorkspaceName] = useState('');
-    const [currentWorkspace, setCurrentWorkspace] = useState(persistence.getCurrentWorkspace());
+export default function WorkspaceControls() {
+    const [newWorkspaceName, setNewWorkspaceName] = React.useState('');
 
-    // Update the current workspace display when it changes
-    useEffect(() => {
-        setCurrentWorkspace(persistence.getCurrentWorkspace());
-    }, [persistence]);
+    usePersistenceStoreAttachment(1000);
+    usePersistenceImageOverlayAttachment(1000);
 
-    const handleSwitchWorkspace = () => {
-        if (newWorkspaceName.trim() === '') return;
+    const {
+        workspaces,
+        currentWorkspace,
+        switchWorkspace,
+        createWorkspace,
+        deleteWorkspace,
+    } = useWorkspace();
 
-        // Clear current workspace data from memory
-        persistence.clearCurrentWorkspace();
+    const handleSwitchWorkspace = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        switchWorkspace(e.target.value);
+    };
 
-        // Try to load data from the new workspace
-        const loaded = persistence.loadAllStores(newWorkspaceName);
-
-        // If no data was found, we're creating a new workspace
-        if (!loaded) {
-            persistence.setCurrentWorkspace(newWorkspaceName);
-            persistence.saveAllStores();
+    const handleCreateWorkspace = () => {
+        if (newWorkspaceName.trim() === '') {
+            return;
         }
-
-        // Update the current workspace display
-        setCurrentWorkspace(persistence.getCurrentWorkspace());
-
-        // Reset input field
+        createWorkspace(newWorkspaceName);
         setNewWorkspaceName('');
     };
 
+    const handleDeleteWorkspace = () => {
+        if (workspaces.length === 1) {
+            return;
+        }
+        if (confirm(`Are you sure to delete workspace ${currentWorkspace}?`)) {
+            deleteWorkspace();
+        }
+    };
+
     return (
-        <div style={{marginBottom: '10px'}}>
-            <div>
-                <strong>Current Workspace:</strong> {currentWorkspace}
-            </div>
-            <div style={{display: 'flex', marginTop: '5px'}}>
+        <div>
+            <label>
+                Workspace:
+                <select
+                    value={currentWorkspace}
+                    onChange={handleSwitchWorkspace}
+                >
+                    {workspaces.map(workspace => (
+                        <option
+                            key={workspace}
+                            value={workspace}
+                        >
+                            {workspace}
+                        </option>
+                    ))}
+                </select>
+            </label>
+
+            <label>
+                New workspace:
                 <input
                     type="text"
                     value={newWorkspaceName}
-                    onChange={(e) => setNewWorkspaceName(e.target.value)}
-                    placeholder="New workspace name"
-                    style={{marginRight: '5px'}}
+                    onChange={e => setNewWorkspaceName(e.target.value)}
                 />
-                <button
-                    onClick={handleSwitchWorkspace}
-                    disabled={newWorkspaceName.trim() === ''}
-                    style={{marginRight: '5px'}}
-                >
-                    Switch/Create
-                </button>
-            </div>
+                <button onClick={handleCreateWorkspace}>Create</button>
+            </label>
+
+            <button onClick={handleDeleteWorkspace}>Delete Current</button>
         </div>
     );
-};
-
-export default WorkspaceControl;
+}
