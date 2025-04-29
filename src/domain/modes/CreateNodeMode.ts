@@ -2,10 +2,10 @@
 import {NodeType} from "../graph";
 import {EventPropMap} from "../../hooks/event";
 import {Vec2} from "../../utils/vector.ts";
-import {GridStore} from "../../stores/canvas";
-import CommandFactory from "../../core/commands/CommandFactory.ts";
-import {CommandStore} from "../../stores/main";
+import {useCommandStore} from "../../stores/main";
 import {snapToGrid} from "../../utils/mouse.ts";
+import CreateNodeCommand from "../../core/commands/CreateNodeCommand.ts";
+import {useGridStore} from "../../stores/canvas";
 
 export class CreateNodeMode extends Mode {
     name = "Create";
@@ -13,9 +13,6 @@ export class CreateNodeMode extends Mode {
 
     constructor(
         private nodeType: NodeType,
-        private gridStore: GridStore,
-        private commandStore: CommandStore,
-        private commandFactory: CommandFactory,
     ) {
         super();
         this.name = "Create " + nodeType.name;
@@ -27,11 +24,11 @@ export class CreateNodeMode extends Mode {
 
     override handleClick(props: EventPropMap["click"]): void {
         this.calculateSnappedPosition(props.mousePos);
-        const command = this.commandFactory.createNodeCommand(
+        const command = new CreateNodeCommand(
             this.nodeType,
             this.position,
         );
-        this.commandStore.execute(command);
+        useCommandStore.getState().execute(command);
     }
 
     override draw(ctx: CanvasRenderingContext2D): void {
@@ -41,7 +38,8 @@ export class CreateNodeMode extends Mode {
     }
 
     private calculateSnappedPosition(mousePos: Vec2): void {
-        const gap = this.gridStore.gap;
+        const gridStore = useGridStore.getState();
+        const gap = gridStore.gap;
         this.position = snapToGrid(mousePos, gap);
     }
 }
