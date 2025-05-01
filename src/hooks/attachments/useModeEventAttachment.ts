@@ -1,84 +1,24 @@
 ﻿import {useEffect} from "react";
 import {EventBus, EventPropMap} from "../event";
-import {ModeStore, useCommandStore} from "../../stores/main";
-import {useEdgeStore, useNodeSeedStore, useNodeStore} from "../../stores/graph";
-import CommandFactory from "../../core/commands/CommandFactory.ts";
-import {useGridStore} from "../../stores/canvas";
-import {useSelectionStore} from "../../stores/main/selectionStore.ts";
-import {ConnectMode, CreateNodeMode, SelectMode} from "../../domain/modes";
+import {ModeStore} from "../../stores/main";
+import {ConnectMode, CreateNodeMode, Mode, SelectMode} from "../../domain/modes";
 import {nodeTypes} from "../../domain/graph";
 
 export const useModeEventAttachment = (eventBus: EventBus, modeStore: ModeStore) => {
-    const nodeStore = useNodeStore();
-    const edgeStore = useEdgeStore();
-    const commandStore = useCommandStore();
-    const selectionStore = useSelectionStore();
-    const gridStore = useGridStore();
-    const nodeSeedStore = useNodeSeedStore();
-
     useEffect(() => {
-        const commandFactory = new CommandFactory(
-            nodeSeedStore,
-            nodeStore,
-            edgeStore,
-        );
+        const keyModeMap: Record<string, () => Mode> = {
+            'KeyV': () => new SelectMode(),
+            'KeyC': () => new ConnectMode(),
+            'KeyR': () => new CreateNodeMode(nodeTypes.RoomNode),
+            'KeyA': () => new CreateNodeMode(nodeTypes.PathNode),
+            'KeyF': () => new CreateNodeMode(nodeTypes.ReferenceNode),
+        };
+
         const handleKeypress = ({ key }: EventPropMap['keypress']) => {
-            switch (key) {
-                case 'KeyV':
-                    modeStore.setMode(
-                        new SelectMode(
-                            nodeStore,
-                            edgeStore,
-                            gridStore,
-                            selectionStore,
-                            commandStore,
-                            commandFactory,
-                        )
-                    );
-                    break;
-                case 'KeyC':
-                    modeStore.setMode(
-                        new ConnectMode(
-                            nodeStore,
-                            commandStore,
-                            commandFactory,
-                        )
-                    );
-                    break;
-                case 'KeyR':
-                    modeStore.setMode(
-                        new CreateNodeMode(
-                            nodeTypes.RoomNode,
-                            gridStore,
-                            commandStore,
-                            commandFactory,
-                        )
-                    );
-                    break;
-                case 'KeyA':
-                    modeStore.setMode(
-                        new CreateNodeMode(
-                            nodeTypes.PathNode,
-                            gridStore,
-                            commandStore,
-                            commandFactory,
-                        )
-                    );
-                    break;
-                case 'KeyF':
-                    modeStore.setMode(
-                        new CreateNodeMode(
-                            nodeTypes.ReferenceNode,
-                            gridStore,
-                            commandStore,
-                            commandFactory,
-                        )
-                    );
-                    break;
-                default:
-                    break;
+            if (key in keyModeMap) {
+                modeStore.setMode(keyModeMap[key]());
             }
-        }; // TODO: refactor this somehow, someday.
+        };
 
         const unsubscribes = [
             eventBus.subscribe('click', modeStore.mode.handleClick.bind(modeStore.mode)),
@@ -91,5 +31,5 @@ export const useModeEventAttachment = (eventBus: EventBus, modeStore: ModeStore)
         return () => {
             unsubscribes.forEach((unsubscribe) => unsubscribe());
         };
-    }, [commandStore, edgeStore, eventBus, gridStore, modeStore, nodeStore, selectionStore]);
+    }, [eventBus, modeStore]);
 };

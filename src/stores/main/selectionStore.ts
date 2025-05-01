@@ -1,8 +1,9 @@
 ﻿import {create} from 'zustand';
 import {GraphEdge, GraphNode} from "../../domain/graph";
-import {useEdgeStore, useNodeSeedStore, useNodeStore} from "../graph";
-import CommandFactory from "../../core/commands/CommandFactory.ts";
+import {useEdgeStore, useNodeStore} from "../graph";
 import {useCommandStore} from "./commandStore.ts";
+import DeleteNodeCommand from "../../core/commands/DeleteNodeCommand.ts";
+import DeleteEdgeCommand from "../../core/commands/DeleteEdgeCommand.ts";
 
 export interface SelectionState {
     entity: GraphNode | GraphEdge | null;
@@ -37,15 +38,9 @@ export const useSelectionStore = create<SelectionStore>((set, get) => ({
             return;
         }
 
-        const commandFactory = new CommandFactory(
-            useNodeSeedStore.getState(),
-            useNodeStore.getState(),
-            useEdgeStore.getState(),
-        );
-
         const command = type === "node"
-            ? commandFactory.deleteNodeCommand(entity.id)
-            : commandFactory.deleteEdgeCommand(entity.id);
+            ? new DeleteNodeCommand(entity.id)
+            : new DeleteEdgeCommand(entity.id);
         useCommandStore.getState().execute(command);
     },
     clear: () => set({entity: null, type: null}),

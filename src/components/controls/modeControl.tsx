@@ -1,58 +1,26 @@
-import React, {useRef, useState} from "react";
+import React, {useState} from "react";
 import {SelectMode} from "../../domain/modes";
-import {useCommandStore, useModeStore} from "../../stores/main";
+import {useModeStore} from "../../stores/main";
 import {NodeType, nodeTypes} from "../../domain/graph";
 import {CreateNodeMode} from "../../domain/modes";
-import {useGridStore} from "../../stores/canvas";
-import CommandFactory from "../../core/commands/CommandFactory.ts";
-import {useEdgeStore, useNodeSeedStore, useNodeStore} from "../../stores/graph";
 import {ConnectMode} from "../../domain/modes";
-import {useSelectionStore} from "../../stores/main/selectionStore.ts";
 
 const ModeControl: React.FC = () => {
     const {mode, setMode} = useModeStore();
     const [nodeType, setNodeType] = useState<NodeType>(nodeTypes.PathNode);
 
-    const gridStore = useGridStore();
-    const nodeSeedStore = useNodeSeedStore();
-    const nodeStore = useNodeStore();
-    const edgeStore = useEdgeStore();
-    const selectionStore = useSelectionStore();
-
-    const commandStore = useCommandStore();
-    const commandFactory = useRef<CommandFactory>(new CommandFactory(
-        nodeSeedStore,
-        nodeStore,
-        edgeStore,
-    ));
 
     const switchToSelectMode = () => {
-        setMode(new SelectMode(
-            nodeStore,
-            edgeStore,
-            gridStore,
-            selectionStore,
-            commandStore,
-            commandFactory.current,
-        ));
+        setMode(new SelectMode());
     }
 
     const switchToConnectMode = () => {
-        setMode(new ConnectMode(
-            nodeStore,
-            commandStore,
-            commandFactory.current,
-        ));
+        setMode(new ConnectMode());
     };
 
     const switchToCreateMode = (nodeType: NodeType) => {
         setNodeType(nodeType);
-        setMode(new CreateNodeMode(
-            nodeType,
-            gridStore,
-            commandStore,
-            commandFactory.current,
-        ));
+        setMode(new CreateNodeMode(nodeType));
     };
 
     return (<div>

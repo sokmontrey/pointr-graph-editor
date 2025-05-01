@@ -1,4 +1,4 @@
-﻿import {EdgeStore, NodeStore} from "../../stores/graph";
+﻿import {useEdgeStore, useNodeStore} from "../../stores/graph";
 import {ICommand} from "./ICommand.ts";
 import {GraphNode} from "../../domain/graph";
 
@@ -8,31 +8,38 @@ class DeleteNodeCommand implements ICommand {
 
     constructor(
         private nodeId: string,
-        private nodeStore: NodeStore,
-        private edgeStore: EdgeStore,
     ) {
-        this.node = this.nodeStore.nodes
+        const nodeStore = useNodeStore.getState();
+        const edgeStore = useEdgeStore.getState();
+
+        this.node = nodeStore.nodes
             .find(node => node.id === nodeId)!;
 
-        this.connectedNodes = this.edgeStore.edges
+        this.connectedNodes = edgeStore.edges
             .filter(edge => edge.from === nodeId || edge.to === nodeId)
             .map(edge => edge.from === nodeId ? edge.to : edge.from);
     }
 
     execute() {
-        this.nodeStore.removeNode(this.nodeId);
-        this.edgeStore.removeEdgesConnectedToNode(this.nodeId);
+        const nodeStore = useNodeStore.getState();
+        const edgeStore = useEdgeStore.getState();
+
+        nodeStore.removeNode(this.nodeId);
+        edgeStore.removeEdgesConnectedToNode(this.nodeId);
     }
 
     undo() {
-        this.nodeStore.addNode(
+        const nodeStore = useNodeStore.getState();
+        const edgeStore = useEdgeStore.getState();
+
+        nodeStore.addNode(
             this.node.label,
             this.node.position,
             this.node.type,
             this.nodeId);
 
         this.connectedNodes.forEach(nodeId => {
-            this.edgeStore.addEdge(this.nodeId, nodeId);
+            edgeStore.addEdge(this.nodeId, nodeId);
         });
     }
 }
