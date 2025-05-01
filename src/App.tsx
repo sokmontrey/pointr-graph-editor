@@ -9,7 +9,7 @@ import ModeOverlayCanvas from "./components/canvas/ModeOverlayCanvas.tsx";
 import CommandControl from "./components/controls/CommandControl.tsx";
 import GraphControl from "./components/controls/GraphControl.tsx";
 import WorkspaceControl from "./components/controls/WorkspaceControl.tsx";
-import {Neo4jControl} from "./components/controls/Neo4jControl.tsx";
+import Neo4jControl from "./components/controls/Neo4jControl.tsx";
 import ReferenceNodeControl from "./components/controls/ReferenceNodeControl.tsx";
 
 export default function App() {

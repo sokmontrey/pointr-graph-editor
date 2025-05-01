@@ -2,7 +2,7 @@
 import {usePersistenceImageOverlayAttachment, usePersistenceStoreAttachment} from "../../hooks/attachments";
 import {useWorkspace} from "../../hooks/persistence";
 
-export default function WorkspaceControls() {
+const WorkspaceControls = () => {
     const [newWorkspaceName, setNewWorkspaceName] = React.useState('');
 
     usePersistenceStoreAttachment(1000);
@@ -69,4 +69,6 @@ export default function WorkspaceControls() {
             <button onClick={handleDeleteWorkspace}>Delete Current</button>
         </div>
     );
-}
+};
+
+export default WorkspaceControls;
