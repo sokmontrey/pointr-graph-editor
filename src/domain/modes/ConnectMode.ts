@@ -1,12 +1,12 @@
 ﻿import {EventPropMap} from "../../hooks/event";
 import {useCommandStore} from "../../stores/main";
-import {Mode} from "./Mode.ts";
 import {useNodeStore} from "../../stores/graph";
 import {GraphNode} from "../graph";
 import {Vec2} from "../../utils/vector.ts";
 import ConnectCommand from "../../core/commands/ConnectCommand.ts";
+import Mode from "./Mode.ts";
 
-export class ConnectMode extends Mode {
+class ConnectMode extends Mode {
     name = 'connect';
     private hoveredNode: GraphNode | null = null;
     private selectedNode: GraphNode | null = null;
@@ -68,3 +68,5 @@ export class ConnectMode extends Mode {
         this.selectedNode = null;
     }
 }
+
+export default ConnectMode;

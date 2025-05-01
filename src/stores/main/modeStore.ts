@@ -1,5 +1,5 @@
 ﻿import {create} from 'zustand';
-import {Mode, SelectMode} from '../../domain/modes'
+import Mode from "../../domain/modes/Mode.ts";
 
 export interface ModeState {
     mode: Mode;
@@ -12,6 +12,8 @@ export interface ModeAction {
 export type ModeStore = ModeState & ModeAction;
 
 export const useModeStore = create<ModeStore>((set) => ({
-    mode: new SelectMode(),
+    mode: new (class DefaultMode extends Mode {
+        name = "Select";
+    })(),
     setMode: (mode) => set({mode}),
 }));

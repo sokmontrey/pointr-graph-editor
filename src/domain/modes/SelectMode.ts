@@ -1,5 +1,4 @@
 ﻿import {EventPropMap} from "../../hooks/event";
-import {Mode} from "./Mode.ts";
 import {GraphNode, GraphEdge} from "../graph";
 import {useEdgeStore, useNodeStore} from "../../stores/graph";
 import {Segment} from "../../utils/segment.ts";
@@ -9,13 +8,14 @@ import MoveNodeCommand from "../../core/commands/MoveNodeCommand.ts";
 import {useCommandStore} from "../../stores/main";
 import {useSelectionStore} from "../../stores/main/selectionStore.ts";
 import {useGridStore} from "../../stores/canvas";
+import Mode from "./Mode.ts";
 
 export interface GraphEntity {
     value: GraphNode | GraphEdge;
     segment?: Segment;
 }
 
-export class SelectMode extends Mode {
+class SelectMode extends Mode {
     name = "Select";
 
     private hoveredEntity: GraphEntity | null = null;
@@ -139,3 +139,5 @@ export class SelectMode extends Mode {
         ctx.stroke();
     }
 }
+
+export default SelectMode;

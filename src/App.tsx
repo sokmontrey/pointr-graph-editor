@@ -11,8 +11,12 @@ import GraphControl from "./components/controls/GraphControl.tsx";
 import WorkspaceControl from "./components/controls/WorkspaceControl.tsx";
 import Neo4jControl from "./components/controls/Neo4jControl.tsx";
 import ReferenceNodeControl from "./components/controls/ReferenceNodeControl.tsx";
+import {useModeStore} from "./stores/main";
+import SelectMode from "./domain/modes/SelectMode.ts";
 
 export default function App() {
+    useModeStore.getState().setMode(new SelectMode());
+
     return (<>
         <div style={{
             position: 'fixed',

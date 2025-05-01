@@ -1,5 +1,5 @@
 ﻿import {create} from 'zustand';
-import {ICommand} from "../../core/commands";
+import {ICommand} from "../../core/commands/ICommand.ts";
 
 export interface CommandState {
     undoStack: ICommand[];
