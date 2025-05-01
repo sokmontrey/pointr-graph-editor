@@ -1,14 +1,14 @@
 import './App.css';
 import MainCanvas from "./components/canvas/MainCanvas.tsx";
-import ModeControl from "./components/controls/modeControl.tsx";
+import ModeControl from "./components/controls/ModeControl.tsx";
 import ImageOverlayControl from "./components/controls/ImageOverlayControl.tsx";
 import ImageOverlayCanvas from "./components/canvas/ImageOverlayCanvas.tsx";
 import BulletGrid from "./components/canvas/BulletGrid.tsx";
 // import GridControl from "./components/controls/gridControl.tsx";
 import ModeOverlayCanvas from "./components/canvas/ModeOverlayCanvas.tsx";
-import CommandControl from "./components/controls/commandControl.tsx";
-import GraphControl from "./components/controls/graphControl.tsx";
-import WorkspaceControl from "./components/controls/workspaceControl.tsx";
+import CommandControl from "./components/controls/CommandControl.tsx";
+import GraphControl from "./components/controls/GraphControl.tsx";
+import WorkspaceControl from "./components/controls/WorkspaceControl.tsx";
 import {Neo4jControl} from "./components/controls/Neo4jControl.tsx";
 import ReferenceNodeControl from "./components/controls/ReferenceNodeControl.tsx";
 

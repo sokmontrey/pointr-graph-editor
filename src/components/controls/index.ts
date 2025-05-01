@@ -1,3 +1,3 @@
-﻿export * from './modeControl.tsx';
+﻿export * from './ModeControl.tsx';
 export * from './ImageOverlayControl.tsx';
-export * from './gridControl.tsx';
+export * from './GridControl.tsx';
