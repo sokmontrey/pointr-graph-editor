@@ -1,8 +1,11 @@
 ﻿import {useEffect} from "react";
 import {EventBus, EventPropMap} from "../event";
 import {ModeStore} from "../../stores/main";
-import {ConnectMode, CreateNodeMode, Mode, SelectMode} from "../../domain/modes";
 import {nodeTypes} from "../../domain/graph";
+import SelectMode from "../../domain/modes/SelectMode.ts";
+import ConnectMode from "../../domain/modes/ConnectMode.ts";
+import CreateNodeMode from "../../domain/modes/CreateNodeMode.ts";
+import Mode from "../../domain/modes/Mode.ts";
 
 export const useModeEventAttachment = (eventBus: EventBus, modeStore: ModeStore) => {
     useEffect(() => {

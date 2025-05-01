@@ -19,8 +19,8 @@ import {useSelectionStore} from "../../stores/main/selectionStore.ts";
 const MainCanvas = ({ zIndex }: ZIndexProps) => {
     const ref = useRef<HTMLCanvasElement | null>(null);
 
-    const viewport = useViewportStore();
     const mode = useModeStore();
+    const viewport = useViewportStore();
     const nodeStore = useNodeStore();
     const edgeStore = useEdgeStore();
     const commandStore = useCommandStore();

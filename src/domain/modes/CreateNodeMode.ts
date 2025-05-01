@@ -1,13 +1,13 @@
-﻿import {Mode} from "./Mode.ts";
-import {NodeType} from "../graph";
+﻿import {NodeType} from "../graph";
 import {EventPropMap} from "../../hooks/event";
 import {Vec2} from "../../utils/vector.ts";
 import {useCommandStore} from "../../stores/main";
 import {snapToGrid} from "../../utils/mouse.ts";
 import CreateNodeCommand from "../../core/commands/CreateNodeCommand.ts";
 import {useGridStore} from "../../stores/canvas";
+import Mode from "./Mode.ts";
 
-export class CreateNodeMode extends Mode {
+class CreateNodeMode extends Mode {
     name = "Create";
     position: Vec2 = new Vec2(0, 0);
 
@@ -44,3 +44,4 @@ export class CreateNodeMode extends Mode {
     }
 }
 
+export default CreateNodeMode;

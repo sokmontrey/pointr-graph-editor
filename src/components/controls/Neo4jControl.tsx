@@ -1,6 +1,6 @@
 ﻿import {neo4jExportService} from "../../services/neo4jExportService.ts";
 
-export const Neo4jControl = () => {
+const Neo4jControl = () => {
     const handleExport = () => {
         neo4jExportService.export();
     };
@@ -13,3 +13,5 @@ export const Neo4jControl = () => {
         </button>
     </div>;
 };
+
+export default Neo4jControl;
