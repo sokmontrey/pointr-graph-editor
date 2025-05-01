@@ -16,6 +16,8 @@ export interface EdgeAction {
     clearEdges: () => void;
     draw: (ctx: CanvasRenderingContext2D) => void;
     getHoveredEdge: (position: Vec2) => [GraphEdge, Segment] | null;
+    getConnectedNodes: (nodeId: string) => string[];
+    find: (edgeId: string) => GraphEdge | null;
 }
 
 export type EdgeStore = EdgeState & EdgeAction;
@@ -73,6 +75,16 @@ export const useEdgeStore = create<EdgeStore>((set, get) => ({
             }
         }
         return null;
+    },
+    getConnectedNodes: (nodeId) => {
+        const {edges} = get();
+        return edges
+            .filter(edge => edge.from === nodeId || edge.to === nodeId)
+            .map(edge => edge.from === nodeId ? edge.to : edge.from);
+    },
+    find: (edgeId) => {
+        const {edges} = get();
+        return edges.find(edge => edge.id === edgeId) ?? null;
     },
     draw: (ctx) => {
         const {edges} = get();

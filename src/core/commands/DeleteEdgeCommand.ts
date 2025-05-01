@@ -3,28 +3,26 @@ import {ICommand} from "./ICommand.ts";
 import {GraphEdge} from "../../domain/graph";
 
 class DeleteEdgeCommand implements ICommand {
-    private edge: GraphEdge;
+    private edge: GraphEdge | null;
 
     constructor(
         private edgeId: string,
     ) {
-        const edgeStore = useEdgeStore.getState();
-        this.edge = edgeStore.edges.find(edge => edge.id === edgeId)!;
+        this.edge = useEdgeStore.getState()
+            .find(edgeId);
     }
 
     execute() {
-        const edgeStore = useEdgeStore.getState();
-        edgeStore.removeEdge(this.edgeId);
+        useEdgeStore.getState()
+            .removeEdge(this.edgeId);
     }
 
     undo() {
-        const edgeStore = useEdgeStore.getState();
-
-        edgeStore.addEdge(
-            this.edge.from,
-            this.edge.to,
-            this.edgeId
-        );
+        if (!this.edge) {
+            return;
+        }
+        useEdgeStore.getState()
+            .addEdge(this.edge.from, this.edge.to, this.edgeId);
     }
 }
 

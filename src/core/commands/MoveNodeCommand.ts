@@ -10,15 +10,11 @@ class MoveNodeCommand implements ICommand {
     ) { }
 
     execute() {
-        const nodeStore = useNodeStore.getState();
-
-        nodeStore.moveNode(this.nodeId, this.newPosition);
+        useNodeStore.getState().moveNode(this.nodeId, this.newPosition);
     }
 
     undo() {
-        const nodeStore = useNodeStore.getState();
-
-        nodeStore.moveNode(this.nodeId, this.oldPosition);
+        useNodeStore.getState().moveNode(this.nodeId, this.oldPosition);
     }
 }
 

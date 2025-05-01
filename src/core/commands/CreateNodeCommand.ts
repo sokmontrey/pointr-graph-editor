@@ -13,15 +13,17 @@ class CreateNodeCommand implements ICommand {
     ) { }
 
     execute() {
-        const edgeStore = useEdgeStore.getState();
         const nodeStore = useNodeStore.getState();
         const nodeSeedStore = useNodeSeedStore.getState();
 
         const label = nodeSeedStore.next(this.nodeType.key);
         this.nodeId = nodeStore.addNode(label.toString(), this.position, this.nodeType, this.nodeId);
-        this.connectedNodes = edgeStore.edges
-            .filter(edge => edge.from === this.nodeId || edge.to === this.nodeId)
-            .map(edge => edge.from === this.nodeId ? edge.to : edge.from); // TODO: reuse this
+        this.reconnectEdges(this.nodeId);
+    }
+
+    private reconnectEdges(nodeId: string) {
+        const edgeStore = useEdgeStore.getState();
+        this.connectedNodes = edgeStore.getConnectedNodes(nodeId);
         this.connectedNodes.forEach(otherNodeId => {
             edgeStore.addEdge(this.nodeId!, otherNodeId);
         });
