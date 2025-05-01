@@ -1,9 +1,12 @@
 import {create} from 'zustand';
 import {GraphNode, NodeType} from "../../domain/graph";
 import {Vec2} from "../../utils/vector.ts";
+import SpatialIndex from "../../utils/spatialIndex.ts";
 
 export interface NodeState {
     nodes: GraphNode[];
+    nodeMap: Map<string, GraphNode>;
+    spatialIndex: SpatialIndex;
 }
 
 export interface NodeAction {
@@ -15,14 +18,18 @@ export interface NodeAction {
     clearNodes: () => void;
     draw: (ctx: CanvasRenderingContext2D) => void;
     getHoveredNode: (position: Vec2) => GraphNode | null;
+    find: (id: string) => GraphNode | null;
 }
 
 export type NodeStore = NodeState & NodeAction;
 
 export const useNodeStore = create<NodeStore>((set, get) => ({
     nodes: [],
+    nodeMap: new Map(),
+    spatialIndex: new SpatialIndex(),
+
     addNode: (label, position, nodeType, id = null) => {
-        const {nodes} = get();
+        const {nodes, nodeMap, spatialIndex} = get();
         id ??= Date.now().toString();
         const newNode: GraphNode = {
             id,
@@ -30,36 +37,102 @@ export const useNodeStore = create<NodeStore>((set, get) => ({
             type: nodeType,
             position,
         };
-        set({nodes: [...nodes, newNode]});
+
+        const updatedNodes = [...nodes, newNode];
+        const updatedNodeMap = new Map(nodeMap);
+        updatedNodeMap.set(id, newNode);
+
+        spatialIndex.add(id, position);
+
+        set({
+            nodes: updatedNodes,
+            nodeMap: updatedNodeMap
+        });
         return id;
     },
+
     removeNode: (id) => {
-        const {nodes} = get();
-        set({
-            nodes: nodes.filter(node => node.id !== id),
-        });
+        const {nodes, nodeMap, spatialIndex} = get();
+        const node = nodeMap.get(id);
+
+        if (node) {
+            spatialIndex.remove(id, node.position);
+
+            const updatedNodeMap = new Map(nodeMap);
+            updatedNodeMap.delete(id);
+
+            set({
+                nodes: nodes.filter(node => node.id !== id),
+                nodeMap: updatedNodeMap
+            });
+        }
     },
+
     moveNode: (id, position) => {
-        const {nodes} = get();
-        set({
-            nodes: nodes.map(node => node.id === id ? {...node, position} : node),
-        });
+        const {nodes, nodeMap, spatialIndex} = get();
+        const node = nodeMap.get(id);
+
+        if (node) {
+            spatialIndex.update(id, node.position, position);
+            const updatedNode = {...node, position};
+            const updatedNodeMap = new Map(nodeMap);
+            updatedNodeMap.set(id, updatedNode);
+
+            set({
+                nodes: nodes.map(n => n.id === id ? updatedNode : n),
+                nodeMap: updatedNodeMap
+            });
+        }
     },
-    // TODO: update label instead of id
+
     updateNodeLabel: (id, newLabel) => {
-        const {nodes} = get();
-        set({
-            nodes: nodes.map(node => node.id === id
-                ? {...node, label: newLabel}
-                : node),
-        });
+        const {nodes, nodeMap} = get();
+        const node = nodeMap.get(id);
+        if (node) {
+            const updatedNode = {...node, label: newLabel};
+            const updatedNodeMap = new Map(nodeMap);
+            updatedNodeMap.set(id, updatedNode);
+            set({
+                nodes: nodes.map(n => n.id === id ? updatedNode : n),
+                nodeMap: updatedNodeMap
+            });
+        }
     },
-    loadNodes: (nodes) => set({nodes}),
-    clearNodes: () => set({nodes: []}),
+
+    loadNodes: (nodes) => {
+        const nodeMap = new Map();
+        for (const node of nodes) {
+            nodeMap.set(node.id, node);
+        }
+        const spatialIndex = new SpatialIndex();
+        spatialIndex.rebuild(nodes);
+        set({nodes, nodeMap, spatialIndex});
+    },
+
+    clearNodes: () => {
+        const {spatialIndex} = get();
+        spatialIndex.clear();
+        set({nodes: [], nodeMap: new Map()});
+    },
+
     getHoveredNode: (position) => {
-        const {nodes} = get();
-        return nodes.find(node => node.position.distance(position) < 10) ?? null;
+        const {nodeMap, spatialIndex} = get();
+        const radius = 10;
+        const nearbyNodeIds = spatialIndex.getNearbyNodeIds(position, radius);
+        for (const nodeId of nearbyNodeIds) {
+            const node = nodeMap.get(nodeId);
+            if (node && node.position.distance(position) < radius) {
+                return node;
+            }
+        }
+        return null;
     },
+
+    find: (id) => {
+        const {nodeMap} = get();
+        return nodeMap.get(id) || null;
+    },
+
     draw: (ctx) => {
         const {nodes} = get();
         nodes.forEach(node => {
