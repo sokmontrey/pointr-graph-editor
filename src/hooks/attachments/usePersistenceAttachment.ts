@@ -1,13 +1,16 @@
-﻿import {useEffect, useRef} from "react";
-import {GridState, useGridStore} from "../../stores/canvas";
-import {persistenceService} from "../../services/persistenceService.ts";
+import { useEffect, useRef } from 'react';
+import { persistenceService } from '../../services/persistenceService.ts';
 
-export const usePersistenceGridAttachment = (debounceMs: number = 1000) => {
+export const usePersistenceAttachment = <T>(
+    storeSubscribe: (callback: (state: T) => void) => () => void,
+    shouldPersist: (state: T) => boolean,
+    debounceMs: number = 1000
+) => {
     const debounceTimerRef = useRef<number | null>(null);
 
     useEffect(() => {
-        const unsubscribe = useGridStore.subscribe((state: GridState) => {
-            if (state.gap) {
+        const unsubscribe = storeSubscribe((state: T) => {
+            if (shouldPersist(state)) {
                 if (debounceTimerRef.current !== null) {
                     window.clearTimeout(debounceTimerRef.current);
                 }
@@ -25,5 +28,5 @@ export const usePersistenceGridAttachment = (debounceMs: number = 1000) => {
                 window.clearTimeout(debounceTimerRef.current);
             }
         };
-    }, [debounceMs]);
+    }, [storeSubscribe, shouldPersist, debounceMs]);
 };

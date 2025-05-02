@@ -10,18 +10,31 @@ import GraphControl from "./components/controls/GraphControl.tsx";
 import WorkspaceControl from "./components/controls/WorkspaceControl.tsx";
 import Neo4jControl from "./components/controls/Neo4jControl.tsx";
 import ReferenceNodeControl from "./components/controls/ReferenceNodeControl.tsx";
-import {useModeStore} from "./stores/main";
+import {CommandStore, useCommandStore, useModeStore} from "./stores/main";
 import SelectMode from "./domain/modes/SelectMode.ts";
 import GridControl from "./components/controls/GridControl.tsx";
-import {usePersistenceImageOverlayAttachment, usePersistenceStoreAttachment} from "./hooks/attachments";
-import {usePersistenceGridAttachment} from "./hooks/attachments/usePersistenceGridAttachment.ts";
+import {GridState, ImageOverlayState, useGridStore, useImageOverlayStore} from "./stores/canvas";
+import {usePersistenceAttachment} from "./hooks/attachments";
 
 export default function App() {
     useModeStore.getState().setMode(new SelectMode());
 
-    usePersistenceStoreAttachment(1000);
-    usePersistenceImageOverlayAttachment(1000);
-    usePersistenceGridAttachment(1000);
+    const debounceMs = 1000;
+    usePersistenceAttachment(
+        useCommandStore.subscribe,
+        (state: CommandStore) => state.undoStack.length > 0 || state.redoStack.length > 0,
+        debounceMs
+    );
+    usePersistenceAttachment(
+        useImageOverlayStore.subscribe,
+        (state: ImageOverlayState) => state.imageData !== null,
+        debounceMs
+    );
+    usePersistenceAttachment(
+        useGridStore.subscribe,
+        (state: GridState) => !!state.gap,
+        debounceMs
+    );
 
     return (<>
         <div style={{
