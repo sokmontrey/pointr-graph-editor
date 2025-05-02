@@ -39,6 +39,15 @@ export class PersistenceService {
         console.info("Saved all stores for workspace: " + workspace);
     }
 
+    saveCommandStore(workspace?: string): void {
+        workspace ??= this.getCurrentWorkspace();
+        this.saveNodeStore(workspace);
+        this.saveEdgeStore(workspace);
+        this.saveNodeSeedStore(workspace);
+
+        console.info("Saved command stores for workspace: " + workspace);
+    }
+
     saveNodeStore(workspace?: string): void {
         workspace ??= this.getCurrentWorkspace();
         const nodeStore = useNodeStore.getState();
@@ -46,6 +55,8 @@ export class PersistenceService {
             nodes: nodeStore.nodes.map(serializeGraphNode)
         };
         this.saveStore(workspace, STORE_KEYS.NODE, serialized);
+
+        console.info("Saved node store for workspace: " + workspace);
     }
 
     saveEdgeStore(workspace?: string): void {
@@ -55,6 +66,8 @@ export class PersistenceService {
             edges: edgeStore.edges.map(serializeGraphEdge)
         };
         this.saveStore(workspace, STORE_KEYS.EDGE, serialized);
+
+        console.info("Saved edge store for workspace: " + workspace);
     }
 
     saveNodeSeedStore(workspace?: string): void {
@@ -64,6 +77,8 @@ export class PersistenceService {
             seed: nodeSeedStore.seed
         };
         this.saveStore(workspace, STORE_KEYS.NODE_SEED, serialized);
+
+        console.info("Saved node seed store for workspace: " + workspace);
     }
 
     saveGridStore(workspace?: string): void {
@@ -73,6 +88,8 @@ export class PersistenceService {
             gap: gridStore.gap
         };
         this.saveStore(workspace, STORE_KEYS.GRID, serialized);
+
+        console.info("Saved grid store for workspace: " + workspace);
     }
 
     saveImageOverlayStore(workspace?: string): void {
@@ -88,6 +105,8 @@ export class PersistenceService {
             imageData: imageOverlayStore.imageData
         };
         this.saveStore(workspace, STORE_KEYS.IMAGE_OVERLAY, serialized);
+
+        console.info("Saved image overlay store for workspace: " + workspace);
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
