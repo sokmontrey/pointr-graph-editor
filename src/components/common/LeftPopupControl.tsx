@@ -1,7 +1,8 @@
 ﻿import React, {useState, useRef, useEffect} from 'react';
 import {createPortal} from 'react-dom';
-import {HugeiconsIcon, IconSvgElement} from "@hugeicons/react";
+import {IconSvgElement} from "@hugeicons/react";
 import {SearchIcon} from "@hugeicons/core-free-icons";
+import IconButton from "../ui/IconButton.tsx";
 
 export type PopupDirection = 'top' | 'right' | 'bottom' | 'left';
 
@@ -58,22 +59,12 @@ const LeftPopupControl = ({
 
     return (
         <div className={`popup-toggle ${className}`} style={{position: 'relative'}}>
-            <button
-                ref={buttonRef}
+            <IconButton
+                icon={icon}
                 onClick={togglePanel}
+                ref={buttonRef}
                 className="popup-toggle-button"
-                style={{
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}
-            >
-                <HugeiconsIcon icon={icon}
-                               strokeWidth={2}
-                               size={32}
-                />
-            </button>
+            />
 
             {/* Hidden div that always renders children */}
             <div style={hiddenChildrenStyle} aria-hidden="true">

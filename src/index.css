@@ -3,3 +3,42 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+:root {
+    --square-button-size: 42px;
+    --accent-color: #0183FF;
+    --accent-glow: rgba(1, 131, 255, 0.27);
+    --background-color: #ffffff;
+    --background-glow: rgba(255, 255, 255, 0.27);
+}
+
+.square-button {
+    width: var(--square-button-size);
+    height: var(--square-button-size);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background-color);
+    color: var(--accent-color);
+    border: none;
+    border-radius: calc(0.3 * var(--square-button-size));
+    padding: calc(0.1 * var(--square-button-size));
+    transition: all 0.2s ease;
+}
+
+.square-button svg {
+    color: var(--accent-color);
+    filter: drop-shadow(0 0 2px var(--accent-glow));
+    transition: filter 0.2s ease;
+}
+
+.square-button:hover svg {
+    filter: drop-shadow(0 0 5px var(--background-glow));
+    color: var(--background-color);
+}
+
+.square-button:hover {
+    background-color: var(--accent-color);
+    color: var(--background-color);
+}
