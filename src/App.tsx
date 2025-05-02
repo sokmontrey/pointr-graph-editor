@@ -14,6 +14,8 @@ import {useModeStore} from "./stores/main";
 import SelectMode from "./domain/modes/SelectMode.ts";
 import GridControl from "./components/controls/GridControl.tsx";
 import {usePersistenceDebouncingAttachment} from "./hooks/attachments";
+import React from "react";
+import LeftPopupControl from "./components/common/LeftPopupControl.tsx";
 
 export default function App() {
     useModeStore.getState().setMode(new SelectMode());
@@ -27,14 +29,28 @@ export default function App() {
             left: 0,
             zIndex: 1000,
         }}>
-            <WorkspaceControl/>
-            <ModeControl/>
-            <ImageOverlayControl/>
-            <GridControl/>
-            <CommandControl/>
             <GraphControl/>
-            <Neo4jControl/>
             <ReferenceNodeControl/>
+        </div>
+
+        <div style={leftMiddleStyle}>
+            <LeftPopupControl buttonContent="s">
+                <WorkspaceControl/>
+            </LeftPopupControl>
+            <LeftPopupControl buttonContent="s">
+                <ImageOverlayControl/>
+            </LeftPopupControl>
+            <LeftPopupControl buttonContent="s">
+                <GridControl/>
+            </LeftPopupControl>
+            <LeftPopupControl buttonContent="s">
+                <Neo4jControl/>
+            </LeftPopupControl>
+        </div>
+
+        <div style={topCenteredStyle}>
+            <CommandControl/>
+            <ModeControl/>
         </div>
 
         <div style={{position: 'relative'}}>
@@ -45,3 +61,40 @@ export default function App() {
         </div>
     </>);
 }
+
+// const bottomCenteredStyle: React.CSSProperties = {
+//     position: 'fixed',
+//     bottom: 0,
+//     right: 0,
+//     width: '100%',
+//     zIndex: 1000,
+//     display: 'flex',
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//     padding: '10px',
+// };
+
+const topCenteredStyle: React.CSSProperties = {
+    position: 'fixed',
+    top: 0,
+    right: 0,
+    width: '100%',
+    zIndex: 1000,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: '10px',
+};
+
+const leftMiddleStyle: React.CSSProperties = {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    height: '100vh',
+    zIndex: 1000,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: '10px',
+};
