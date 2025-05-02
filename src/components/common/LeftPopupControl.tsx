@@ -63,7 +63,7 @@ const LeftPopupControl = ({
                 icon={icon}
                 onClick={togglePanel}
                 ref={buttonRef}
-                className="popup-toggle-button"
+                className={isOpen ? 'active' : ''}
             />
 
             {/* Hidden div that always renders children */}

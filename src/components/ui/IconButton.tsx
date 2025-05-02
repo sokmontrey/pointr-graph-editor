@@ -12,15 +12,15 @@ const IconButton = ({
                         icon,
                         onClick,
                         ref,
-                        className,
+                        className = "",
                     }: IconButtonProps) => {
     return <>
         <button
             ref={ref}
             onClick={onClick}
-            className={`${className || ""} square-button`}
+            className={" square-button " + className}
         >
-            <HugeiconsIcon icon={icon} strokeWidth={2} />
+            <HugeiconsIcon icon={icon} strokeWidth={2} size={18} />
         </button>
     </>;
 }

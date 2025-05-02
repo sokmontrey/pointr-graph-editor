@@ -36,18 +36,20 @@ export default function App() {
         </div>
 
         <div style={leftMiddleStyle}>
-            <LeftPopupControl icon={StudyDeskIcon}>
-                <WorkspaceControl/>
-            </LeftPopupControl>
-            <LeftPopupControl icon={Image03Icon}>
-                <ImageOverlayControl/>
-            </LeftPopupControl>
-            <LeftPopupControl icon={GridTableIcon}>
-                <GridControl/>
-            </LeftPopupControl>
-            <LeftPopupControl icon={NanoTechnologyIcon}>
-                <Neo4jControl/>
-            </LeftPopupControl>
+            <div className="control-container col">
+                <LeftPopupControl icon={StudyDeskIcon}>
+                    <WorkspaceControl/>
+                </LeftPopupControl>
+                <LeftPopupControl icon={Image03Icon}>
+                    <ImageOverlayControl/>
+                </LeftPopupControl>
+                <LeftPopupControl icon={GridTableIcon}>
+                    <GridControl/>
+                </LeftPopupControl>
+                <LeftPopupControl icon={NanoTechnologyIcon}>
+                    <Neo4jControl/>
+                </LeftPopupControl>
+            </div>
         </div>
 
         <div style={topCenteredStyle}>

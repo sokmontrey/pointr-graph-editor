@@ -5,11 +5,14 @@
 }
 
 :root {
-    --square-button-size: 42px;
+    --square-button-size: 44px;
     --accent-color: #0183FF;
     --accent-glow: rgba(1, 131, 255, 0.27);
     --background-color: #ffffff;
     --background-glow: rgba(255, 255, 255, 0.27);
+    --darkened-background-color: #F7F8FC;
+    --darkened-shadow: rgba(0, 0, 0, 0.06);
+    --dark-shadow: rgba(0, 0, 0, 0.1);
 }
 
 .square-button {
@@ -22,9 +25,10 @@
     background-color: var(--background-color);
     color: var(--accent-color);
     border: none;
-    border-radius: calc(0.3 * var(--square-button-size));
+    border-radius: calc(0.2 * var(--square-button-size));
     padding: calc(0.1 * var(--square-button-size));
     transition: all 0.2s ease;
+    filter: drop-shadow(0 0 10px var(--darkened-shadow));
 }
 
 .square-button svg {
@@ -33,12 +37,32 @@
     transition: filter 0.2s ease;
 }
 
-.square-button:hover svg {
-    filter: drop-shadow(0 0 5px var(--background-glow));
+.square-button:hover svg,
+.square-button.active svg {
+    filter: drop-shadow(0 0 10px var(--background-glow));
     color: var(--background-color);
 }
 
-.square-button:hover {
+.square-button:hover,
+.square-button.active{
     background-color: var(--accent-color);
     color: var(--background-color);
+}
+
+.control-container {
+    background-color: var(--darkened-background-color);
+    gap: 5px;
+    padding: 5px;
+    border-radius: calc(5px / 2 + 0.2 * var(--square-button-size));
+    filter: drop-shadow(0 0 20px var(--dark-shadow));
+}
+
+.col {
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
 }
