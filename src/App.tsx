@@ -4,7 +4,6 @@ import ModeControl from "./components/controls/ModeControl.tsx";
 import ImageOverlayControl from "./components/controls/ImageOverlayControl.tsx";
 import ImageOverlayCanvas from "./components/canvas/ImageOverlayCanvas.tsx";
 import BulletGrid from "./components/canvas/BulletGrid.tsx";
-// import GridControl from "./components/controls/gridControl.tsx";
 import ModeOverlayCanvas from "./components/canvas/ModeOverlayCanvas.tsx";
 import CommandControl from "./components/controls/CommandControl.tsx";
 import GraphControl from "./components/controls/GraphControl.tsx";
@@ -13,6 +12,7 @@ import Neo4jControl from "./components/controls/Neo4jControl.tsx";
 import ReferenceNodeControl from "./components/controls/ReferenceNodeControl.tsx";
 import {useModeStore} from "./stores/main";
 import SelectMode from "./domain/modes/SelectMode.ts";
+import GridControl from "./components/controls/GridControl.tsx";
 
 export default function App() {
     useModeStore.getState().setMode(new SelectMode());
@@ -27,7 +27,7 @@ export default function App() {
             <WorkspaceControl/>
             <ModeControl/>
             <ImageOverlayControl/>
-            {/*<GridControl/> Mode doesn't reflect store changes, disable for now */}
+            <GridControl/>
             <CommandControl/>
             <GraphControl/>
             <Neo4jControl/>
