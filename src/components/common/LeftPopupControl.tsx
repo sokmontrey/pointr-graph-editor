@@ -1,20 +1,22 @@
 ﻿import React, {useState, useRef, useEffect} from 'react';
 import {createPortal} from 'react-dom';
+import {HugeiconsIcon, IconSvgElement} from "@hugeicons/react";
+import {SearchIcon} from "@hugeicons/core-free-icons";
 
 export type PopupDirection = 'top' | 'right' | 'bottom' | 'left';
 
 export interface PopupToggleProps {
     children: React.ReactNode;
     direction?: PopupDirection;
-    buttonContent?: React.ReactNode;
+    icon?: IconSvgElement;
     className?: string;
 }
 
 const LeftPopupControl = ({
-                         children,
-                         buttonContent = '☰',
-                         className = '',
-                     }: PopupToggleProps) => {
+                              children,
+                              icon = SearchIcon,
+                              className = '',
+                          }: PopupToggleProps) => {
 
     const [isOpen, setIsOpen] = useState(false);
     const buttonRef = useRef<HTMLButtonElement>(null);
@@ -67,7 +69,10 @@ const LeftPopupControl = ({
                     justifyContent: 'center',
                 }}
             >
-                {buttonContent}
+                <HugeiconsIcon icon={icon}
+                               strokeWidth={2}
+                               size={32}
+                />
             </button>
 
             {/* Hidden div that always renders children */}

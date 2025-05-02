@@ -17,6 +17,8 @@ import {usePersistenceDebouncingAttachment} from "./hooks/attachments";
 import React from "react";
 import LeftPopupControl from "./components/common/LeftPopupControl.tsx";
 
+import {GridTableIcon, Image03Icon, NanoTechnologyIcon, StudyDeskIcon} from '@hugeicons/core-free-icons';
+
 export default function App() {
     useModeStore.getState().setMode(new SelectMode());
 
@@ -34,16 +36,16 @@ export default function App() {
         </div>
 
         <div style={leftMiddleStyle}>
-            <LeftPopupControl buttonContent="s">
+            <LeftPopupControl icon={StudyDeskIcon}>
                 <WorkspaceControl/>
             </LeftPopupControl>
-            <LeftPopupControl buttonContent="s">
+            <LeftPopupControl icon={Image03Icon}>
                 <ImageOverlayControl/>
             </LeftPopupControl>
-            <LeftPopupControl buttonContent="s">
+            <LeftPopupControl icon={GridTableIcon}>
                 <GridControl/>
             </LeftPopupControl>
-            <LeftPopupControl buttonContent="s">
+            <LeftPopupControl icon={NanoTechnologyIcon}>
                 <Neo4jControl/>
             </LeftPopupControl>
         </div>
