@@ -13,9 +13,15 @@ import ReferenceNodeControl from "./components/controls/ReferenceNodeControl.tsx
 import {useModeStore} from "./stores/main";
 import SelectMode from "./domain/modes/SelectMode.ts";
 import GridControl from "./components/controls/GridControl.tsx";
+import {usePersistenceImageOverlayAttachment, usePersistenceStoreAttachment} from "./hooks/attachments";
+import {usePersistenceGridAttachment} from "./hooks/attachments/usePersistenceGridAttachment.ts";
 
 export default function App() {
     useModeStore.getState().setMode(new SelectMode());
+
+    usePersistenceStoreAttachment(1000);
+    usePersistenceImageOverlayAttachment(1000);
+    usePersistenceGridAttachment(1000);
 
     return (<>
         <div style={{

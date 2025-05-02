@@ -1,12 +1,8 @@
 ﻿import React from 'react';
-import {usePersistenceImageOverlayAttachment, usePersistenceStoreAttachment} from "../../hooks/attachments";
 import {useWorkspace} from "../../hooks/persistence";
 
 const WorkspaceControls = () => {
     const [newWorkspaceName, setNewWorkspaceName] = React.useState('');
-
-    usePersistenceStoreAttachment(1000);
-    usePersistenceImageOverlayAttachment(1000);
 
     const {
         workspaces,

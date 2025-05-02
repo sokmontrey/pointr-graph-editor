@@ -17,11 +17,6 @@ const ReferenceNodeControl = () => {
             return;
         }
 
-        const numberRegex = /^[0-9]+$/;
-        if (!numberRegex.test(label)) {
-            return;
-        }
-
         const node = entity as GraphNode;
         useNodeStore.getState().updateNodeLabel(node.id, label);
     };
