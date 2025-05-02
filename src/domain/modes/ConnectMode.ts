@@ -1,33 +1,29 @@
 ﻿import {EventPropMap} from "../../hooks/event";
-import {CommandStore} from "../../stores/main";
-import {Mode} from "./Mode.ts";
-import {NodeStore} from "../../stores/graph";
-import CommandFactory from "../../core/commands/CommandFactory.ts";
+import {useCommandStore} from "../../stores/main";
+import {useNodeStore} from "../../stores/graph";
 import {GraphNode} from "../graph";
 import {Vec2} from "../../utils/vector.ts";
+import ConnectCommand from "../../core/commands/ConnectCommand.ts";
+import Mode from "./Mode.ts";
 
-export class ConnectMode extends Mode {
+class ConnectMode extends Mode {
     name = 'connect';
     private hoveredNode: GraphNode | null = null;
     private selectedNode: GraphNode | null = null;
     private mousePos: Vec2 = new Vec2(0, 0);
 
-    constructor(
-        private nodeStore: NodeStore,
-        private commandStore: CommandStore,
-        private commandFactory: CommandFactory,
-    ) {
-        super();
-    }
-
     override handleMouseMove(props: EventPropMap["mousemove"]): void {
+        const nodeStore = useNodeStore.getState();
+
         this.mousePos = props.mousePos;
-        this.hoveredNode = this.nodeStore.getHoveredNode(props.mousePos);
+        this.hoveredNode = nodeStore.getHoveredNode(props.mousePos);
     }
 
     override handleClick(props: EventPropMap["click"]): void {
+        const nodeStore = useNodeStore.getState();
+
         this.mousePos = props.mousePos;
-        this.hoveredNode = this.nodeStore.getHoveredNode(props.mousePos);
+        this.hoveredNode = nodeStore.getHoveredNode(props.mousePos);
 
         if (!this.hoveredNode) {
             this.reset();
@@ -41,11 +37,8 @@ export class ConnectMode extends Mode {
 
         if (this.selectedNode === this.hoveredNode) return;
 
-        const command = this.commandFactory.connectCommand(
-            this.selectedNode.id,
-            this.hoveredNode!.id,
-        );
-        this.commandStore.execute(command);
+        const command = new ConnectCommand(this.selectedNode.id, this.hoveredNode!.id);
+        useCommandStore.getState().execute(command);
         this.reset();
     }
 
@@ -75,3 +68,5 @@ export class ConnectMode extends Mode {
         this.selectedNode = null;
     }
 }
+
+export default ConnectMode;

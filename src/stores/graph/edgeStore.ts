@@ -3,9 +3,11 @@ import {GraphEdge} from "../../domain/graph";
 import {useNodeStore} from "./nodeStore.ts";
 import {Vec2} from "../../utils/vector.ts";
 import {Segment} from "../../utils/segment.ts";
+import EdgeIndex from "../../utils/edgeIndex.ts";
 
 export interface EdgeState {
     edges: GraphEdge[];
+    edgeIndex: EdgeIndex;
 }
 
 export interface EdgeAction {
@@ -16,19 +18,23 @@ export interface EdgeAction {
     clearEdges: () => void;
     draw: (ctx: CanvasRenderingContext2D) => void;
     getHoveredEdge: (position: Vec2) => [GraphEdge, Segment] | null;
+    getConnectedNodes: (nodeId: string) => string[];
+    find: (edgeId: string) => GraphEdge | null;
 }
 
 export type EdgeStore = EdgeState & EdgeAction;
 
 export const useEdgeStore = create<EdgeStore>((set, get) => ({
     edges: [],
+    edgeIndex: new EdgeIndex(),
+
     addEdge: (fromId, toId, id = null) => {
-        const {edges} = get();
-        if (edges.some(edge => edge.from === fromId && edge.to === toId)) {
+        const {edges, edgeIndex} = get();
+
+        if (edgeIndex.hasConnection(fromId, toId)) {
             return null; // Edge already exists
         }
 
-        // Check if nodes exist
         const {nodes} = useNodeStore.getState();
         const fromNodeExists = nodes.some(node => node.id === fromId);
         const toNodeExists = nodes.some(node => node.id === toId);
@@ -44,41 +50,85 @@ export const useEdgeStore = create<EdgeStore>((set, get) => ({
             from: fromId,
             to: toId,
         };
-        set({edges: [...edges, newEdge]});
+
+        const updatedEdges = [...edges, newEdge];
+        edgeIndex.add(newEdge);
+
+        set({edges: updatedEdges});
         return id;
     },
+
     removeEdge: (id) => {
-        const {edges} = get();
+        const {edges, edgeIndex} = get();
+        edgeIndex.remove(id);
         set({edges: edges.filter(edge => edge.id !== id)});
     },
+
     removeEdgesConnectedToNode: (nodeId) => {
-        const {edges} = get();
+        const {edges, edgeIndex} = get();
+        const connectedEdges = edgeIndex.getEdgesConnectedToNode(nodeId);
+        const connectedEdgeIds = new Set(connectedEdges.map(edge => edge.id));
+        for (const edge of connectedEdges) {
+            edgeIndex.remove(edge.id);
+        }
         set({
-            edges: edges.filter(edge => edge.from !== nodeId && edge.to !== nodeId),
+            edges: edges.filter(edge => !connectedEdgeIds.has(edge.id)),
         });
     },
-    loadEdges: (edges) => set({edges}),
-    clearEdges: () => set({edges: []}),
+
+    loadEdges: (edges) => {
+        const edgeIndex = new EdgeIndex();
+        edgeIndex.rebuild(edges);
+        set({edges, edgeIndex});
+    },
+
+    clearEdges: () => {
+        const {edgeIndex} = get();
+        edgeIndex.clear();
+        set({edges: []});
+    },
+
     getHoveredEdge: (position) => {
         const {edges} = get();
+        const nodeStore = useNodeStore.getState();
+
+        // TODO: This could be further optimized with a spatial index for edges
+        // For now, optimize the node lookups
         for (const edge of edges) {
-            const fromNode = useNodeStore.getState().nodes.find(node => node.id === edge.from);
-            const toNode = useNodeStore.getState().nodes.find(node => node.id === edge.to);
+            const fromNode = nodeStore.find(edge.from);
+            const toNode = nodeStore.find(edge.to);
+
             if (!fromNode || !toNode) {
                 continue;
             }
+
             const segment = new Segment(fromNode.position, toNode.position);
-            if (segment.isHovered(position, 10)){
+            if (segment.isHovered(position, 10)) {
                 return [edge, segment];
             }
         }
         return null;
     },
+
+    getConnectedNodes: (nodeId) => {
+        const {edgeIndex} = get();
+        return edgeIndex.getConnectedNodeIds(nodeId);
+    },
+
+    find: (edgeId) => {
+        const {edgeIndex} = get();
+        const edge = edgeIndex.getEdge(edgeId);
+        return edge || null;
+    },
+
     draw: (ctx) => {
         const {edges} = get();
+        const nodeStore = useNodeStore.getState();
+
         edges.forEach(edge => {
-            const fromNode = useNodeStore.getState().nodes.find(node => node.id === edge.from);
-            const toNode = useNodeStore.getState().nodes.find(node => node.id === edge.to);
+            const fromNode = nodeStore.find(edge.from);
+            const toNode = nodeStore.find(edge.to);
+
             if (!fromNode || !toNode) return;
 
             ctx.beginPath();

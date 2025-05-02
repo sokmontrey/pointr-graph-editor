@@ -1,21 +1,21 @@
 ﻿import {EventPropMap} from "../../hooks/event";
-import {Mode} from "./Mode.ts";
 import {GraphNode, GraphEdge} from "../graph";
-import {EdgeStore, NodeStore, useNodeStore} from "../../stores/graph";
+import {useEdgeStore, useNodeStore} from "../../stores/graph";
 import {Segment} from "../../utils/segment.ts";
-import {CommandStore} from "../../stores/main";
-import CommandFactory from "../../core/commands/CommandFactory.ts";
 import {Vec2} from "../../utils/vector.ts";
 import {snapToGrid} from "../../utils/mouse.ts";
-import {GridStore} from "../../stores/canvas";
-import {SelectionStore} from "../../stores/main/selectionStore.ts";
+import MoveNodeCommand from "../../core/commands/MoveNodeCommand.ts";
+import {useCommandStore} from "../../stores/main";
+import {useSelectionStore} from "../../stores/main/selectionStore.ts";
+import {useGridStore} from "../../stores/canvas";
+import Mode from "./Mode.ts";
 
 export interface GraphEntity {
     value: GraphNode | GraphEdge;
     segment?: Segment;
 }
 
-export class SelectMode extends Mode {
+class SelectMode extends Mode {
     name = "Select";
 
     private hoveredEntity: GraphEntity | null = null;
@@ -24,17 +24,6 @@ export class SelectMode extends Mode {
     private draggingNode: GraphNode | null = null;
     private dragStartPos: Vec2 | null = null;
 
-    constructor(
-        private nodeStore: NodeStore,
-        private edgeStore: EdgeStore,
-        private gridStore: GridStore,
-        private selectionStore: SelectionStore,
-        private commandStore: CommandStore,
-        private commandFactory: CommandFactory,
-    ) {
-        super();
-    }
-
     override handleMouseMove(props: EventPropMap["mousemove"]): void {
         const nodes = useNodeStore.getState().getHoveredNode(props.mousePos);
         if (nodes) {
@@ -42,7 +31,8 @@ export class SelectMode extends Mode {
             return;
         }
 
-        const edge = this.edgeStore.getHoveredEdge(props.mousePos);
+        const edgeStore = useEdgeStore.getState();
+        const edge = edgeStore.getHoveredEdge(props.mousePos);
         if (edge) {
             this.hoveredEntity = {value: edge[0], segment: edge[1]};
             return;
@@ -61,19 +51,22 @@ export class SelectMode extends Mode {
             this.dragStartPos = this.draggingNode.position;
         }
 
-        const snappedPos = snapToGrid(props.mousePos, this.gridStore.gap);
-        this.nodeStore.moveNode(this.draggingNode!.id, snappedPos);
+        const nodeStore = useNodeStore.getState();
+        const { gap } = useGridStore.getState();
+        const snappedPos = snapToGrid(props.mousePos, gap);
+        nodeStore.moveNode(this.draggingNode!.id, snappedPos);
     }
 
     override handleMouseUp(props: EventPropMap["mouseup"]): void {
         if (this.draggingNode && this.dragStartPos) {
-            const snappedPos = snapToGrid(props.mousePos, this.gridStore.gap);
-            const command = this.commandFactory.moveNodeCommand(
+            const { gap } = useGridStore.getState();
+            const snappedPos = snapToGrid(props.mousePos, gap);
+            const command = new MoveNodeCommand(
                 this.draggingNode.id,
                 this.dragStartPos,
                 snappedPos,
             );
-            this.commandStore.execute(command);
+            useCommandStore.getState().execute(command);
             this.dragStartPos = null;
             this.draggingNode = null;
             this.clearSelection();
@@ -91,16 +84,17 @@ export class SelectMode extends Mode {
 
     private selectEntity(entity: GraphEntity): void {
         this.selectedEntity = entity;
+        const selectionStore = useSelectionStore.getState();
         if (this.isNode(entity)) {
-            this.selectionStore.setNode(entity.value.id);
+            selectionStore.setNode(entity.value.id);
         } else {
-            this.selectionStore.setEdge(entity.value.id);
+            selectionStore.setEdge(entity.value.id);
         }
     }
 
     private clearSelection(): void {
         this.selectedEntity = null;
-        this.selectionStore.clear();
+        useSelectionStore.getState().clear();
     }
 
     private isNode(entity: GraphEntity): boolean {
@@ -145,3 +139,5 @@ export class SelectMode extends Mode {
         ctx.stroke();
     }
 }
+
+export default SelectMode;

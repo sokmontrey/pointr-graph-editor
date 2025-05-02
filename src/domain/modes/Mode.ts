@@ -1,6 +1,6 @@
 ﻿import {EventPropMap} from "../../hooks/event";
 
-export abstract class Mode {
+abstract class Mode {
     name: string = '';
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -23,3 +23,5 @@ export abstract class Mode {
     draw(_ctx: CanvasRenderingContext2D): void {
     }
 }
+
+export default Mode;

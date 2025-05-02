@@ -1,5 +1,5 @@
 ﻿import {ICommand} from "./ICommand.ts";
-import {EdgeStore} from "../../stores/graph";
+import {useEdgeStore} from "../../stores/graph";
 
 class ConnectCommand implements ICommand {
     private edgeId: string | null = null;
@@ -7,12 +7,11 @@ class ConnectCommand implements ICommand {
     constructor(
         private fromId: string,
         private toId: string,
-        private edgeStore: EdgeStore,
     ) {
     }
 
     execute() {
-        this.edgeId = this.edgeStore.addEdge(this.fromId, this.toId);
+        this.edgeId = useEdgeStore.getState().addEdge(this.fromId, this.toId);
         if (this.edgeId === null) {
             return;
         } // TODO: error message handling
@@ -20,7 +19,7 @@ class ConnectCommand implements ICommand {
 
     undo() {
         if (this.edgeId) {
-            this.edgeStore.removeEdge(this.edgeId);
+            useEdgeStore.getState().removeEdge(this.edgeId);
         }
     }
 }

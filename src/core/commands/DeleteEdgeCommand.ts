@@ -1,27 +1,28 @@
-﻿import {EdgeStore} from "../../stores/graph";
+﻿import {useEdgeStore} from "../../stores/graph";
 import {ICommand} from "./ICommand.ts";
 import {GraphEdge} from "../../domain/graph";
 
 class DeleteEdgeCommand implements ICommand {
-    private edge: GraphEdge;
+    private edge: GraphEdge | null;
 
     constructor(
         private edgeId: string,
-        private edgeStore: EdgeStore,
     ) {
-        this.edge = this.edgeStore.edges.find(edge => edge.id === edgeId)!;
+        this.edge = useEdgeStore.getState()
+            .find(edgeId);
     }
 
     execute() {
-        this.edgeStore.removeEdge(this.edgeId);
+        useEdgeStore.getState()
+            .removeEdge(this.edgeId);
     }
 
     undo() {
-        this.edgeStore.addEdge(
-            this.edge.from,
-            this.edge.to,
-            this.edgeId
-        );
+        if (!this.edge) {
+            return;
+        }
+        useEdgeStore.getState()
+            .addEdge(this.edge.from, this.edge.to, this.edgeId);
     }
 }
 
