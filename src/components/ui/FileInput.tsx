@@ -1,4 +1,5 @@
-import React, { useRef } from "react";
+import React, {useRef} from "react";
+import PrimaryButton from "./PrimaryButton";
 
 interface FileInputProps {
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -7,10 +8,10 @@ interface FileInputProps {
 }
 
 const FileInput: React.FC<FileInputProps> = ({
-    onChange,
-    accept = "image/*",
-    label,
-}) => {
+                                                 onChange,
+                                                 accept = "image/*",
+                                                 label,
+                                             }) => {
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleButtonClick = () => {
@@ -28,12 +29,9 @@ const FileInput: React.FC<FileInputProps> = ({
                     onChange={onChange}
                     className="hidden"
                 />
-                <button 
-                    onClick={handleButtonClick}
-                    className="flex-1 p-1.5 px-2.5 text-sm text-white bg-blue-500 hover:bg-blue-600 font-medium rounded-lg transition-colors"
-                >
+                <PrimaryButton onClick={handleButtonClick}>
                     Choose File
-                </button>
+                </PrimaryButton>
             </div>
         </div>
     );
