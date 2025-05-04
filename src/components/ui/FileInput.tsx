@@ -21,7 +21,7 @@ const FileInput: React.FC<FileInputProps> = ({
     return (
         <div className="w-full">
             {label && <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>}
-            <div className="flex w-full bg-white rounded-lg shadow-sm overflow-hidden">
+            <div className="flex w-full bg-white rounded-lg ">
                 <input
                     ref={fileInputRef}
                     type="file"

@@ -116,9 +116,9 @@ const DragNumberInput = ({
 
     return (
         <div
-            className={` flex flex-row items-center w-full bg-white rounded-lg shadow-sm overflow-hidden hover:bg-blue-50 group transition-colors duration-200 `}>
+            className={` flex flex-row items-center w-full bg-white rounded-lg shadow-sm overflow-hidden group transition-colors duration-200 `}>
             {label && <div
-                className={` flex-none text-left font-mono text-xs text-gray-500 p-2 pl-4 pr-3 border-r border-gray-300 group-hover:bg-blue-500 group-hover:text-white group-hover:border-blue-400 transition-colors duration-200 `}>
+                className={` flex-none text-left font-mono text-xs text-gray-500 p-2 pl-4 pr-3 border-r border-gray-300 group-hover:text-blue-500 group-hover:font-bold group-hover:border-blue-500 transition-all duration-200 `}>
                 {label}
             </div>}
             <input
