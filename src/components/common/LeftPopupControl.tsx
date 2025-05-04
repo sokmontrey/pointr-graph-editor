@@ -58,7 +58,10 @@ const LeftPopupControl = ({
     };
 
     return (
-        <div className={`popup-toggle ${className}`} style={{position: 'relative'}}>
+        <div className={className}
+             style={{
+                 position: 'relative'
+             }}>
             <IconButton
                 icon={icon}
                 onClick={togglePanel}
@@ -67,42 +70,32 @@ const LeftPopupControl = ({
             />
 
             {/* Hidden div that always renders children */}
-            <div style={hiddenChildrenStyle} aria-hidden="true">
+            <div className={`
+                absolute top-0 left-0
+                w-0 h-0 p-0 m-0
+                overflow-hidden
+                clip-rect(0, 0, 0, 0)
+                whitespace-nowrap
+                border-0
+            `}
+                 aria-hidden="true">
                 {children}
             </div>
 
             {isOpen && createPortal(
                 <div
                     ref={panelRef}
-                    className="popup-panel"
-                    style={{
-                        ...getPopupStyle(),
-                        background: '#fff',
-                        border: '1px solid #ccc',
-                        borderRadius: '4px',
-                        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
-                        padding: '10px',
-                        maxWidth: '90vw',
-                        maxHeight: '90vh',
-                        overflow: 'auto',
-                    }}
-                > {children} </div>,
+                    style={getPopupStyle()}
+                    className={`
+                        bg-gray-100 p-2
+                        rounded-md shadow-lg overflow-auto
+                        max-w-[90vw] max-h-[90vh]
+                    `}>
+                    {children}
+                </div>,
                 document.body
             )}
         </div>
     );
 }
-
-const hiddenChildrenStyle: React.CSSProperties = {
-    position: 'absolute',
-    width: '1px',
-    height: '1px',
-    padding: '0',
-    margin: '-1px',
-    overflow: 'hidden',
-    clip: 'rect(0, 0, 0, 0)',
-    whiteSpace: 'nowrap',
-    border: '0',
-};
-
 export default LeftPopupControl;
