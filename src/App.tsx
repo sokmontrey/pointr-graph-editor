@@ -36,7 +36,7 @@ export default function App() {
         </div>
 
         <div style={leftMiddleStyle}>
-            <div className="control-container col">
+            <div className="flex flex-col gap-1 bg-gray-100 rounded-xl p-1 ">
                 <LeftPopupControl icon={StudyDeskIcon}>
                     <WorkspaceControl/>
                 </LeftPopupControl>
@@ -65,18 +65,6 @@ export default function App() {
         </div>
     </>);
 }
-
-// const bottomCenteredStyle: React.CSSProperties = {
-//     position: 'fixed',
-//     bottom: 0,
-//     right: 0,
-//     width: '100%',
-//     zIndex: 1000,
-//     display: 'flex',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     padding: '10px',
-// };
 
 const topCenteredStyle: React.CSSProperties = {
     position: 'fixed',
