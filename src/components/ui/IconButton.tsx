@@ -20,15 +20,8 @@ const IconButton = ({
         <button
             ref={ref}
             onClick={onClick}
-            className={`
-                w-[40px] h-[40px]
-                flex items-center justify-center
-                border-none rounded-xl
-                p-[4px] cursor-pointer
-                transition-all duration-100 ease-in-out
-                shadow-xl
-                ${active ? 'bg-blue-500 text-white' : 'bg-white text-blue-500'}
-                hover:bg-blue-500 hover:text-white
+            className={` w-[40px] h-[40px] flex items-center justify-center border-none rounded-xl p-[4px] cursor-pointer transition-all duration-100 ease-in-out shadow-xl bg-white hover:text-blue-500
+                ${active ? 'text-blue-500' : 'text-gray-400'}
                 ${className}
             `}
         >
@@ -36,10 +29,8 @@ const IconButton = ({
                 icon={icon}
                 strokeWidth={2}
                 size={18}
-                className={`
-                    transition-all duration-200
-                    ${active ? 'text-white drop-shadow-lg' : 'text-primary drop-shadow-sm'}
-                    hover:text-white hover:drop-shadow-lg
+                className={` transition-all duration-200
+                    ${active ? 'text-blue-500 drop-shadow-sm' : 'text-primary drop-shadow-sm'}
                 `}
             />
         </button>

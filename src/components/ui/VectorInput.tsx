@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Vec2 } from '../../utils/vector.ts';
+import {useState, useEffect} from 'react';
+import {Vec2} from '../../utils/vector.ts';
 import DragNumberInput from './DragNumberInput.tsx';
 
 interface VectorInputProps {
@@ -13,14 +13,14 @@ interface VectorInputProps {
 }
 
 const VectorInput = ({
-    value,
-    onChange,
-    min = -1000,
-    max = 1000,
-    step = 1,
-    label,
-    disabled = false,
-}: VectorInputProps) => {
+                         value,
+                         onChange,
+                         min = -1000,
+                         max = 1000,
+                         step = 1,
+                         label,
+                         disabled = false,
+                     }: VectorInputProps) => {
     const [localValue, setLocalValue] = useState<Vec2>(value.clone());
 
     useEffect(() => {
@@ -40,31 +40,31 @@ const VectorInput = ({
     };
 
     return (
-        <div className="vector-input">
-            {label && <label className="vector-label">{label}</label>}
-            <div className="vector-controls">
-                <div className="vector-x">
-                    <DragNumberInput
-                        label="X"
-                        value={localValue.x}
-                        onChange={handleXChange}
-                        min={min}
-                        max={max}
-                        step={step}
-                        disabled={disabled}
-                    />
-                </div>
-                <div className="vector-y">
-                    <DragNumberInput
-                        label="Y"
-                        value={localValue.y}
-                        onChange={handleYChange}
-                        min={min}
-                        max={max}
-                        step={step}
-                        disabled={disabled}
-                    />
-                </div>
+        <div>
+            {label &&
+                <label
+                    className={` block text-sm font-medium text-gray-700 mb-1 `}>
+                    {label}
+                </label>}
+            <div className={` flex flex-row gap-2 w-full `}>
+                <DragNumberInput
+                    label="X"
+                    value={localValue.x}
+                    onChange={handleXChange}
+                    min={min}
+                    max={max}
+                    step={step}
+                    disabled={disabled}
+                />
+                <DragNumberInput
+                    label="Y"
+                    value={localValue.y}
+                    onChange={handleYChange}
+                    min={min}
+                    max={max}
+                    step={step}
+                    disabled={disabled}
+                />
             </div>
         </div>
     );

@@ -1,6 +1,7 @@
 ﻿import React from "react";
 import DragNumberInput from "../ui/DragNumberInput.tsx";
 import VectorInput from "../ui/VectorInput.tsx";
+import FileInput from "../ui/FileInput.tsx";
 import {useImageOverlayStore} from "../../stores/canvas";
 
 const ImageOverlayControl: React.FC = () => {
@@ -31,22 +32,23 @@ const ImageOverlayControl: React.FC = () => {
         reader.readAsDataURL(file);
     };
 
-    return (<div>
-        <input
-            type="file"
-            accept="image/*"
+    return (<div
+        className={` flex flex-col gap-2 `}>
+        <FileInput
+            label="Image"
             onChange={handleFileChange}
+            accept="image/*"
         />
 
         <VectorInput
-            label="Image Position"
+            label="Position"
             value={imageOffset}
             onChange={setImageOffset}
             step={1}
         />
 
         <DragNumberInput
-            label="Image Scale"
+            label="Scale"
             value={imageScale}
             onChange={setImageScale}
             min={0.01}
@@ -56,7 +58,7 @@ const ImageOverlayControl: React.FC = () => {
         />
 
         <DragNumberInput
-            label="Image Opacity"
+            label="Opacity"
             value={imageOpacity}
             onChange={setImageOpacity}
             min={0}

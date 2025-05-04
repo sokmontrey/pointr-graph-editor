@@ -37,16 +37,16 @@ export default function App() {
 
         <div style={leftMiddleStyle}>
             <div className="flex flex-col gap-1 bg-gray-100 rounded-xl p-1 ">
-                <LeftPopupControl icon={StudyDeskIcon}>
+                <LeftPopupControl icon={StudyDeskIcon} title="Workspace">
                     <WorkspaceControl/>
                 </LeftPopupControl>
-                <LeftPopupControl icon={Image03Icon}>
+                <LeftPopupControl icon={Image03Icon} title="Image Overlay">
                     <ImageOverlayControl/>
                 </LeftPopupControl>
-                <LeftPopupControl icon={GridTableIcon}>
+                <LeftPopupControl icon={GridTableIcon} title="Grid">
                     <GridControl/>
                 </LeftPopupControl>
-                <LeftPopupControl icon={NanoTechnologyIcon}>
+                <LeftPopupControl icon={NanoTechnologyIcon} title="Neo4j">
                     <Neo4jControl/>
                 </LeftPopupControl>
             </div>

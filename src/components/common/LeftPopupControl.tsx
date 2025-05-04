@@ -11,12 +11,14 @@ export interface PopupToggleProps {
     direction?: PopupDirection;
     icon?: IconSvgElement;
     className?: string;
+    title: string;
 }
 
 const LeftPopupControl = ({
                               children,
                               icon = SearchIcon,
                               className = '',
+                              title = '',
                           }: PopupToggleProps) => {
 
     const [isOpen, setIsOpen] = useState(false);
@@ -58,10 +60,7 @@ const LeftPopupControl = ({
     };
 
     return (
-        <div className={className}
-             style={{
-                 position: 'relative'
-             }}>
+        <div className={className} style={{ position: 'relative' }}>
             <IconButton
                 icon={icon}
                 onClick={togglePanel}
@@ -70,14 +69,7 @@ const LeftPopupControl = ({
             />
 
             {/* Hidden div that always renders children */}
-            <div className={`
-                absolute top-0 left-0
-                w-0 h-0 p-0 m-0
-                overflow-hidden
-                clip-rect(0, 0, 0, 0)
-                whitespace-nowrap
-                border-0
-            `}
+            <div className={` absolute top-0 left-0 w-0 h-0 p-0 m-0 overflow-hidden clip-rect(0, 0, 0, 0) whitespace-nowrap border-0 `}
                  aria-hidden="true">
                 {children}
             </div>
@@ -86,12 +78,13 @@ const LeftPopupControl = ({
                 <div
                     ref={panelRef}
                     style={getPopupStyle()}
-                    className={`
-                        bg-gray-100 p-2
-                        rounded-md shadow-lg overflow-auto
-                        max-w-[90vw] max-h-[90vh]
-                    `}>
-                    {children}
+                    className={` bg-gray-100 p-3 rounded-lg shadow-lg overflow-auto max-w-[90vw] max-h-[90vh] `}>
+                    <p className={` block text-lg font-medium text-gray-400 mb-1 `}>
+                        {title}
+                    </p>
+                    <div>
+                        {children}
+                    </div>
                 </div>,
                 document.body
             )}
