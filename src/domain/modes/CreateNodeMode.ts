@@ -32,8 +32,9 @@ class CreateNodeMode extends Mode {
     }
 
     override draw(ctx: CanvasRenderingContext2D): void {
+        ctx.strokeStyle = 'rgb(0,196,255)';
         ctx.beginPath();
-        ctx.arc(this.position.x, this.position.y, 10, 0, 2 * Math.PI);
+        ctx.arc(this.position.x, this.position.y, 7, 0, 2 * Math.PI);
         ctx.stroke();
     }
 

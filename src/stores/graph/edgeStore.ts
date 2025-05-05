@@ -125,16 +125,21 @@ export const useEdgeStore = create<EdgeStore>((set, get) => ({
         const {edges} = get();
         const nodeStore = useNodeStore.getState();
 
+        ctx.lineWidth = 1.5;
         edges.forEach(edge => {
             const fromNode = nodeStore.find(edge.from);
             const toNode = nodeStore.find(edge.to);
 
             if (!fromNode || !toNode) return;
 
+            const grad = ctx.createLinearGradient(fromNode.position.x, fromNode.position.y, toNode.position.x, toNode.position.y);
+            grad.addColorStop(0, fromNode.type.color);
+            grad.addColorStop(1, toNode.type.color);
+            ctx.strokeStyle = grad;
+
             ctx.beginPath();
             ctx.moveTo(fromNode.position.x, fromNode.position.y);
             ctx.lineTo(toNode.position.x, toNode.position.y);
-            ctx.strokeStyle = 'black';
             ctx.stroke();
         });
     },

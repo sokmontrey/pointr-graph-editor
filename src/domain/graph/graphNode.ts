@@ -18,19 +18,19 @@ export const nodeTypes: Record<string, NodeType> = Object.fromEntries([
     {
         key: "PathNode" as NodeTypeKey,
         name: "Normal Node",
-        color: "blue",
+        color: "#045cff",
         icon: CircleIcon,
     },
     {
         key: "ReferenceNode" as NodeTypeKey,
         name: "Reference Node",
-        color: "orange",
+        color: "#d83b3b",
         icon: LinkCircleIcon,
     },
     {
         key: "RoomNode" as NodeTypeKey,
         name: "Final Node",
-        color: "green",
+        color: "#3aa23d",
         icon: CheckmarkCircle01Icon,
     }
 ].map(x => [x.key as NodeTypeKey, x]));

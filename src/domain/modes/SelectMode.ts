@@ -104,19 +104,22 @@ class SelectMode extends Mode {
     override draw(ctx: CanvasRenderingContext2D): void {
         ctx.lineWidth = 2;
 
+        const hoverColor = 'rgb(0,196,255)';
+        const selectColor = '#1ddcff';
+
         if (this.hoveredEntity) {
             if (this.isNode(this.hoveredEntity)) {
-                this.drawNode(ctx, this.hoveredEntity, 'red');
+                this.drawNode(ctx, this.hoveredEntity, hoverColor);
             } else {
-                this.drawEdge(ctx, this.hoveredEntity, 'red');
+                this.drawEdge(ctx, this.hoveredEntity, hoverColor);
             }
         }
 
         if (this.selectedEntity) {
             if (this.isNode(this.selectedEntity)) {
-                this.drawNode(ctx, this.selectedEntity, 'cyan');
+                this.drawNode(ctx, this.selectedEntity, selectColor);
             } else {
-                this.drawEdge(ctx, this.selectedEntity, 'cyan');
+                this.drawEdge(ctx, this.selectedEntity, selectColor);
             }
         }
     }
@@ -124,7 +127,7 @@ class SelectMode extends Mode {
     private drawNode(ctx: CanvasRenderingContext2D, entity: GraphEntity, color: string): void {
         const node = entity.value as GraphNode;
         ctx.beginPath();
-        ctx.arc(node.position.x, node.position.y, 10, 0, 2 * Math.PI);
+        ctx.arc(node.position.x, node.position.y, 7, 0, 2 * Math.PI);
         ctx.strokeStyle = color;
         ctx.stroke();
     }
