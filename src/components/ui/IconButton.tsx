@@ -7,6 +7,8 @@ export interface IconButtonProps {
     ref?: React.Ref<HTMLButtonElement>;
     className?: string;
     active?: boolean;
+    size?: 'sm' | 'md' | 'lg';
+    disabled?: boolean;
 }
 
 const IconButton = ({
@@ -15,13 +17,22 @@ const IconButton = ({
                         ref,
                         className = "",
                         active = false,
+                        size = 'md',
+                        disabled = false,
                     }: IconButtonProps) => {
+    const sizeMap = {
+        sm: 'w-[30px] h-[30px]',
+        md: 'w-[40px] h-[40px]',
+        lg: 'w-[50px] h-[50px]',
+    };
+
     return (
         <button
             ref={ref}
             onClick={onClick}
-            className={` w-[40px] h-[40px] flex items-center justify-center border-none rounded-xl p-[4px] cursor-pointer transition-all duration-100 ease-in-out shadow-sm bg-white hover:text-blue-500
-                ${active ? 'text-blue-500' : 'text-gray-400'}
+            className={` ${sizeMap[size]} flex items-center justify-center border-none rounded-xl p-[4px] cursor-pointer transition-all duration-50 ease-in-out shadow-sm 
+                ${active ? 'text-white bg-blue-500' : 'text-gray-700 bg-white'}
+                ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:text-blue-500'}
                 ${className}
             `}
         >
@@ -29,8 +40,8 @@ const IconButton = ({
                 icon={icon}
                 strokeWidth={2}
                 size={18}
-                className={` transition-all duration-200
-                    ${active ? 'text-blue-500 drop-shadow-sm' : 'text-primary drop-shadow-sm'}
+                className={` transition-all duration-100
+                    ${active ? 'text-white drop-shadow-sm' : 'drop-shadow-sm'}
                 `}
             />
         </button>
