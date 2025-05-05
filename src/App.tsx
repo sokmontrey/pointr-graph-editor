@@ -45,6 +45,9 @@ export default function App() {
         <div style={topCenteredStyle}>
             <CommandControl/>
             <ModeControl/>
+        </div>
+
+        <div style={topRightStyle}>
             <NodeControl/>
         </div>
 
@@ -75,6 +78,18 @@ const leftMiddleStyle: React.CSSProperties = {
     top: 0,
     left: 0,
     height: '100vh',
+    zIndex: 1000,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: '10px',
+};
+
+const topRightStyle: React.CSSProperties = {
+    position: 'fixed',
+    top: 0,
+    right: 0,
     zIndex: 1000,
     display: 'flex',
     flexDirection: 'column',

@@ -5,6 +5,7 @@ import {useEffect, useState} from "react";
 import {useNodeStore} from "../../stores/graph";
 import IconButton from "../ui/IconButton.tsx";
 import Input from "../ui/Input.tsx";
+import {motion, AnimatePresence} from "motion/react";
 
 const NodeControl = () => {
     const {
@@ -53,22 +54,44 @@ const NodeControl = () => {
             />
         </div>
 
-        {type && type === 'node' && <>
-            <Input
-                label="Label"
-                value={label}
-                onChange={e => setLabel(e.target.value)}
-            />
+        <AnimatePresence>
+            {type && type === 'node' && <>
+                <motion.div
+                    key="node-input-control"
+                    initial={{opacity: 0, scale: 0.9, width: 0}}
+                    animate={{opacity: 1, scale: 1, width: 'auto'}}
+                    exit={{opacity: 0, scale: 0.9, width: 0}}
+                    transition={{duration: 0.3}}
+                    style={{overflow: 'hidden', display: 'flex'}}
+                >
+                    <Input
+                        label="Label"
+                        value={label}
+                        onChange={e => setLabel(e.target.value)}
+                    />
+                </motion.div>
+            </>}
+        </AnimatePresence>
 
-            <div>
-                <IconButton
-                    icon={Edit02Icon}
-                    onClick={handleUpdateLabel}
-                    disabled={!isValidLabel()}
-                    size="md"
-                />
-            </div>
-        </>}
+        <AnimatePresence>
+            {type && type === 'node' && isValidLabel() &&
+                <motion.div
+                    key="node-update-button"
+                    initial={{opacity: 0, scale: 0.9, width: 0}}
+                    animate={{opacity: 1, scale: 1, width: 'auto'}}
+                    exit={{opacity: 0, scale: 0.9, width: 0}}
+                    transition={{duration: 0.3}}
+                    style={{overflow: 'hidden', display: 'flex'}}
+                >
+                    <IconButton
+                        icon={Edit02Icon}
+                        onClick={handleUpdateLabel}
+                        disabled={!isValidLabel()}
+                        size="md"
+                    />
+                </motion.div>
+            }
+        </AnimatePresence>
     </div>;
 };
 
