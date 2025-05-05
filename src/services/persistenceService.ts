@@ -27,48 +27,86 @@ export class PersistenceService {
         localStorage.setItem(WORKSPACE_KEY, workspace);
     }
 
-    // TODO: this can be split into individual store for performance
     saveAllStores(workspace?: string): void {
         workspace ??= this.getCurrentWorkspace();
 
-        const nodeStore = useNodeStore.getState();
-        const edgeStore = useEdgeStore.getState();
-        const nodeSeedStore = useNodeSeedStore.getState();
-        const gridStore = useGridStore.getState();
-        const imageOverlayStore = useImageOverlayStore.getState();
-
-        // TODO: move this to individual stores
-        const serialized = {
-            nodeStore: {
-                nodes: nodeStore.nodes.map(serializeGraphNode)
-            },
-            edgeStore: {
-                edges: edgeStore.edges.map(serializeGraphEdge)
-            },
-            nodeSeedStore: {
-                seed: nodeSeedStore.seed
-            },
-            gridStore: {
-                gap: gridStore.gap
-            },
-            imageOverlayStore: {
-                imageOffset: {
-                    x: imageOverlayStore.imageOffset.x,
-                    y: imageOverlayStore.imageOffset.y
-                },
-                imageScale: imageOverlayStore.imageScale,
-                imageOpacity: imageOverlayStore.imageOpacity,
-                imageData: imageOverlayStore.imageData
-            }
-        };
-
-        this.saveStore(workspace, STORE_KEYS.NODE, serialized.nodeStore);
-        this.saveStore(workspace, STORE_KEYS.EDGE, serialized.edgeStore);
-        this.saveStore(workspace, STORE_KEYS.NODE_SEED, serialized.nodeSeedStore);
-        this.saveStore(workspace, STORE_KEYS.GRID, serialized.gridStore);
-        this.saveStore(workspace, STORE_KEYS.IMAGE_OVERLAY, serialized.imageOverlayStore);
+        this.saveNodeStore(workspace);
+        this.saveEdgeStore(workspace);
+        this.saveNodeSeedStore(workspace);
+        this.saveGridStore(workspace);
+        this.saveImageOverlayStore(workspace);
 
         console.info("Saved all stores for workspace: " + workspace);
+    }
+
+    saveCommandStore(workspace?: string): void {
+        workspace ??= this.getCurrentWorkspace();
+        this.saveNodeStore(workspace);
+        this.saveEdgeStore(workspace);
+        this.saveNodeSeedStore(workspace);
+
+        console.info("Saved command stores for workspace: " + workspace);
+    }
+
+    saveNodeStore(workspace?: string): void {
+        workspace ??= this.getCurrentWorkspace();
+        const nodeStore = useNodeStore.getState();
+        const serialized = {
+            nodes: nodeStore.nodes.map(serializeGraphNode)
+        };
+        this.saveStore(workspace, STORE_KEYS.NODE, serialized);
+
+        console.info("Saved node store for workspace: " + workspace);
+    }
+
+    saveEdgeStore(workspace?: string): void {
+        workspace ??= this.getCurrentWorkspace();
+        const edgeStore = useEdgeStore.getState();
+        const serialized = {
+            edges: edgeStore.edges.map(serializeGraphEdge)
+        };
+        this.saveStore(workspace, STORE_KEYS.EDGE, serialized);
+
+        console.info("Saved edge store for workspace: " + workspace);
+    }
+
+    saveNodeSeedStore(workspace?: string): void {
+        workspace ??= this.getCurrentWorkspace();
+        const nodeSeedStore = useNodeSeedStore.getState();
+        const serialized = {
+            seed: nodeSeedStore.seed
+        };
+        this.saveStore(workspace, STORE_KEYS.NODE_SEED, serialized);
+
+        console.info("Saved node seed store for workspace: " + workspace);
+    }
+
+    saveGridStore(workspace?: string): void {
+        workspace ??= this.getCurrentWorkspace();
+        const gridStore = useGridStore.getState();
+        const serialized = {
+            gap: gridStore.gap
+        };
+        this.saveStore(workspace, STORE_KEYS.GRID, serialized);
+
+        console.info("Saved grid store for workspace: " + workspace);
+    }
+
+    saveImageOverlayStore(workspace?: string): void {
+        workspace ??= this.getCurrentWorkspace();
+        const imageOverlayStore = useImageOverlayStore.getState();
+        const serialized = {
+            imageOffset: {
+                x: imageOverlayStore.imageOffset.x,
+                y: imageOverlayStore.imageOffset.y
+            },
+            imageScale: imageOverlayStore.imageScale,
+            imageOpacity: imageOverlayStore.imageOpacity,
+            imageData: imageOverlayStore.imageData
+        };
+        this.saveStore(workspace, STORE_KEYS.IMAGE_OVERLAY, serialized);
+
+        console.info("Saved image overlay store for workspace: " + workspace);
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

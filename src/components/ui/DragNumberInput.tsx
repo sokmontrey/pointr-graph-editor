@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import {useState, useEffect, useRef} from 'react';
 
 interface DragNumberInputProps {
     value: number;
@@ -8,19 +8,19 @@ interface DragNumberInputProps {
     step?: number;
     label?: string;
     disabled?: boolean;
-    dragSensitivity?: number; 
+    dragSensitivity?: number;
 }
 
 const DragNumberInput = ({
-    value,
-    onChange,
-    min = 0,
-    max = 100,
-    step = 1,
-    label,
-    disabled = false,
-    dragSensitivity = 0.5, 
-}: DragNumberInputProps) => {
+                             value,
+                             onChange,
+                             min = 0,
+                             max = 100,
+                             step = 1,
+                             label,
+                             disabled = false,
+                             dragSensitivity = 0.5,
+                         }: DragNumberInputProps) => {
     const [inputValue, setInputValue] = useState<string>(value.toString());
     const [isDragging, setIsDragging] = useState<boolean>(false);
     const [startX, setStartX] = useState<number>(0);
@@ -115,24 +115,27 @@ const DragNumberInput = ({
     };
 
     return (
-        <div>
-            <div>
-                {label && <label>{label}</label>}
-                <input
-                    ref={inputRef}
-                    type="number"
-                    value={inputValue}
-                    onChange={handleInputChange}
-                    onBlur={handleBlur}
-                    onMouseDown={handleMouseDown}
-                    onTouchStart={handleTouchStart}
-                    min={min}
-                    max={max}
-                    step={step}
-                    disabled={disabled}
-                    style={{ cursor: disabled ? 'not-allowed' : 'ew-resize' }}
-                />
-            </div>
+        <div
+            className={` flex flex-row items-center w-full bg-white rounded-lg shadow-sm overflow-hidden group transition-colors duration-200 `}>
+            {label && <div
+                className={` flex-none text-left font-mono text-xs text-gray-500 p-2 pl-4 pr-3 border-r border-gray-300 group-hover:text-blue-500 group-hover:font-bold group-hover:border-blue-500 transition-all duration-200 `}>
+                {label}
+            </div>}
+            <input
+                className={` flex-1 p-1 px-3 outline-none border-none bg-transparent text-gray-700 text-left font-mono `}
+                ref={inputRef}
+                type="number"
+                value={inputValue}
+                onChange={handleInputChange}
+                onBlur={handleBlur}
+                onMouseDown={handleMouseDown}
+                onTouchStart={handleTouchStart}
+                min={min}
+                max={max}
+                step={step}
+                disabled={disabled}
+                style={{cursor: disabled ? 'not-allowed' : 'ew-resize'}}
+            />
         </div>
     );
 };

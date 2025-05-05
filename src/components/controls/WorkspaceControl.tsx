@@ -1,12 +1,12 @@
 ﻿import React from 'react';
-import {usePersistenceImageOverlayAttachment, usePersistenceStoreAttachment} from "../../hooks/attachments";
 import {useWorkspace} from "../../hooks/persistence";
+import Input from "../ui/Input";
+import {Delete02Icon, PlusSignIcon} from "@hugeicons/core-free-icons";
+import {HugeiconsIcon} from "@hugeicons/react";
+import SelectInput from "../ui/SelectInput.tsx";
 
 const WorkspaceControls = () => {
     const [newWorkspaceName, setNewWorkspaceName] = React.useState('');
-
-    usePersistenceStoreAttachment(1000);
-    usePersistenceImageOverlayAttachment(1000);
 
     const {
         workspaces,
@@ -38,35 +38,37 @@ const WorkspaceControls = () => {
     };
 
     return (
-        <div>
-            <label>
-                Workspace:
-                <select
+        <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-2">
+                <label className="text-sm font-medium text-gray-700">Workspace:</label>
+                <SelectInput
                     value={currentWorkspace}
                     onChange={handleSwitchWorkspace}
-                >
-                    {workspaces.map(workspace => (
-                        <option
-                            key={workspace}
-                            value={workspace}
-                        >
-                            {workspace}
-                        </option>
-                    ))}
-                </select>
-            </label>
+                    options={workspaces}
+                    className="flex-1"
+                />
+                <HugeiconsIcon
+                    icon={Delete02Icon}
+                    strokeWidth={2}
+                    size={18}
+                    onClick={handleDeleteWorkspace}
+                    className={` ml-2 transition-all duration-200 text-gray-500 hover:text-red-500 hover:-translate-y-0.5 cursor-pointer`} />
+            </div>
 
-            <label>
-                New workspace:
-                <input
-                    type="text"
+            <div className="flex items-center gap-2">
+                <Input
                     value={newWorkspaceName}
                     onChange={e => setNewWorkspaceName(e.target.value)}
+                    placeholder="New workspace name"
+                    className="flex-1"
                 />
-                <button onClick={handleCreateWorkspace}>Create</button>
-            </label>
-
-            <button onClick={handleDeleteWorkspace}>Delete Current</button>
+                <HugeiconsIcon
+                    icon={PlusSignIcon}
+                    strokeWidth={2}
+                    size={18}
+                    onClick={handleCreateWorkspace}
+                    className={` transition-all duration-200 text-blue-500 hover:text-blue-500 hover:-translate-y-0.5 cursor-pointer`} />
+            </div>
         </div>
     );
 };

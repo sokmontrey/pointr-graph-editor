@@ -1,4 +1,9 @@
 ﻿import {Vec2} from "../../utils/vector.ts";
+import {IconSvgElement} from "@hugeicons/react";
+import {
+    CheckmarkCircle01Icon,
+    CircleIcon, LinkCircleIcon
+} from "@hugeicons/core-free-icons";
 
 export type NodeTypeKey = "PathNode" | "ReferenceNode" | "RoomNode";
 
@@ -6,23 +11,27 @@ export interface NodeType {
     key: NodeTypeKey;
     name: string;
     color: string;
+    icon: IconSvgElement;
 }
 
 export const nodeTypes: Record<string, NodeType> = Object.fromEntries([
     {
         key: "PathNode" as NodeTypeKey,
-        name: "Path Node",
-        color: "blue",
+        name: "Normal Node",
+        color: "#045cff",
+        icon: CircleIcon,
     },
     {
         key: "ReferenceNode" as NodeTypeKey,
         name: "Reference Node",
-        color: "orange",
+        color: "#d83b3b",
+        icon: LinkCircleIcon,
     },
     {
         key: "RoomNode" as NodeTypeKey,
-        name: "Room Node",
-        color: "green",
+        name: "Final Node",
+        color: "#3aa23d",
+        icon: CheckmarkCircle01Icon,
     }
 ].map(x => [x.key as NodeTypeKey, x]));
 

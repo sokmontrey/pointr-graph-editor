@@ -43,23 +43,28 @@ class ConnectMode extends Mode {
     }
 
     override draw(ctx: CanvasRenderingContext2D): void {
+        const hoverColor = 'rgba(0,149,255,0.68)';
+        const connectColor = '#3cef67';
+
+        ctx.lineWidth = 2;
+
         if (this.hoveredNode) {
             ctx.beginPath();
             ctx.arc(this.hoveredNode.position.x, this.hoveredNode.position.y, 10, 0, 2 * Math.PI);
-            ctx.strokeStyle = 'red';
+            ctx.strokeStyle = hoverColor;
             ctx.stroke();
         }
 
         if (this.selectedNode) {
             ctx.beginPath();
             ctx.arc(this.selectedNode.position.x, this.selectedNode.position.y, 10, 0, 2 * Math.PI);
-            ctx.strokeStyle = 'green';
+            ctx.strokeStyle = connectColor;
             ctx.stroke();
 
             ctx.beginPath();
             ctx.moveTo(this.selectedNode.position.x, this.selectedNode.position.y);
             ctx.lineTo(this.mousePos.x, this.mousePos.y);
-            ctx.strokeStyle = 'green';
+            ctx.strokeStyle = connectColor;
             ctx.stroke();
         }
     }

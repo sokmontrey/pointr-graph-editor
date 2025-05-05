@@ -4,6 +4,9 @@ import {NodeType, nodeTypes} from "../../domain/graph";
 import SelectMode from "../../domain/modes/SelectMode.ts";
 import ConnectMode from "../../domain/modes/ConnectMode.ts";
 import CreateNodeMode from "../../domain/modes/CreateNodeMode.ts";
+import {BendToolIcon, Cursor02Icon} from "@hugeicons/core-free-icons";
+import IconButton from "../ui/IconButton.tsx";
+import DropdownButton from "../ui/DropdownButton.tsx";
 
 const ModeControl: React.FC = () => {
     const {mode, setMode} = useModeStore();
@@ -23,31 +26,36 @@ const ModeControl: React.FC = () => {
         setMode(new CreateNodeMode(nodeType));
     };
 
-    return (<div>
-        <p>{mode.name}</p>
+    return (
+        <div className="flex flex-row gap-1 bg-gray-100 rounded-xl p-1 shadow-lg ">
+            <IconButton
+                icon={Cursor02Icon}
+                onClick={switchToSelectMode}
+                active={mode instanceof SelectMode}
+                size="md"
+            />
 
-        <button onClick={switchToSelectMode}>
-            Select
-        </button>
+            <IconButton
+                icon={BendToolIcon}
+                onClick={switchToConnectMode}
+                active={mode instanceof ConnectMode}
+                size="md"
+            />
 
-        <button onClick={() => switchToConnectMode()}>
-            Connect
-        </button>
-
-        <select
-            onChange={e => switchToCreateMode(nodeTypes[e.target.value])}
-        >
-            {Object.entries(nodeTypes).map(([key, value]) =>
-                <option key={key} value={key}>
-                    {value.name}
-                </option>
-            )}
-        </select>
-
-        <button onClick={() => switchToCreateMode(nodeType)}>
-            {nodeType.name}
-        </button>
-    </div>);
+            <DropdownButton
+                items={Object.entries(nodeTypes).map(([key, value]) => ({
+                    key,
+                    value,
+                    name: value.name
+                }))}
+                selectedItem={nodeType}
+                onSelect={switchToCreateMode}
+                getIcon={(item) => item.icon || Cursor02Icon}
+                isActive={mode instanceof CreateNodeMode}
+                size="md"
+            />
+        </div>
+    );
 };
 
 export default ModeControl;

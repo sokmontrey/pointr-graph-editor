@@ -137,15 +137,15 @@ export const useNodeStore = create<NodeStore>((set, get) => ({
         const {nodes} = get();
         nodes.forEach(node => {
             ctx.beginPath();
-            ctx.arc(node.position.x, node.position.y, 10, 0, 2 * Math.PI);
+            ctx.arc(node.position.x, node.position.y, 7, 0, 2 * Math.PI);
             ctx.fillStyle = node.type.color;
             ctx.fill();
 
-            ctx.fillStyle = "black";
+            ctx.fillStyle = "#414a4b";
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
             ctx.font = "12px Arial";
-            ctx.fillText(node.label, node.position.x, node.position.y + 20);
+            ctx.fillText(node.label, node.position.x + 12, node.position.y + 12);
         });
     },
 }));
