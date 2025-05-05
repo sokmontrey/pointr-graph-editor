@@ -6,10 +6,9 @@ import ImageOverlayCanvas from "./components/canvas/ImageOverlayCanvas.tsx";
 import BulletGrid from "./components/canvas/BulletGrid.tsx";
 import ModeOverlayCanvas from "./components/canvas/ModeOverlayCanvas.tsx";
 import CommandControl from "./components/controls/CommandControl.tsx";
-import GraphControl from "./components/controls/GraphControl.tsx";
+import NodeControl from "./components/controls/NodeControl.tsx";
 import WorkspaceControl from "./components/controls/WorkspaceControl.tsx";
 import Neo4jControl from "./components/controls/Neo4jControl.tsx";
-import ReferenceNodeControl from "./components/controls/ReferenceNodeControl.tsx";
 import {useModeStore} from "./stores/main";
 import SelectMode from "./domain/modes/SelectMode.ts";
 import GridControl from "./components/controls/GridControl.tsx";
@@ -25,15 +24,6 @@ export default function App() {
     usePersistenceDebouncingAttachment(1000);
 
     return (<>
-        <div style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            zIndex: 1000,
-        }}>
-            <GraphControl/>
-            <ReferenceNodeControl/>
-        </div>
 
         <div style={leftMiddleStyle}>
             <div className="flex flex-col gap-1 bg-gray-100 rounded-xl p-1 ">
@@ -55,6 +45,7 @@ export default function App() {
         <div style={topCenteredStyle}>
             <CommandControl/>
             <ModeControl/>
+            <NodeControl/>
         </div>
 
         <div style={{position: 'relative'}}>
@@ -76,6 +67,7 @@ const topCenteredStyle: React.CSSProperties = {
     justifyContent: 'center',
     alignItems: 'center',
     padding: '10px',
+    gap: '10px',
 };
 
 const leftMiddleStyle: React.CSSProperties = {
