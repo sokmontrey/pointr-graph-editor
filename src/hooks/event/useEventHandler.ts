@@ -8,7 +8,7 @@ export const useEventHandler = (
     canvasRef: React.RefObject<HTMLCanvasElement | null>,
     eventBus: EventBus,
     viewport: ViewportState,
-    dragThreshold = 5,
+    dragThreshold = 2,
 ) => {
     const {publish} = eventBus;
 
